@@ -1,0 +1,85 @@
+<meta charset="UTF-8">
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset = "UTF-8" />
+<meta name="viewport" content="width=device-width" />
+
+<title>Reading Weekly Reports</title>
+
+<!--CSS-->
+
+
+<!--JavaScript-->
+<script src="scripts/jquery-1.11.1.min.js"></script>
+
+</head>
+
+<body>
+
+<input type="file" id="fileinput" />
+
+<br/><br/>
+<div id="textType"></div><br/>
+<div id="reportContents"></div>
+
+<script type="text/javascript">
+
+var reportcontents = document.getElementById('reportContents');
+var contents;
+
+    function readSingleFile(evt) {
+      //Retrieve the first (and only!) File from the FileList object
+      var f = evt.target.files[0]; 
+    
+        var r = new FileReader();
+        r.onload = function(e) {
+            contents = e.target.result;               
+            var arrayOfLines = contents.match(/[^\r\n]+/g);
+            
+            if(contents.charAt(0)!="<"){   
+                for(i = 0; i<arrayOfLines.length;i++){         
+                    document.getElementById('reportContents').innerHTML += "<input type='text' id='content"+i+"' value='"+arrayOfLines[i]+"'/></br>"; 
+                }
+            }else{
+                readXML();
+            }
+
+        }
+        r.readAsText(f);
+      }
+
+    function readXML(){
+        
+        xmlDoc = jQuery.parseXML(contents);
+        $xml = $( xmlDoc );
+        
+        document.getElementById('reportContents').innerHTML += "<hr></hr>";
+        
+        document.getElementById('reportContents').innerHTML +=
+        "<div style='width:120px; float:left;'>Sendtime:</div><input type='text' id='sendtime' value='"+$(contents).find("sendtime").text()+"'/></br>";
+        document.getElementById('reportContents').innerHTML +=
+        "<div style='width:120px;float:left;'>Project name:</div><input type='text' id='projectname' value='"+$(contents).find("projectname").text()+"'/></br>";        
+        document.getElementById('reportContents').innerHTML +=
+        "<div style='width:120px;float:left;'>Project ID:</div><input type='text' id='projectid' value='"+$(contents).find("projectid").text()+"'/></br>";        
+        document.getElementById('reportContents').innerHTML +=
+        "<div style='width:120px;float:left;'>Total time:   </div><input type='text' id='timelogged' value='"+$(contents).find("timelogged").text()+"'/></br>";
+        document.getElementById('reportContents').innerHTML +=
+        "<div style='width:120px;float:left;'>Maximum Time: </div> <input type='text' id='maxtime' value='"+$(contents).find("maxtime").text()+"'/></br>";
+
+        $xml.find('member').each(function(){
+            document.getElementById('reportContents').innerHTML +=
+            "<input type='text' id='maxtime' value='"+$(this).attr('name')+"'/>"+
+            "<input type='text' id='maxtime' value='"+$(this).attr('position')+"'/>"+
+            "<input type='text' id='maxtime' value='"+$(this).attr('hours')+"'/><br>";           
+        })
+
+    }
+
+document.getElementById('fileinput').addEventListener('change', readSingleFile, false); 
+</script>
+
+
+</body>
+</html>
+

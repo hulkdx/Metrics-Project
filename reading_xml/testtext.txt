@@ -1,0 +1,12 @@
+<report>
+    <sendtime>09.10.2014</sendtime>
+    <projectname>Secret Software 1.0</projectname>
+    <projectid>3Dw3dW44</projectid>
+    <timelogged>331</timelogged>
+    <maxtime>700</maxtime>
+
+    <member name="John Doe" position="Supervisor" hours="223"></member>
+    <member name="Texas Red" position="Programmer" hours="33"></member>
+    <member name="Markus Svensson" position="Programmer" hours="32"></member>
+    <member name="Maija Meikalainen" position="Designer" hours="43"></member>
+</report>

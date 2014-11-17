@@ -21,25 +21,47 @@ class Time_entries extends ActiveResource {
 	var $request_format = 'xml';
 }
 
+class Project extends ActiveResource {
+	var $site = FORMAT;
+	var $request_format = 'xml';
+}
+
 // create a new issue
 $issue = new Issue();
 $issues = $issue -> find('all');
+$count_issue = count($issues);
 
 $time = new Time_entries();
 $times = $time -> find('all');
+$count_times = count($times);
+
+
+$project = new Project();
+$projects = $project -> find('all');
+$projects_count = count($projects);
 
 // get Issues from Redmine Database
-for ($i = 0, $count = count($issues); $i < $count; $i++) {
+for ($i = 0; $i < $count_issue; $i++) {
+	$reqId[$i] = intval($issues[$i] -> id);
 	$projectId[$i] = intval($issues[$i] -> project['id']);
-	$status[$i] = (string)$issues[$i] -> status['name'];
+	$status[$i] = (string)$issues[$i] -> tracker['name'];
 	$start_time[$i] = (string)$issues[$i] -> start_date;
 	$desc[$i] = (string)$issues[$i] -> description;
 };
 
 // get Working hours from Redmine Database
-for ($i = 0, $count = count($times); $i < $count; $i++) {
+for ($i = 0; $i < $count_times; $i++) {
 	$projectIdT[$i] = intval($times[$i] -> project['id']);
 	$working_hours[$i] = (string)$times[$i] -> hours;
+};
+
+// get Projects from Redmine DB
+for ($i = 0; $i < $projects_count; $i++) {
+	$projectIdP[$i] = intval($projects[$i] -> id);
+	$projectName[$i] = (string)$projects[$i] -> name;
+	$projectCreatedOn[$i] = (string)$projects[$i] -> created_on;
+	$projectUpdatedOn[$i] = (string)$projects[$i] -> updated_on;
+	$projectDesc[$i] = (string)$projects[$i] -> description;
 };
 
 ?>

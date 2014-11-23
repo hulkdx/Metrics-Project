@@ -1,0 +1,288 @@
+<meta charset="UTF-8">
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset = "UTF-8" />
+<meta name="viewport" content="width=device-width" />
+
+<title>Reading Weekly Reports</title>
+
+<!--CSS-->
+<link rel="stylesheet" type="text/css" media="screen" href="styles/readreport.css" />
+
+<!--JavaScript-->
+<script src="scripts/jquery-1.11.1.min.js"></script>
+
+</head>
+
+<body>
+
+<input type="file" id="fileinput" />
+
+<br/><br/>
+<div id="textType"></div><br>
+
+<div id="handledContents" style="float: left; width: 701px; border: 1px solid silver; padding: 10px; box-shadow: 5px 5px 5px #888888;">
+
+</div>
+
+
+<script type="text/javascript">
+
+//var reportcontents = document.getElementById('reportContents');
+var contents;
+
+var projectname;
+var timeofreport;
+var client = [""];
+var description;
+var projectmanagers = [""];
+var manageremails = [""];
+
+var headers = ["WEEKLY REPORT","TIME OF REPORT","CLIENT","PROJECT","DESCRIPTION","PROJECT MANAGERS","PHASE OF PROJECT",
+                "REQUIREMENTS","COMPLETED TASKS","TASKS FOR THE NEXT WEEK","NEXT MILESTONE","UNIT TEST","OTHER TEST CASES",
+                "CODE REVISIONS","PROBLEMS","WORKING HOURS (this week/so far)","ADDITIONAL INFORMATION"];
+
+var keywords = ["#title","#time","#client","#project","#desc","#managers","#phase",
+                "#req","#tasks_comp","#tasks_next","#milestone","#unit_test","#other_test",
+                "#revisions","#problems","#hours","#additional"];
+var selecteddiv;
+var headerdiv;
+var selectedbtn;
+
+
+//Load defaults
+initFields();
+
+//Reads weekly report text file
+    function readSingleFile(evt) {
+        clearFields();
+        var f = evt.target.files[0];
+        var r = new FileReader();
+        
+        r.onload = function(e){
+            contents = e.target.result;
+    
+            //Creates an array matching regex:
+            var arrayOfLines = contents.match(/[^\r\n]+/g);
+            
+            //initFields();
+            var emailregex = /(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
+            var hashtagregex = /(^|\s)(#[a-z\d-]+)/;
+            var withouthashtag = "";   
+            var detectedkey = "";
+            
+            
+            //Loops thru the information searching for keywords:
+            //TODO: Make it more efficient       
+                for(i = 0; i<arrayOfLines.length; i++){
+                    if(arrayOfLines[i].charAt(0) == "#"){
+                        
+                        detectedkey = arrayOfLines[i];
+                        document.getElementById("handledContents").innerHTML +=
+                        "<div class='maincontainer_div' type='text' id='"+detectedkey+"_maincontainer' style='border: 1px solid silver; padding:2px; width:100%; margin-top:20px; margin-bottom:-10px;'>"+
+                        
+                            "<div class='header_div' type='text' id='header_"+i+"' style='width: 100%; font-weight: bold; padding:2px; border-bottom:1px solid silver;'>"+arrayOfLines[i+1]+         
+                                "<input type='button' class='no-print' id='hidebtn"+i+"' media='print' onclick='hideSection(\""+detectedkey+"_container\",\"header_"+i+"\",\"hidebtn"+i+"\")' value='hide' style='margin-right:2px; font-size:8pt; height:20px; float:right;'/>"+
+                                "<input type='button' class='no-print' id='addbtn"+i+"' media='print' onclick='addToSection(\""+detectedkey+"\")' value='add' style='margin-right:2px; font-size:8pt; height:20px; float:right;'/>"+
+                            "</div>"+
+                            "<div class='container_div' name='0' type='text' id='"+detectedkey+"_container' style='width: 100%; padding: 2px;'></div>"+
+                 
+                        "</div>";
+                        getData(i, emailregex, "client", arrayOfLines, detectedkey);
+                    }
+                }
+            }
+        r.readAsText(f);
+      }
+
+    //Function used for clearing fields and divs
+    function initFields(){
+        clearFields();
+        
+        for(i = 0; i<headers.length; i++){
+    
+            detectedkey = keywords[i];
+            document.getElementById("handledContents").innerHTML +=
+            "<div class='maincontainer_div' type='text' id='"+detectedkey+"_maincontainer' style='border: 1px solid silver; padding:2px; width:100%; margin-top:20px; margin-bottom:-10px;'>"+
+            
+                "<div class='header_div' type='text' id='header_"+i+"' style='width: 100%; font-weight: bold; padding:2px; border-bottom:1px solid silver;'>"+headers[i]+         
+                    "<input type='button' class='no-print' id='hidebtn"+i+"' media='print' onclick='hideSection(\""+detectedkey+"_container\",\"header_"+i+"\",\"hidebtn"+i+"\")' value='hide' style='margin-right:2px; font-size:8pt; height:20px; float:right;'/>"+
+                    "<input type='button' class='no-print' id='addbtn"+i+"' media='print' onclick='addToSection(\""+detectedkey+"\")' value='add' style='margin-right:2px; font-size:8pt; height:20px; float:right;'/>"+
+                "</div>"+
+                "<div class='container_div' name='0' type='text' id='"+detectedkey+"_container' style='width: 100%; padding: 2px;'></div>"+
+     
+            "</div>";
+            //getData(i, emailregex, "client", arrayOfLines, detectedkey);
+        
+        }
+        
+    }
+    
+    
+    function clearFields(){
+        document.getElementById("handledContents").innerHTML = "";
+    }
+     
+    
+    function addToSection(detectedkey){
+        
+        var numofitems = document.getElementById(detectedkey+"_container").getAttribute("name");
+        CreateInput("",detectedkey.substr(1),1,parseInt(numofitems)+1,detectedkey,"text_input");
+     /*   
+        if(detectedkey == "#title"){
+        }
+        
+        else if(detectedkey == "#time"){   
+    
+        }
+        
+        else if(detectedkey == "#client" || detectedkey == "#managers"){
+       
+        }
+        
+        else if(detectedkey == "#project" || detectedkey == "#req" || detectedkey == "#tasks_comp" || detectedkey == "#tasks_next"){
+    
+        }
+        
+        else if(detectedkey == "#desc" || detectedkey == "#phase"){
+    
+        }
+        
+        else if(detectedkey == "#hours"){
+
+            CreateInput(splithours[1], keywordsub+"_totalspent", 1, counter, detectedkey, "hour_input");
+        }
+*/
+    }
+    
+    function hideSection(targetid, headerid, btnid){
+  
+        selecteddiv = document.getElementById(targetid);
+        headerdiv = document.getElementById(headerid);
+        selectedbtn = document.getElementById(btnid);
+        
+        if(selecteddiv.style.display == "none"){  
+            selectedbtn.value = "hide";
+            selectedbtn.style.color = "#000000";
+            headerdiv.style.color = "#000000";
+            selecteddiv.style.display = 'block'; 
+        }else{
+            selectedbtn.value = "show";
+            selectedbtn.style.color = "gray";
+            headerdiv.style.color = "silver";
+            selecteddiv.style.display = 'none';  
+        }
+        
+    }
+    
+    function CheckForKeyWord(input){
+        var result = false;
+        
+        for(i=0;keywords.length;i++){
+            if(keywords[i] == input){
+                result = true;
+            }     
+        }
+        
+        return result;
+    }
+    
+    //Function used for displaying the data
+    //Loops thru sub categories
+    function getData(i, regex, idprefix, arrayOfLines, detectedkey){   
+        var extractedRegex = "";
+        var excludedRegex = "";
+        var text = "";
+        var keywordsub = detectedkey.substr(1);
+        var counter = 1;
+        var hoursRegex = /\d+\/\d+/;
+        var textRegex = /[a-zA-Z]*\s+[a-zA-Z]*/;
+        var extractedHours = "";
+        var excludedHours = "";
+        
+        for(k = i+2; k<arrayOfLines.length; k++){
+
+            if(arrayOfLines[k].charAt(0) == "#"){
+                counter = 0;
+                break;
+            }else{
+    
+                if(detectedkey == "#title"){
+                }
+                
+                else if(detectedkey == "#time"){   
+                    CreateInput(arrayOfLines[k], "time", 1, counter, detectedkey, "text_input");    
+                }
+                
+                else if(detectedkey == "#client" || detectedkey == "#managers"){
+                    
+                    //Gets email from the string
+                    //Separates email from name
+                    extractedRegex = regex.exec(arrayOfLines[k]);
+                    excludedRegex = arrayOfLines[k].replace(extractedRegex[0],'');
+                    excludedRegex = excludedRegex.trim();
+                    
+                    CreateInput(excludedRegex, keywordsub+"_name", 0, counter, detectedkey, "text_input");
+                    CreateInput(extractedRegex[0], keywordsub+"_email", 1, counter, detectedkey, "text_input");   
+                }
+                
+                else if(detectedkey == "#project" || detectedkey == "#req" || detectedkey == "#tasks_comp" || detectedkey == "#tasks_next"){
+                    CreateInput(arrayOfLines[k], keywordsub, 1, counter, detectedkey, "text_input", "text_input");
+                }
+                
+                else if(detectedkey == "#desc" || detectedkey == "#phase"){
+                    if(document.getElementById(keywordsub+"_"+i)){         
+                        text += arrayOfLines[k-1]+"&#13;&#10;";
+                        document.getElementById(keywordsub+"_"+i).innerHTML = text;
+                    }else{    
+                        document.getElementById(detectedkey+"_container").innerHTML +=
+                        "<textarea type='text' id='"+keywordsub+"_"+i+"' style='width: 70%; height: 110px;'></textarea><br>";                      
+                    }
+                }
+                
+                else if(detectedkey == "#hours"){
+                       
+                    extractedHours = hoursRegex.exec(arrayOfLines[k]);
+                    excludedHours = arrayOfLines[k].replace(extractedHours,'');
+                    excludedHours = excludedHours.trim();
+                    
+                    if(extractedHours != null){    
+                        var splithours = extractedHours[0].split("/");
+                        CreateInput(excludedHours, keywordsub+"_names", 0, counter, detectedkey, "text_input");
+                        CreateInput(splithours[0], keywordsub+"_spent", 0, counter, detectedkey, "hour_input");
+                        CreateInput(splithours[1], keywordsub+"_totalspent", 1, counter, detectedkey, "hour_input");                        
+                    }else{
+                        CreateInput(excludedHours, keywordsub+"_names", 1,""+i+"_"+counter, detectedkey, "text_input");   
+                    }
+                }
+                
+                counter++;
+            }
+        } 
+    }
+    
+var br = "";
+
+//Function used for creating input text fields
+function CreateInput(text,idprefix,order,counter,detectedkey,classname){
+     
+    if(order == 0){
+        br="";
+    }else{
+        br="<br>";
+    }
+
+    document.getElementById(detectedkey+"_container").innerHTML +=
+   "<input type='text' class='"+classname+"' value='"+text+"' id='"+idprefix+"_"+counter+"'/>"+br;
+   
+    document.getElementById(detectedkey+"_container").setAttribute("name",counter);
+}
+    
+document.getElementById('fileinput').addEventListener('change', readSingleFile, false); 
+</script>
+
+
+</body>
+</html>
+

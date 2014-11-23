@@ -11,7 +11,6 @@ define('FORMAT', $SITE_FORMAT . $SITE_API . ':1@' . $SITE_NAME);
 require_once ('lib\ActiveResource.php');
 
 class Issue extends ActiveResource {
-
 	var $site = FORMAT;
 	var $request_format = 'xml';
 }
@@ -34,7 +33,6 @@ $count_issue = count($issues);
 $time = new Time_entries();
 $times = $time -> find('all');
 $count_times = count($times);
-
 
 $project = new Project();
 $projects = $project -> find('all');
@@ -63,5 +61,4 @@ for ($i = 0; $i < $projects_count; $i++) {
 	$projectUpdatedOn[$i] = (string)$projects[$i] -> updated_on;
 	$projectDesc[$i] = (string)$projects[$i] -> description;
 };
-
 ?>

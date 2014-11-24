@@ -17,7 +17,12 @@
 
 <body>
 
-<input type="file" id="fileinput" />
+<input type="file" id="fileinput" value="Browse"/>
+
+<input type="text" id="projectid" placeholder="project id"/>
+<input type="text" id="reportid" placeholder="report id"/>
+<input type="button" onclick="clicked()" value="Send to db"/>
+
 
 <br/><br/>
 <div id="textType"></div><br>
@@ -31,13 +36,6 @@
 
 //var reportcontents = document.getElementById('reportContents');
 var contents;
-
-var projectname;
-var timeofreport;
-var client = [""];
-var description;
-var projectmanagers = [""];
-var manageremails = [""];
 
 var headers = ["WEEKLY REPORT","TIME OF REPORT","CLIENT","PROJECT","DESCRIPTION","PROJECT MANAGERS","PHASE OF PROJECT",
                 "REQUIREMENTS","COMPLETED TASKS","TASKS FOR THE NEXT WEEK","NEXT MILESTONE","UNIT TEST","OTHER TEST CASES",
@@ -96,6 +94,182 @@ initFields();
         r.readAsText(f);
       }
 
+    var reportData = {
+        report_id: 1,
+        project_id: 1,
+        number_of_week: 4,
+        project_manager: "John Doe",
+        project_phase: "",
+        completed_tasks: "",
+        task_for_nextweek: "",
+        schedule_status: "",
+        next_milestone: "",
+        working_hours: "",
+        requirements: "",
+        unit_testcases: "",
+        other_testcases: "",
+        code_revisions: "",
+        problems: "",
+        changes_in_project_plan: "",
+        things_to_mention: ""
+    };
+    
+    
+    var projectid;
+    var reportid;
+       
+    var projectname;
+    var timeofreport;
+    
+    var client = [""];
+    var description;
+    
+    //Weeklyreport info
+    var managers = [""];
+    var manageremails = [""];
+    var phase = "";
+    var completed_tasks = [""];
+    var tasks_for
+    
+    var members = [""];
+    var spenthours = [0];
+    var totalhours = [0];
+    
+    
+    //In the clicked function we get text from the text fields
+    //TODO: Loop information from all of the text fields    
+    function clicked(){
+    var i = 0;
+    
+        if(document.getElementById("reportid").value != null && document.getElementById("projectid").value != null){
+            
+            projectid = document.getElementById("projectid").value;
+            reportid = document.getElementById("reportid").value;
+
+            //Project name
+            if(document.getElementById("project_1")){
+                projectname = document.getElementById("project_1").value;
+            }else{
+                console.log("error getting projectname!");
+            }
+            
+            //Client name
+            while(true){
+            i++;
+                if(document.getElementById("client_name_"+i)){
+                    client[i] = document.getElementById("client_name_"+i).value;
+                }else{
+                    i = 0;
+                    break;
+                }
+            }
+            
+            //Managers
+            while(true){
+            i++;
+                if(document.getElementById("managers_name_"+i)){
+                    managers[i] = document.getElementById("managers_name_"+i).value;
+                    manageremails[i] = document.getElementById("managers_email_"+i).value;
+                }else{
+                    i = 0;
+                    console.log("break");
+                    break;
+                }
+            }           
+            
+            //Completed tasks
+            if(document.getElementById("tasks_comp_1")){
+                completed_tasks[0] = document.getElementById("tasks_comp_1").value;
+            }else{
+                console.log("error getting completed_tasks!");
+            }
+            
+            //Tasks for the next week
+            if(document.getElementById("tasks_next_1")){
+                completed_tasks[0] = document.getElementById("tasks_next_1").value;
+            }else{
+                console.log("error getting tasks_next!");
+            }
+            
+            //TODO:
+            //Get milestone, unit_test, other_test, revisions, problems, additional info
+        
+            //Members
+            if(document.getElementById("hours_names_1")){
+                members[0] = document.getElementById("hours_names_1").value;
+                spenthours[0] = document.getElementById("hours_spent_1").value;
+                totalhours[0] = document.getElementById("hours_totalspent_1").value;
+            }else{
+                console.log("error getting hours!");
+            }
+    
+            
+            reportData = {
+                
+                //Weekly report data
+                report_id: reportid,
+                project_id: projectid,
+                number_of_week: 4,
+                project_manager: managers[0],
+                project_phase: phase,
+                completed_tasks: "x",
+                task_for_nextweek: "x",
+                schedule_status: "x",
+                next_milestone: "x",
+                working_hours: totalhours[0],
+                requirements: "x",
+                unit_testcases: "x",
+                other_testcases: "x",
+                code_revisions: "x",
+                problems: "x",
+                changes_in_project_plan: "x",
+                things_to_mention: "x",
+                
+                //Individual data
+                work_id: 0,
+                member_id: 0,
+                description: "x",
+                hours: spenthours[0],
+                date: "",
+                
+                //Project data
+                project_name: projectname,
+                created_on: "",
+                updated_on: "",
+                status: "x",
+                version: "x",
+ 
+                //Member data
+                account: "x",
+                password: "x",
+                first_name: members[0],
+                level_of_privileges: 1,
+                email: "x",
+                phonenumber: "x"
+            };
+            
+        } 
+    
+    sendData();    
+    }
+    
+    function sendData() {
+        $.ajax({
+            url : "database_in.php",
+            type : "POST",
+            data : reportData,
+            success : function(reportData) {
+                //console.log( data );
+                //data - response from server
+            },
+            error : function(errorThrown) {
+                console.log( reportData );
+                console.log("error");
+            },
+        });
+    }
+
+
     //Function used for clearing fields and divs
     function initFields(){
         clearFields();
@@ -104,19 +278,15 @@ initFields();
     
             detectedkey = keywords[i];
             document.getElementById("handledContents").innerHTML +=
-            "<div class='maincontainer_div' type='text' id='"+detectedkey+"_maincontainer' style='border: 1px solid silver; padding:2px; width:100%; margin-top:20px; margin-bottom:-10px;'>"+
-            
+            "<div class='maincontainer_div' type='text' id='"+detectedkey+"_maincontainer' style='border: 1px solid silver; padding:2px; width:100%; margin-top:20px; margin-bottom:-10px;'>"+        
                 "<div class='header_div' type='text' id='header_"+i+"' style='width: 100%; font-weight: bold; padding:2px; border-bottom:1px solid silver;'>"+headers[i]+         
                     "<input type='button' class='no-print' id='hidebtn"+i+"' media='print' onclick='hideSection(\""+detectedkey+"_container\",\"header_"+i+"\",\"hidebtn"+i+"\")' value='hide' style='margin-right:2px; font-size:8pt; height:20px; float:right;'/>"+
                     "<input type='button' class='no-print' id='addbtn"+i+"' media='print' onclick='addToSection(\""+detectedkey+"\")' value='add' style='margin-right:2px; font-size:8pt; height:20px; float:right;'/>"+
                 "</div>"+
                 "<div class='container_div' name='0' type='text' id='"+detectedkey+"_container' style='width: 100%; padding: 2px;'></div>"+
      
-            "</div>";
-            //getData(i, emailregex, "client", arrayOfLines, detectedkey);
-        
-        }
-        
+            "</div>";        
+        }    
     }
     
     
@@ -128,32 +298,27 @@ initFields();
     function addToSection(detectedkey){
         
         var numofitems = document.getElementById(detectedkey+"_container").getAttribute("name");
-        CreateInput("",detectedkey.substr(1),1,parseInt(numofitems)+1,detectedkey,"text_input");
-     /*   
+
         if(detectedkey == "#title"){
-        }
-        
-        else if(detectedkey == "#time"){   
-    
-        }
-        
+        }    
+        else if(detectedkey == "#time"){
+            CreateInput("",detectedkey.substr(1),1,parseInt(numofitems)+1,detectedkey,"text_input");
+        } 
         else if(detectedkey == "#client" || detectedkey == "#managers"){
-       
-        }
-        
+            CreateInput("",detectedkey.substr(1)+"_name",0,parseInt(numofitems)+1,detectedkey,"text_input");
+            CreateInput("",detectedkey.substr(1)+"_email",1,parseInt(numofitems)+1,detectedkey,"text_input");
+        } 
         else if(detectedkey == "#project" || detectedkey == "#req" || detectedkey == "#tasks_comp" || detectedkey == "#tasks_next"){
-    
+            CreateInput("",detectedkey.substr(1),1,parseInt(numofitems)+1,detectedkey,"text_input");
         }
-        
         else if(detectedkey == "#desc" || detectedkey == "#phase"){
     
-        }
-        
+        } 
         else if(detectedkey == "#hours"){
-
-            CreateInput(splithours[1], keywordsub+"_totalspent", 1, counter, detectedkey, "hour_input");
+            CreateInput("",detectedkey.substr(1),0,parseInt(numofitems)+1,detectedkey,"text_input");
+            CreateInput("",detectedkey.substr(1),0,parseInt(numofitems)+1,detectedkey,"hour_input");
+            CreateInput("",detectedkey.substr(1),1,parseInt(numofitems)+1,detectedkey,"hour_input");
         }
-*/
     }
     
     function hideSection(targetid, headerid, btnid){

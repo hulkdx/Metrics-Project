@@ -13,12 +13,4 @@ $working_hours = $client->api('time_entry')->all([
 ]);
 
 
-
-
-//echo $x['total_count'];
-//print_r($working_hours);
-
-
-//$client->api('user')->all();
-//$client->api('user')->listing();
 ?>

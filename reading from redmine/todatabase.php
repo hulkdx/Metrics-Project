@@ -24,10 +24,7 @@ else {
 		$query = "INSERT INTO `project`(`project_id`, `project_name`, `created_on`, `updated_on`, `status`, `version`, `discription`) VALUES ($projectIdP[$i],'$projectName[$i]', '$projectCreatedOn[$i]', '$projectUpdatedOn[$i]', '', '', '$projectDesc[$i]');";
 
 		if (!mysqli_query($con, $query)) {
-			// TODO Duplicated Error
-			//die('Error: ' . mysqli_error($con));
 		} else {
-			// TODO if its correct
 			echo "added successfully";
 		};
 	};
@@ -76,6 +73,8 @@ else {
 			echo "added successfully";
 		};
 	};
+	
+	// TODO (participation table) : accessing to user is forbidden
 
 	mysqli_close($con);
 };

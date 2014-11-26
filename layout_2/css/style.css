@@ -1,0 +1,372 @@
+
+/* Global */
+
+body{
+    /*background-color:#1E1E1E;*/
+
+}
+
+h1, h2, p, a
+	{font-family:Arial, Helvetica, sans-serif;}
+h1{
+    color:#3F3F3F;
+    padding-top: 20px;
+    font-size:36px;
+}
+
+h2{
+    color:#3F3F3F;
+    margin: 0;
+    padding-top: 0px;
+}
+
+p{
+    line-height: 150%;
+    color: #1E1E1E;
+}
+
+#top{
+    margin-bottom: 20px;
+}
+
+#wrapper{
+    width:1400px;
+    margin: auto;
+}
+
+#banner{
+    border-bottom: 1px solid silver;
+}
+
+#border img{
+    width: 100%;
+    margin-bottom:2px;
+}
+
+#navigation{
+    float: left;
+    width: 180px;
+}
+
+#navigation img
+    {margin-left:55px;
+     margin-top:5px;
+     width: 80px;
+     border: 3px solid #999;
+     border-radius: 5px;}
+
+
+#navigation ul li{
+    margin-left: -25px;
+    list-style-type:none;
+    padding-top: 15px;
+    padding-bottom:15px;
+    border-bottom: 1px #333333 solid;
+}
+
+#navigation ul li a
+	{text-decoration:none;
+	 color:#999;
+	 font-size:18px;}
+
+#navigation li a:visited	{color:#999;}
+#navigation li a:hover		{color:#2B7484;}
+#navigation li a:link		{}
+#navigation li a:active		{color:#FFF;}
+#navigation li a:focus		{color:#3CF;}
+
+#maincontent{
+    width: 1200px;
+    float: left;
+    margin-left: 15px;
+    margin-bottom: 15px;
+}
+
+#header{
+    width: 1165px;
+    background-color:#FFF;
+    border-radius: 8px;
+    padding: 15px;
+    height: 25px;
+    font-weigth: bold;
+}
+
+
+/* Project List */
+
+#header a
+	{text-decoration:none;
+	 color:#3C8299;}
+
+#header a:visited	{color:#3C8299;}
+#header a:hover		{color:#666;}
+#header a:focus		{color:#3C8299;}
+
+#description{
+    width: 1165px;
+    padding-bottom: 0px;
+    background-color:#FFF;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 0px;
+    margin-top: 15px;
+}
+
+#footer{
+    margin-top: 20px;
+    border-top: 1px solid silver;
+    clear:both;
+}
+
+#footer p
+	{color:#3C8299;
+	font-size:18px;
+	text-align:center;}
+
+/* Project List */
+
+#header form
+	{background-color:#FFF;
+	 text-align:right;}
+
+#listcontent
+	{background-color:#FFF;
+	 border-radius: 8px;
+	 padding: 15px;
+	 margin: 15px 0;}
+
+#listbutton button
+	{width: 120px;
+	 height: 30px;
+	 font-size:18px;
+	 border-radius:6px;
+	 margin-left: 20px;}
+
+#listtable
+	{margin: 25px 0px 15px 15px;}
+
+#listtable td
+	{text-align:center;
+	 font-size:15px;}
+
+#listtable a
+	{text-decoration:none;
+	 color:#606;
+	 font-size:15px;}
+
+#listtable p
+	{font-size:15px;}
+
+#tpn
+	{width: 650px;
+	 background:#CCC;}
+
+#tstat
+	{width: 90px;
+	 background:#CCC;}
+
+#tsd
+	{width: 110px;
+	 background:#CCC;}
+
+#tdl
+	{width: 110px;
+	 background:#CCC;}
+
+#tfd
+	{width: 110px;
+	 background:#CCC;}
+
+/* Main */
+
+.databox_big{
+    float:left;
+    width: 375px;
+    height: 500px;
+    background-color:#FFF;
+    border-radius: 8px;
+    padding: 10px;
+    margin-right: 5px;
+    margin-top: 5px;
+}
+
+.databox_small{
+    float:left;
+    width: 375px;
+    height: 300px;
+    background-color:#FFF;
+    border-radius: 8px;
+    padding: 10px;
+    margin-right: 5px;
+    margin-top: 5px;
+}
+
+.databox_wide{
+    float:left;
+    width: 1165px;
+    border: thin solid silver;
+    background-color:#FFF;
+    border-radius: 8px;
+    padding: 10px 5px 5px 5px;
+    margin-right: 5px;
+    margin-top: 5px;
+}
+
+.projectbox a:visited	{color:#3F3F3F;text-decoration:none;}
+.projectbox a:hover	{color:#2B7484;text-decoration:underline;}
+.projectbox a:link	{color:#3F3F3F;text-decoration:none;}
+.projectbox a:active	{color:#3F3F3F;text-decoration:none;}
+.projectbox a:focus	{color:#3F3F3F;text-decoration:none;}
+
+.newscontent a:visited	{color:#3F3F3F;text-decoration:none;}
+.newscontent a:hover	{color:#2B7484;text-decoration:underline;}
+.newscontent a:link	{color:#3F3F3F;text-decoration:none;}
+.newscontent a:active	{color:#3F3F3F;text-decoration:none;}
+.newscontent a:focus	{color:#3F3F3F;text-decoration:none;}
+
+.projectbox{
+    float: left;
+    width: 1138px;
+    padding: 5px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+    border: thin solid silver;
+    border-radius: 8px;
+    font-weigth: bold;
+    background-color: white;
+    /*transition: background-color 0.5s, border-color 0.5s;*/
+}
+
+.newsbox{
+    float: left;
+    width: 1138px;
+    height: 90px;
+    padding: 5px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+    border: thin solid silver;
+    border-radius: 8px;
+    font-weigth: bold;
+    background-color: white;
+}
+
+.newsheader{
+    height: 25px;
+    border-bottom: 1px solid silver;
+}
+
+.newscontent{
+    color:#3F3F3F;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size: 10pt;
+}
+
+.projectbox:hover{
+    /*background-color: #e2f3f7;*/
+    border: thin solid #72b1c0;
+}
+
+.projname{
+    font-weight: bold;
+    font-family:Arial, Helvetica, sans-serif;
+    color:#3F3F3F;
+    float: left;
+}
+.projstatus_Completed{
+    margin-right: 20px;
+    font-size: 10pt;
+    font-family:Arial, Helvetica, sans-serif;
+    text-shadow: 1px 1px silver;
+    color: green;
+    float: right;
+}
+.projstatus_Active{
+    margin-right: 20px;
+    font-size: 10pt;
+    font-family:Arial, Helvetica, sans-serif;
+    text-shadow: 1px 1px silver;
+    color: orange;
+    float: right;
+}
+.projstatus_Late{
+    margin-right: 20px;
+    font-size: 10pt;
+    font-family:Arial, Helvetica, sans-serif;
+    text-shadow: 1px 1px silver;
+    color: red;
+    float: right;
+}
+
+.projinfo_head{
+    color:#3F3F3F;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size: 10pt;
+    font-weight: bold;
+    margin-right: 20px;
+    float: right;
+}
+
+.projinfo_left{
+    float: left;
+    color:#3F3F3F;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size: 10pt;
+}
+
+.projinfo_right{
+    float: right;
+    color:#3F3F3F;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size: 10pt;
+}
+
+.metricsbtn{
+    background: url('../images/metricsbtn.jpg') no-repeat top left;
+    height: 32px;
+    width: 32px;
+}
+
+
+#pre-banner img{
+    float: left;
+}
+
+.team{
+    font-weight: bold;
+    float: left;
+    font-size: 8pt;
+    font-family:Arial, Helvetica, sans-serif;
+    color: gray;
+    margin-left: 5px;
+}
+
+/* Member */
+
+#tmn
+	{width: 350px;
+	 background:#CCC;}
+
+#tttl
+	{width: 200px;
+	 background:#CCC;}
+
+#tem
+	{width: 230px;
+	 background:#CCC;}
+
+#tcn
+	{width: 190px;
+	 background:#CCC;}
+
+#tfd
+	{width: 120px;
+	 background:#CCC;}
+#twh
+	{width: 100px;
+	 background:#CCC;}
+
+/* Index */
+
+#troll img
+	{margin: 200px 0px 200px 450px;
+	 width: 500px;}

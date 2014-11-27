@@ -270,6 +270,48 @@ p
 	 
 /* Index */
 
-#troll img
+#loginimage img
 	{margin: 200px 0px 200px 450px;
-	 width: 500px;}
+	 width: 500px;
+	 position:absolute;}
+
+#loginform
+	{color:#999;
+	 font-size:22px;
+	 width: 400px;
+	 height: 400px;
+	 margin-top: 300px;
+	 margin-left: 420px;}
+	 
+#loginform ol
+	{list-style-type:none;}
+	
+#loginform ol li
+	{margin-top:30px;}
+	
+#logb
+	{margin: 50px 180px;}
+
+#logb button
+	{width: 120px;
+	 height: 30px;	
+	 font-size:18px;
+	 border-radius:6px;} 
+
+#loginform ol li input
+	{width: 230px;
+	 margin-left: 20px;}
+
+/* Registration */
+
+#loginbody
+	{background-image:url(../images/loginlogo.png);
+	 background-repeat:no-repeat;}
+
+#regform
+	{background-color:#FFF;
+	 border-radius: 8px;
+	 padding: 15px;
+	 margin-top: 15px;
+	 }
+	 

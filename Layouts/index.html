@@ -4,14 +4,15 @@
 
 	<head>
     
-    	<Title>Logint</title>
+    	<Title>Login</title>
          <link href="css/style.css" rel="stylesheet" type="text/css" media="screen">
     
     </head>
     
-    <body>
+    <body id="loginbody">
+    
     <div id="wrapper">
-    	
+    		
         <div id="top">
                 
           <div id="banner">
@@ -22,13 +23,26 @@
               <img src="images/border1.png">          </div> 
                                             
         </div>
-                    
-          <div id="troll">
-          	<img src="images/funny-gifs-player-2-has-left-the-game.gif">
-          </div>
              
-          <div id="footer">
-         	  <img src="images/border1.png">
+          <div id="loginform">
+              	  <form method="post" action="" name="logform" id="login">
+                  
+                  <ol>
+                  		<li>
+                        	<label for="username">Username:</label>
+                            <input type="text" name="uname">
+                        </li>
+                        
+                        <li>
+                        	<label for="password">Password :</label>
+                            <input type="text" name="pass">
+                        </li>
+                  </ol>
+                  <div id="logb">
+                  	<button>Login</button>
+                  </div>
+                  
+                  </form>
           </div>
 	
     </div>

@@ -6,7 +6,7 @@
     
     	<Title>Logint</title>
          <link href="css/style.css" rel="stylesheet" type="text/css" media="screen">
-        <script src="scripts/SiteElements.js"></script> 
+        <script src="scripts/SiteElements.js"></script>
     </head>
     <script src="scripts/SiteElements.js"></script>
     
@@ -14,13 +14,29 @@
     <div id="wrapper">
     	
 	<script>
-	createTop();
+	createTop("Login To The Project Metrics Software");
 	</script>
-                    
-          <div id="troll">
-          	<img src="images/funny-gifs-player-2-has-left-the-game.gif">
-          </div>
-             
+
+        <div id="loginform">
+              	<form method="post" action="" name="logform" id="login">
+                  
+		<ol>
+		      <li>
+		      <label for="username">Username:</label>
+		      <input type="text" name="uname">
+		      </li>  
+		      <li>
+		      <label for="password">Password :</label>
+		      <input type="text" name="pass">
+		      </li>
+		</ol>
+                  <div id="logb">
+			<button>Login</button>
+                  </div>
+                  
+                </form>
+        </div>
+	
 	<script>
 	createFooter();
 	</script>

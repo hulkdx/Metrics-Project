@@ -1,5 +1,5 @@
 
-var projectname = "Project name here";
+var projectname = "Title";
 var listofprojects = [];
 var listoflatest = [];
 
@@ -79,14 +79,19 @@ function makeObjects(value){
     }
 }
 
-function createTop(){
+function createTop(title){
+    
+    if(title == null){
+        title = projectname;
+    }
+    
     document.write(""+
         "<div id=\"top\">"+
           "<div id=\"pre-banner\" style>"+
             "<img src=\"images/logo.jpg\"><br><br>"+
           "</div>"+        
           "<div id=\"banner\">"+
-              "<h1>"+projectname+"</h1>"+
+              "<h1>"+title+"</h1>"+
           "</div>"+
         "</div>");
 }
@@ -111,7 +116,8 @@ function createHeader(text, type){
             "<div id=\"header\">"+
 		"<h2>"+text+"</h2>"+
 	    "</div>");
-    }else if(type == 1){
+    }   
+    else if(type == 1){
     document.write(""+
             "<div id=\"header\">"+
 		"<h2>"+text+"</h2>"+

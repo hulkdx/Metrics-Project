@@ -16,19 +16,22 @@ if (mysqli_connect_errno($con)) {
 
 // Varibles from Redmine.php
 
-$username = 'hulk';
-$password = '123456';
-$query = "SELECT `member_id`, `account`, `password` FROM `member` WHERE (`account` = '$username') AND (`password` = '$password');";
+ // TODO SQL injection?
+$username = $_POST["uname"];
+$password = $_POST["pass"];
+
+$query = "SELECT `member_id` FROM `member` WHERE (`account` = '$username') AND (`password` = '$password');";
 
 $result = $con->query($query);
 
 if ($result->num_rows > 0){
 	while($row = $result->fetch_assoc()) {
-		echo $row["account"];
 		// TODO GO TO NEXT PAGE
+		header("Location: ../Layouts/main.html");
+  		exit();
 	}
 } else {
-	echo "0 results";
 	// TODO User and password is not correct
+	echo "Wrong User and Password";
 }
 ?>

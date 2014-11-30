@@ -1,6 +1,6 @@
 <?php
 /*
- * Login pages
+ * TODO register page
  */
 
 // DB NAME

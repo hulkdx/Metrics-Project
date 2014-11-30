@@ -105,7 +105,7 @@ function createNavig(){
                       "<li><a href=\"main.html\">Project Main page</a></li>"+
                       "<li><a href=\"listpage.html\">Project List</a></li>"+
                       "<li><a href=\"about.html\">About</a></li>"+
-                      "<li><a href=\"index.html\">Logout</a></li>"+
+                      "<li><a href=\"../Login/logout.php\">Logout</a></li>"+
                    "</ul>"+
             "</div>");
 }

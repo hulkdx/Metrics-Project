@@ -1,0 +1,52 @@
+<html>
+<head>
+
+</head>
+
+<body>
+<!--Sends form data in a POST request, invisible to the user.-->
+<form action="login.php" id="post" method="post">
+<b>
+Date from: <br><input type="date" id="fromdate" name="fromdate" value="2014-01-01"/>
+<br><br>
+Group ID: <br><input type="text" name="group" id="group" value="652060828245934" maxlength="15" onchange="checkGroup()"></input>
+<span id="grouperr" style="background-color: #E39362"></span> 
+<br><br>
+Recent posts: <br><input id="count" name="count" type="number" value="5" min="1" max="10"/>
+<br><br></b>
+<input type="submit" name="submit" value="Submit"/>
+</form>
+<script>
+function checkGroup()
+{
+  var b=true;
+  var el=document.getElementById("group").value;
+  for (var i=0; i<el.length; i++)
+    if ((el[i]<'0') || (el[i]>'9'))
+	  b=false;
+  if (!b)
+	document.getElementById("grouperr").value="The group ID must contain 15 digits.";
+  else document.getElementById("grouperr").value="";
+}
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '777065655684035',
+      xfbml      : true,
+      version    : 'v2.1'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+</body>
+
+
+
+
+</html>

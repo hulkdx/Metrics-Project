@@ -37,7 +37,7 @@ function createTop(title){
         "</div>"+
         
         "<div id=\"top_mid\" style=\"width: 300px; float: right;\">"+    
-        "<a href=\"index.html\">Logout</a></div>"+
+        "<a href=\"../Login/logout.php\">Logout</a></div>"+
         
         "</div>");
 }

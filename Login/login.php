@@ -10,7 +10,8 @@ $DATABASE_NAME = "metrics";
 session_start();
 
 if(isset($_SESSION['login_user'])){
-	header('Location: ../layout_2/main.php'); // Redirecting To Login Page
+	// Redirecting To main Page
+	header('Location: ../layout_2/main.php'); 
 }
 
 // Variable To Store Error Message

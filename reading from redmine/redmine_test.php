@@ -1,4 +1,5 @@
 <?php
+// TODO its a test remove it
 /*
  * Reading Data from Redmine website (redmine.sis.uta.fi/projects/metrics)
  */
@@ -11,21 +12,45 @@ define('FORMAT', $SITE_FORMAT . $SITE_API . ':1@' . $SITE_NAME);
 require_once ('lib\ActiveResource.php');
 
 class Issue extends ActiveResource {
-
 	var $site = FORMAT;
 	var $request_format = 'xml';
 }
 
 class Time_entries extends ActiveResource {
 	var $site = FORMAT;
-	var $request_format = 'json';
+	var $request_format = 'xml';
 }
 
-$id = 0;
+class Project extends ActiveResource {
+	var $site = FORMAT;
+	var $request_format = 'xml';
+}
 
-$time = new Time_entries();
-$times = $time -> get('/time_entries/'.urlencode($id).'.json');;
+// call to issue
+$issue = new Issue();
+$issues = $issue -> find('all');
+$count_issue = count($issues);
 
-echo $times->hours;
+// call to project
+$project = new Project();
+$projects = $project -> find('all');
+$projects_count = count($projects);
 
+// get Issues from Redmine Database
+for ($i = 0; $i < $count_issue; $i++) {
+	$reqId[$i] = intval($issues[$i] -> id);
+	$projectId[$i] = intval($issues[$i] -> project['id']);
+	$status[$i] = (string)$issues[$i] -> tracker['name'];
+	$start_time[$i] = (string)$issues[$i] -> start_date;
+	$desc[$i] = (string)$issues[$i] -> description;
+};
+
+// get Projects from Redmine Database
+for ($i = 0; $i < $projects_count; $i++) {
+	$projectIdP[$i] = intval($projects[$i] -> id);
+	$projectName[$i] = (string)$projects[$i] -> name;
+	$projectCreatedOn[$i] = (string)$projects[$i] -> created_on;
+	$projectUpdatedOn[$i] = (string)$projects[$i] -> updated_on;
+	$projectDesc[$i] = (string)$projects[$i] -> description;
+};
 ?>

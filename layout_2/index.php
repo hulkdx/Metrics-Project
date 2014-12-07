@@ -12,13 +12,12 @@
 		<link href="css/style.css" rel="stylesheet" type="text/css" media="screen">
 		<script src="scripts/SiteElements.js"></script>
 	</head>
-	<script src="scripts/SiteElements.js"></script>
 
 	<body>
 		<div id="wrapper">
 
 			<script>
-				createTop("Login To The Project Metrics Software");
+				createTop();
 			</script>
 
 			<div id="loginform">

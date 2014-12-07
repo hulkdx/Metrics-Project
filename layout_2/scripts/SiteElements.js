@@ -1,5 +1,12 @@
+//  Tommi Tuominen
+//  Project Work course work 2014
+//  
 
-var projectname = "Title";
+var menuitems = ["account.html", "main.php", "listpage.html", "compare.html", "readweekly.html", "redmine.html", "facebook.html"];
+var menutext = ["Account Information", "Project Main page", "Project List", "Compare Metrics", "Weekly report", "Redmine", "Facebook"];
+var user_privileges = 7;
+
+var username = "User";
 var listofprojects = [];
 var listoflatest = [];
 
@@ -13,9 +20,90 @@ var random3 = 0;
 var message = "";
 var alarming = 0;
 
+//Function used for creating the top part of the site
+function createTop(title){
+    
+    if(title == null){
+        title = username;
+    }
+    
+    document.write(""+
+        "<div id=\"top\" style=\"border-bottom: 1px solid silver; height: 40px;\">"+
+        "<div style=\"float: left; width: 400px;\">"+
+            "<img src=\"images/logo.jpg\" ><br><br>"+
+        "</div>"+
+        
+        "<div id=\"top_mid\" style=\"width: 300px; float: left;\">Logged in as: "+title+       
+        "</div>"+
+        
+        "<div id=\"top_mid\" style=\"width: 300px; float: right;\">"+    
+        "<a href=\"index.html\">Logout</a></div>"+
+        
+        "</div>");
+}
+
+//Function used for creating the navigation
+function createNavig(){
+    var menus = "";
+    
+    if(user_privileges > menuitems.length){
+        user_privileges = menuitems.length;
+    }
+    
+    for(i=0; i<user_privileges; i++){
+        menus += "<li><a href=\""+menuitems[i]+"\">"+menutext[i]+"</a></li>";
+    }
+    
+    document.write(""+
+            "<div id=\"navigation\">"+
+                   "<ul>"+menus+
+                   "</ul>"+
+            "</div>");
+}
+
+//Function used for creating section header
+function createHeader(text, type){
+    if(type == 0){
+    document.write(""+
+            "<div id=\"header\">"+
+		"<h2>"+text+"</h2>"+
+	    "</div>");
+    }   
+    else if(type == 1){
+    document.write(""+
+            "<div id=\"header\">"+
+		"<h2>"+text+"</h2>"+
+                "<div style='float: right; margin-left: 20px;'>Sort by: "+
+                "<input type='radio' name='sort' id='bydate' value='bydate'/><label for='bydate'>date</label>"+
+                "<input type='radio' name='sort' id='bystatus' value='bystatus'/><label for='bystatus'>status</label>"+
+                "</div>"+
+                "<div style='float: right;'>Arrange: "+
+                "<input type='radio' name='ascdesc' id='ascending' value='ascending'/><label for='ascending'>Ascending</label>"+
+                "<input type='radio' name='ascdesc' id='descending' value='descending'/><label for='descending'>Descending</label>"+
+                "</div>"+
+                "<div style='float: right; margin-right: 50px;'>"+
+                "<input style='width: 200px;' type='text' placeholder='search project by name or id'>"+
+                "<input type='button' value='search'>"+
+                "</div>"+   
+	    "</div>");        
+    }
+    else if(type == 2){
+    document.write(""+
+            "<div id=\"header\">"+
+		"<h2>"+text+"</h2>"+
+                "<div style='float: right; margin-left: 20px;'>"+
+                "<input type=\"file\" id=\"fileinput\" value=\"Browse\"/>"+
+                "<input type=\"text\" id=\"projectid\" placeholder=\"project id\"/>"+
+                "<input type=\"text\" id=\"reportid\" placeholder=\"report id\"/>"+
+                "<input type=\"button\" onclick=\"clicked()\" value=\"Send to db\"/>"+
+                "</div>"+   
+	    "</div>");        
+    }
+}
+
 function makeObjects(value){
 
-    //If value is 0 create projects object
+    //If value is 0, create projects object
     if(value==0){
         for(i=0;i<22;i++){
             //In this demo we use random numbers
@@ -47,7 +135,7 @@ function makeObjects(value){
             listofprojects.push(objects[i]);
         }        
     }else if(value==1){
-    //If value is 0 create projects object
+    //If value is 0, create projects object
         for(i=0;i<5;i++){
             //In this demo we use random numbers
             random = Math.floor(Math.random() * (3 - 0 + 0)) + 0;
@@ -79,64 +167,7 @@ function makeObjects(value){
     }
 }
 
-function createTop(title){
-    
-    if(title == null){
-        title = projectname;
-    }
-    
-    document.write(""+
-        "<div id=\"top\">"+
-          "<div id=\"pre-banner\" style>"+
-            "<img src=\"images/logo.jpg\"><br><br>"+
-          "</div>"+        
-          "<div id=\"banner\">"+
-              "<h1>"+title+"</h1>"+
-          "</div>"+
-        "</div>");
-}
-
-function createNavig(){   
-    document.write(""+
-            "<div id=\"navigation\">"+
-              "<img src=\"images/user.jpg\" />"+
-                   "<ul>"+
-                      "<li><a href=\"account.html\">Account Information</a></li>"+
-                      "<li><a href=\"main.html\">Project Main page</a></li>"+
-                      "<li><a href=\"listpage.html\">Project List</a></li>"+
-                      "<li><a href=\"about.html\">About</a></li>"+
-                      "<li><a href=\"../Login/logout.php\">Logout</a></li>"+
-                   "</ul>"+
-            "</div>");
-}
-
-function createHeader(text, type){
-    if(type == 0){
-    document.write(""+
-            "<div id=\"header\">"+
-		"<h2>"+text+"</h2>"+
-	    "</div>");
-    }   
-    else if(type == 1){
-    document.write(""+
-            "<div id=\"header\">"+
-		"<h2>"+text+"</h2>"+
-                "<div style='float: right; margin-left: 20px;'>Sort by: "+
-                "<input type='radio' name='sort' id='bydate' value='bydate'/><label for='bydate'>date</label>"+
-                "<input type='radio' name='sort' id='bystatus' value='bystatus'/><label for='bystatus'>status</label>"+
-                "</div>"+
-                "<div style='float: right;'>Arrange: "+
-                "<input type='radio' name='ascdesc' id='ascending' value='ascending'/><label for='ascending'>Ascending</label>"+
-                "<input type='radio' name='ascdesc' id='descending' value='descending'/><label for='descending'>Descending</label>"+
-                "</div>"+
-                "<div style='float: right; margin-right: 50px;'>"+
-                "<input style='width: 200px;' type='text' placeholder='search project by name or id'>"+
-                "<input type='button' value='search'>"+
-                "</div>"+   
-	    "</div>");        
-    }
-}
-
+//Function used for creating the footer
 function createFooter(){
     document.write(""+
             "<div id=\"footer\">"+
@@ -144,6 +175,8 @@ function createFooter(){
 	    "</div>");
 }
 
+
+//Function used for getting the project's information from object
 function getProjects(){
 makeObjects(0);
 

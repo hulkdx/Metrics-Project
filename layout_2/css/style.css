@@ -3,7 +3,7 @@
 
 body{
     /*background-color:#1E1E1E;*/
-
+   font-family:Arial, Helvetica, sans-serif;
 }
 
 h1, h2, p, a
@@ -30,7 +30,7 @@ p{
 }
 
 #wrapper{
-    width:1400px;
+    width: 1400px;
     margin: auto;
 }
 
@@ -38,23 +38,12 @@ p{
     border-bottom: 1px solid silver;
 }
 
-#border img{
-    width: 100%;
-    margin-bottom:2px;
-}
-
 #navigation{
+    margin-top: 20px;
+    margin-right: 10px;
     float: left;
-    width: 180px;
+    width: 150px;
 }
-
-#navigation img
-    {margin-left:55px;
-     margin-top:5px;
-     width: 80px;
-     border: 3px solid #999;
-     border-radius: 5px;}
-
 
 #navigation ul li{
     margin-left: -25px;
@@ -64,16 +53,17 @@ p{
     border-bottom: 1px #333333 solid;
 }
 
-#navigation ul li a
-	{text-decoration:none;
-	 color:#999;
-	 font-size:18px;}
+#navigation ul li a{
+    font-size: 12pt;
+    font-weight: bold;
+    text-decoration:none;
+}
 
-#navigation li a:visited	{color:#999;}
-#navigation li a:hover		{color:#2B7484;}
-#navigation li a:link		{}
-#navigation li a:active		{color:#FFF;}
-#navigation li a:focus		{color:#3CF;}
+#navigation ul li a:visited	{color:#999;}
+#navigation ul li a:hover		{color:#2B7484;}
+#navigation ul li a:link		{color:#999;}
+#navigation ul li a:active		{color:#FFF;}
+#navigation ul li a:focus		{color:#3CF;}
 
 #maincontent{
     width: 1200px;
@@ -215,6 +205,21 @@ p{
 	 margin-left: 20px;}
 
 
+#accountform{
+    box-shadow: 2px 2px 5px #888888;    
+    border: thin solid silver;
+    border-radius: 8px;
+    color:#999;
+    padding-right: 30px;
+    font-size:22px;
+    width: 470px;
+    height: 250px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 150px;
+    margin-bottom: 150px;    
+}
+
 /* Main */
 
 .databox_big{
@@ -222,20 +227,20 @@ p{
     width: 375px;
     height: 500px;
     background-color:#FFF;
-    border-radius: 8px;
     padding: 10px;
     margin-right: 5px;
     margin-top: 5px;
 }
 
 .databox_small{
+    border: thin solid silver;
+    border-radius: 8px;
     float:left;
-    width: 375px;
+    width: 500px;
     height: 300px;
     background-color:#FFF;
-    border-radius: 8px;
     padding: 10px;
-    margin-right: 5px;
+    margin-left: 15px;
     margin-top: 5px;
 }
 
@@ -244,7 +249,6 @@ p{
     width: 1165px;
     border: thin solid silver;
     background-color:#FFF;
-    border-radius: 8px;
     padding: 10px 5px 5px 5px;
     margin-right: 5px;
     margin-top: 5px;

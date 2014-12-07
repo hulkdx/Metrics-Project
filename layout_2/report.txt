@@ -1,0 +1,105 @@
+#title
+WEEKLY REPORT
+
+#time
+TIME OF REPORT
+Week 4, 27.10.2014
+
+#client
+CLIENT
+Pekka Mäkiaho pekka.makiaho@uta.fi
+John Doe asdsdd@uta.fi
+Matti Meikäläinen 3d3d3d@uta.fi
+Maija Meikäläinen v5v55v@uta.fi
+Jane Doe acsccscs@uta.fi
+
+#project
+PROJECT
+Monitoring Metrics Tool​​​
+
+#desc
+DESCRIPTION
+Web-based program for monitoring project metrics
+like complete and incomplete tasks and working hours.
+Some more lines just for testing.
+This here is just for testing aswell.
+asddsaasdsadsd.
+
+#managers
+PROJECT MANAGERS
+Muhammad Qasim  Muhammad.Qasim@uta.fi
+Zhang Yichi     zhang.yichi.x@student.uta.fi
+Yang Mengyuan   ymykueen@gmail.com
+
+#phase
+PHASE OF PROJECT
+Planning and study. this is the phase of the project field.
+the phase is good and this is testing.
+
+#req
+REQUIREMENTS
+New:
+In progress:
+Resolved:
+Feedback:
+Closed:
+Rejected:
+
+#tasks_comp
+COMPLETED TASKS
+- Requirements specification meeting with client
+- Development environment decided
+- Developing outlook built
+- Making the project plan
+- First version mockup make
+
+#tasks_next
+TASKS FOR THE NEXT WEEK
+- Editor for reporters to read (weekly report's) information in
+- Development skill study
+- Requirements specification
+- Define a format for weekly report
+- Create interactive charts
+- Make a database to store the data
+- UI design
+
+#milestone
+NEXT MILESTONE
+
+#unit_test
+UNIT TEST
+Passed:
+Amount of test cases:
+
+#other_test
+OTHER TEST CASES
+Passed:
+Amount of test cases:
+
+#revisions
+CODE REVISIONS
+
+#problems
+PROBLEMS
+
+#hours
+WORKING HOURS (this week/so far)
+
+Muhammad Qasim      22/35
+Zhang Yichi          5/18
+Yang Mengyuan        4/26
+Tommi Tuominen       0/18
+Shahzad Choudhry     0/9
+Saba Jafarzadeh     15/31
+Huang Jueran         6/11
+Ahsanur Rahman       4/12
+
+Total working hours: 121
+The revision: so far 0
+
+Requirements: 0/8
+Test cases: 0/0
+Code revisions: 0/0​
+
+#additional
+ADDITIONAL INFORMATION

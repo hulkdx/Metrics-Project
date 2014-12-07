@@ -1,0 +1,54 @@
+body{
+   font-family:Arial, Helvetica, sans-serif;
+}
+
+.text_input{
+    width: 300px;
+}
+
+.hour_input{
+    width: 50px;
+}
+
+#weeklymain{
+    margin-left: 50px;
+    width: 701px;
+    color:#3F3F3F;
+    padding: 10px;
+}
+
+.maincontainer_div{
+    padding:2px;
+    width:100%;
+    margin-top:20px;
+    margin-bottom:-10px;    
+}
+
+.header_div{
+    font-size: 11pt;
+    width: 100%;
+    font-weight: bold;
+    padding:2px;
+    border-bottom:1px solid silver;
+}
+
+.header_div2{
+    font-size: 11pt;
+    width: 100%;
+    font-weight: bold;
+    padding:2px;
+}
+
+.no-print{
+    margin-right:2px;
+    font-size:8pt;
+    height:20px;
+    width: 30px;
+    float:right;
+}
+
+@media print { 
+    .no-print{
+        display:none;
+    } 
+}

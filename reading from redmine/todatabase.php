@@ -131,7 +131,8 @@ for ($i = 0; $i < $count_workh; $i++) {
 	flush();
 };
 // Tell user that the process is completed
-echo '<script language="javascript">document.getElementById("information").innerHTML="Process is done..."</script>';
+echo '<script language="javascript">document.getElementById("information").innerHTML=""</script>';
+echo '<script language="javascript">document.getElementById("headerinfo").innerHTML="Process is done..."</script>';
 
 mysqli_close($con);
 ?>

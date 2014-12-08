@@ -2,7 +2,7 @@
 /*
  * redirected page on successful login.
  */
-
+ 
 session_start();
 $user_check = $_SESSION['login_user'];
 

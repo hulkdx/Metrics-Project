@@ -56,6 +56,9 @@ function createNavig(){
     
     document.write(""+
             "<div id=\"navigation\">"+
+                    "<div id=\"headerinfo\" style=\"width\"></div>"+
+        			"<div id=\"progress\" style=\"width:150px;border:1px solid #ccc;\"></div>"+
+       				"<div id=\"information\" style=\"width\"></div>"+
                    "<ul>"+menus+
                    "</ul>"+
             "</div>");

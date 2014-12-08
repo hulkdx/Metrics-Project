@@ -1,12 +1,11 @@
 <?php
-include('../Login/session.php');
+	include('../Login/session.php');
 ?>
 <!doctype html>
 
 <html>
 
 	<head>
-
 		<Title>Project Main</title>
 		<link href="css/style.css" rel="stylesheet" type="text/css" media="screen">
 		<script src="scripts/SiteElements.js"></script>
@@ -16,7 +15,7 @@ include('../Login/session.php');
 		<div id="wrapper">
 
 			<script>
-				createTop();
+				createTop("<?php Print($user_check); ?>");
 				createNavig();
 			</script>
 
@@ -43,3 +42,7 @@ include('../Login/session.php');
 	</body>
 
 </html>
+
+<?php
+include('../reading from redmine/todatabase.php');
+?>

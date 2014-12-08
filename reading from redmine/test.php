@@ -3,6 +3,6 @@
 		<p>
 			Some text.
 		</p>
-		<?php include 'todatabase.php';?>
+		<?php include 'redmine_working_hours.php';?>
 	</body>
 </html>

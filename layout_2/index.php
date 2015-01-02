@@ -38,6 +38,9 @@
 						<button name="submit">
 							Login
 						</button>
+						<button name="register">
+							Register
+						</button>
 					</div>
 
 				</form>

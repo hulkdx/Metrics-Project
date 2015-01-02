@@ -67,13 +67,15 @@ for ($i = 0; $i < $count_issue; $i++) {
 		// TODO what is required_working_hours?
 		$required_working_hours = '';
 		//TODO Maybe its better to add some name?
+		
+		$description = mysql_real_escape_string($description);
 
 		$query = "INSERT INTO `requirement`(`requirement_id`, `project_id`, `description`, `required_working_hours`, `date`) VALUES ('$requirement_id', '$project_id', '$description', '$required_working_hours', '$date');";
 
 		if (!mysqli_query($con, $query)) {
-
+			
 		} else {
-
+			
 		};
 
 		// Progress bar
@@ -110,7 +112,7 @@ for ($i = 0; $i < $count_workh; $i++) {
 	};
 
 	// Insert into table
-	$query = "INSERT INTO `individual_work`(`work_id`, `project_id`, `member_id`, `description`, `hours`, `date`, `problems`) VALUES ($work_id,$project_id,$member_id,'',$hours,'$date','$issue_id')";
+	$query = "INSERT INTO `individual_work`(`work_id`, `project_id`, `member_id`, `description`, `hours`, `date`, `issue_id`) VALUES ($work_id,$project_id,$member_id,'',$hours,'$date','$issue_id')";
 
 	if (!mysqli_query($con, $query)) {
 

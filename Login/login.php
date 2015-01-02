@@ -9,14 +9,15 @@ $DATABASE_NAME = "metrics";
 // Starting Session
 session_start();
 
-if(isset($_SESSION['login_user'])){
+if (isset($_SESSION['login_user'])) {
 	// Redirecting To main Page
-	header('Location: ../layout_2/main.php'); 
+	header('Location: ../layout_2/main.php');
 }
 
 // Variable To Store Error Message
 $error = '';
 
+// Login button
 if (isset($_POST['submit'])) {
 	if (empty($_POST['uname']) || empty($_POST['pass'])) {
 		$error = "Username or Password is invalid";

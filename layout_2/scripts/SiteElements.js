@@ -2,7 +2,7 @@
 //  Project Work course work 2014
 //  
 
-var menuitems = ["account.html", "main.php", "listpage.html", "compare.html", "readweekly.html", "redmine.html", "facebook.html"];
+var menuitems = ["account.html", "main.php", "listpage.html", "compare.html", "readweekly.html", "redmine.php", "facebook.html"];
 var menutext = ["Account Information", "Project Main page", "Project List", "Compare Metrics", "Weekly report", "Redmine", "Facebook"];
 var user_privileges = 7;
 

@@ -1,24 +1,22 @@
-//  Tommi Tuominen
-//  Project Work course work 2014
-//  
+/*
+Tommi Tuominen 99710
+Metrics Monitoring Tool
+Project Work 2014/2015
+Updated: 5.1.2015
+This file is used for dynamic creation of basic website elements.
+----------------------
+TODO:
+document.write() may not be the best option for creating elements.
+creating section divs and adding into them with innerHtml or
+addElement may or may not be a better choice.
+*/ 
 
-var menuitems = ["account.html", "main.php", "listpage.html", "compare.html", "readweekly.html", "redmine.php", "facebook.html"];
-var menutext = ["Account Information", "Project Main page", "Project List", "Compare Metrics", "Weekly report", "Redmine", "Facebook"];
-var user_privileges = 7;
+var menuitems = ["account.php", "listpage.php", "compare.php", "readweekly.php", "redmine.php", "facebook.php"];
+var menutext = ["Account Information", "Project List", "Compare Metrics", "Weekly report", "Redmine", "Facebook"];
+var user_privileges = 6;
 
 var username = "User";
 var listofprojects = [];
-var listoflatest = [];
-
-var objects = {};
-var latest = {};
-
-var status = "Completed";
-var random = 0;
-var random2 = 0;
-var random3 = 0;
-var message = "";
-var alarming = 0;
 
 //Function used for creating the top part of the site
 function createTop(title){
@@ -74,6 +72,12 @@ function createHeader(text, type){
     }   
     else if(type == 1){
     document.write(""+
+	"<div id=\"header\">"+
+	    "<h2>"+text+"</h2>"
+    );
+    
+    /*uncomment these for project list sorting controls (not implemented)*/
+    /*document.write(""+
             "<div id=\"header\">"+
 		"<h2>"+text+"</h2>"+
                 "<div style='float: right; margin-left: 20px;'>Sort by: "+
@@ -88,7 +92,7 @@ function createHeader(text, type){
                 "<input style='width: 200px;' type='text' placeholder='search project by name or id'>"+
                 "<input type='button' value='search'>"+
                 "</div>"+   
-	    "</div>");        
+	    "</div>");  */
     }
     else if(type == 2){
     document.write(""+
@@ -104,72 +108,6 @@ function createHeader(text, type){
     }
 }
 
-function makeObjects(value){
-
-    //If value is 0, create projects object
-    if(value==0){
-        for(i=0;i<22;i++){
-            //In this demo we use random numbers
-            random = Math.floor(Math.random() * (3 - 0 + 0)) + 0;
-            random2 = Math.floor(Math.random() * (7 - 1 + 1)) + 1;
-            random3 = Math.floor(Math.random() * (2000 - 1 + 1)) + 1;
-        
-            if(random == 0){
-                status = "Completed";  
-            }else if(random == 1){
-                status = "Active";
-            }else{
-                status = "Late";
-            }
-            
-            objects[i] =
-            {
-                name: "Project name "+i,
-                status: status,
-                startdate: "31/12/2013",
-                deadline: "31/12/2014",
-                finishdate: "",
-                numofmembers: random2,
-                lastactive: random+random2+3,
-                description: "Short description of project goes here",
-                id: random3,
-            };
-            
-            listofprojects.push(objects[i]);
-        }        
-    }else if(value==1){
-    //If value is 0, create projects object
-        for(i=0;i<5;i++){
-            //In this demo we use random numbers
-            random = Math.floor(Math.random() * (3 - 0 + 0)) + 0;
-            random3 = Math.floor(Math.random() * (2000 - 1 + 1)) + 1;
-        
-            if(random == 0){
-                message = " needs your attention!";
-                alarming = 1;
-            }else if(random == 1){
-                message = " has posted a new weekly report";
-                alarming = 0;
-            }else{
-                message = " has been completed";
-                alarming = 0;
-            }
-            
-            latest[i] =
-            {
-                header: "Message header",
-                sent: "01/01/2015",
-                message: message,
-                id: random3,
-                alarming: alarming,
-                project: "Projectname"+i+" ("+random3+")"
-            };
-            
-            listoflatest.push(latest[i]);
-        }
-    }
-}
-
 //Function used for creating the footer
 function createFooter(){
     document.write(""+
@@ -178,44 +116,24 @@ function createFooter(){
 	    "</div>");
 }
 
+/*--------------------------------
 
-//Function used for getting the project's information from object
-function getProjects(){
-makeObjects(0);
+CREATE PROJECT LIST
 
-    for(i=0;i<listofprojects.length;i++){
-        document.write(""+
+----------------------------------*/
+
+function CreateProjectList(projectList, i){
+    
+    document.getElementById("projectlistbox").innerHTML +=
             "<div class=\"projectbox\">"+
                 "<div class='newsheader'>"+
-                "<span class='projname'><a href='detail.html'>"+listofprojects[i].name+" ("+listofprojects[i].id+")</a></span>"+
-                "<span class='projinfo_head'>"+listofprojects[i].finishdate+"</span>"+              
-                "<span class='projinfo_head'>"+listofprojects[i].startdate+"</span>"+
-                "<span class='projinfo_head'>"+listofprojects[i].deadline+"</span>"+  
-                "<span class='projstatus_"+listofprojects[i].status+"'>"+listofprojects[i].status+"</span>"+
+                "<span class='projname'><a href='detail.php?id="+projectList[i].project_id+"'>"+projectList[i].project_name+" ("+projectList[i].project_id+")</a></span>"+
+                "<span class='projinfo_head'>Created: <b>"+ParseDate(projectList[i].created_on)+"</b></span>"+              
+                "<span class='projinfo_head'>Updated: <b>"+ParseDate(projectList[i].updated_on)+"</b></span>"+ 
+                "<span class='projstatus_"+projectList[i].status+"'>"+projectList[i].status+"</span>"+
                 "</div>"+
                 "<br>"+
-                "<span class='projinfo_left'>Members: "+listofprojects[i].numofmembers+"</span><br>"+
-                "<span class='projinfo_left'>Last Active: "+listofprojects[i].lastactive+" Days ago</span><br>"+
-                "<span class='projinfo_left'>Description: "+listofprojects[i].description+"</span>"+
-            "</div>");
-    }  
-}
-
-function getLatest(){
-makeObjects(1);
-
-    for(i=0;i<listoflatest.length;i++){
-        document.write(""+
-        "<div class=\"newsbox\">"+
-        "<div class='newsheader'><span class='projname'>"+listoflatest[i].header+"&nbsp;</span>");
-        
-        if(listoflatest[i].alarming == 1){
-          document.write("<img src='images/warning_small.png'>");  
-        }
-        document.write(""+
-        "<span class='projinfo_right'>Sent: "+listoflatest[i].sent+"</span></div></br>"+
-        "<div class='newscontent'><a href='detail.html'>"+listoflatest[i].project+"</a>"+listoflatest[i].message+"</div>"+
-        "</div><br>");
-    }  
-   
+                "<span class='projinfo_left'>Version: "+projectList[i].version+"</span><br>"+
+                "<span class='projinfo_left'>Description: "+projectList[i].description+"</span>"+
+            "</div>";
 }

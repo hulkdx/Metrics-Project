@@ -3,7 +3,7 @@ WEEKLY REPORT
 
 #time
 TIME OF REPORT
-Week 4, 27.10.2014
+27.10.2014
 
 #client
 CLIENT
@@ -15,7 +15,7 @@ Jane Doe acsccscs@uta.fi
 
 #project
 PROJECT
-Monitoring Metrics Tool​​​
+Monitoring Metrics Tool
 
 #desc
 DESCRIPTION
@@ -38,12 +38,11 @@ the phase is good and this is testing.
 
 #req
 REQUIREMENTS
-New:
-In progress:
-Resolved:
-Feedback:
-Closed:
-Rejected:
+must work
+easy to use
+annoy users
+serve drinks
+take money
 
 #tasks_comp
 COMPLETED TASKS
@@ -65,22 +64,31 @@ TASKS FOR THE NEXT WEEK
 
 #milestone
 NEXT MILESTONE
+milestone 1
+milestone 2
 
 #unit_test
 UNIT TEST
-Passed:
-Amount of test cases:
+test 1
+test 2
+test 3
 
 #other_test
 OTHER TEST CASES
-Passed:
-Amount of test cases:
+test 1
+test 2
+test 3
 
 #revisions
 CODE REVISIONS
+revision 1
+revision 2
 
 #problems
 PROBLEMS
+out of beer
+out of coke
+no free time
 
 #hours
 WORKING HOURS (this week/so far)
@@ -93,13 +101,7 @@ Shahzad Choudhry     0/9
 Saba Jafarzadeh     15/31
 Huang Jueran         6/11
 Ahsanur Rahman       4/12
-
-Total working hours: 121
-The revision: so far 0
-
-Requirements: 0/8
-Test cases: 0/0
-Code revisions: 0/0​
+Total:
 
 #additional
 ADDITIONAL INFORMATION

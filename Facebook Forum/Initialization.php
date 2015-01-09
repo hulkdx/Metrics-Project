@@ -1,51 +1,113 @@
 <?php
-session_start();
-if ((!is_numeric($_SESSION["group"])) || (strlen($_SESSION["group"])!=15))
- die("Make sure that the group ID is a 15-digit string.");
+
+function getMostRecent($arr)
+{
+  $max=$arr[0]->created_time;
+  $n=0;
+  $cnt=count($arr);
+  for ($i=1; $i<$cnt; $i++)
+  {  
+    if ($max<$arr[$i]->created_time)
+    { 
+      $max=$arr[$i]->created_time;
+	  $n=$i;
+	}
+  }
+  return $n;
+}
+
+function getPosters($arr)
+{
+  $cnt=count($arr);
+  $names=array();
+  $namecnt=0;
+  for ($i=0; $i<$cnt; $i++) 
+  {
+    $nameflag=false;
+    $buf=$arr[$i]->from->name;
+    for ($j=0; $j<$namecnt; $j++)
+      if ($buf==$names[$j])
+	  {
+	    $nameflag=true;
+	    break;
+	  }
+    if ($nameflag==false)
+    {
+      $names[$namecnt]=$buf;
+	  $namecnt++;
+    }
+  }
+  return $names;  
+}
+
 set_include_path ("C:\Users\omistaja\AppData\Local\Composer\\files\\facebook\php-sdk-v4\\facebook-facebook-php-sdk-v4-e2dc662");
 include "autoload.php";
 use Facebook\FacebookSession;
 use Facebook\FacebookRequest;
 use Facebook\GraphUser;
 use Facebook\GraphObject;
+
+session_start();
 FacebookSession::setDefaultApplication('777065655684035', '3648579cf4a413d1dfe490304456cd4c');
 $session = new FacebookSession($_SESSION["token"]);
-$request = new FacebookRequest(
-  $session,
-  'GET',
-  "/".$_SESSION["group"]."/feed?since=".$_SESSION["fromdate"]);
+$request = new FacebookRequest($session, 'GET',
+  "/".$_SESSION["group"]."/feed?since=".$_SESSION["fromdate"]."&until=".$_SESSION["todate"]);
 try{$response = $request->execute();}
 catch (Exception $e) {
     echo 'Caught exception: ',  $e->getMessage(), "\n";
 }
 $graphObject = $response->getGraphObject(GraphUser::className());
-$temp=$graphObject->getProperty('data')->asArray();
-$arr=array();
+$outcome=$graphObject->getProperty('data');
+$temp=[];
+while ($outcome) 
+{ 
+  $temp=array_merge($temp,$graphObject->getProperty('data')->asArray());
+  $next=$graphObject->getProperty('paging')->asArray();
+  $request = new FacebookRequest(  $session,  'GET', substr($next["next"],31));
+  $response=$request->execute();
+  $graphObject = $response->getGraphObject(GraphUser::className());
+  $outcome=$graphObject->getProperty('data');
+  $j=count($temp);
+  for ($i=$j-1; $i>=0; $i--)
+    if ($temp[$i]->created_time<$_SESSION["fromdate"])
+	{
+      $outcome=false;
+	  $j=$i;
+	}
+   if ($outcome==false) $temp=array_slice($temp,0,$j);	
+}
+if ($_SESSION["members"]!="Everyone")
+{
+  $j=0;
+  for ($i=0; $i<count($temp); $i++)
+    if ($temp[$i]->from->name==$_SESSION["members"])
+	{
+	  $temp[$j]=$temp[$i];
+	  $j++;
+	}
+  $temp=array_slice($temp,0,$j);
+}
 $cnt=count($temp);
-
+$truecount=min($_SESSION["count"],$cnt);
+$m=getMostRecent($temp);
+echo "<i>Most Recently Updated Post by:</i> <b>" .htmlentities($temp[$m]->from->name). "</b>";
+echo "<i><br><br>Most Recent Post Updated time:</i> <b>".date_format(date_create_from_format('Y-m-d\TH:i:sO', $temp[$m]->created_time), 'r'). "</b>";
+echo "<i><br><br>Total Number of Posts:</i> <b> ".$cnt. "</b>";
+echo "<i><br><br> Last ".$truecount." Posts: <br><br>";
 //To get the max creation time and sorting the creation times in an array
+$arr=array();
 for ($i=0; $i<$cnt; $i++)
   $arr[$i]=$temp[$i]->created_time;
 sort($arr);
-//To get the maximum created
-$max=$temp[0]->created_time;
-for ($i=0; $i<$cnt; $i++)  
-if ($max<$temp[$i]->created_time) $max=$temp[$i]->created_time;
-
-//To get the most recent post which will be at index [0]
-$Name=$temp[0]->from->name;
-
-echo "<i>Most Recently Updated Post by:</i> <b>" .$Name. "</b>";
-echo "<i><br><br>Most Recent Post Updated time:</i> <b>".date_format(date_create_from_format('Y-m-d\TH:i:sO', $max), 'r'). "</b>";
-echo "<i><br><br>Total Number of Posts:</i> <b> ".$cnt. "</b>";
-echo "<i><br><br> Last ".min($_SESSION["count"],$cnt)." Posts: <br><br>";
-
 //To get the number of last posts that user wants to see
-for ($k=$cnt-min($_SESSION["count"],$cnt); $k<$cnt;)
-{
-echo $k." ".date_format(date_create_from_format('Y-m-d\TH:i:sO', $arr[$k]), 'r')."<br>" ;
- $k++;
-}
-echo "</i><br> <b>Entire Feed Content</b><br>";
-var_dump($temp);
+for ($k=0; $k<$truecount; $k++)
+  echo ($k+1).". ".date_format(date_create_from_format('Y-m-d\TH:i:sO', $arr[$k+$cnt-$truecount]), 'r')."<br>" ;
+$p=getPosters($temp);
+$namecount=count($p);
+echo "<i><br><br>Unique posters:</i> <b> ".$namecount." </b>(";
+for ($i=0; $i<$namecount; $i++)
+  if ($i==$namecount-1) echo htmlentities($p[$i]).")";
+  else echo htmlentities($p[$i]).", ";
+//echo "<br/>Entire Feed Content <br/>";
+//var_dump($temp);
 ?>

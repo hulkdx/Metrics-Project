@@ -1,10 +1,24 @@
 <?php
+
+function errorCheck()
+{
+  $msg="";
+  if ((!is_numeric($_POST["group"])) || (strlen($_POST["group"])!=15))
+    $msg="Make sure that the group ID is a 15-digit string.";
+  if ((!is_numeric($_POST["count"])) || ($_POST["count"]<=0))
+    $msg="Make sure that the recent posts count is a positive integer.";
+  if (($_POST["fromdate"]>$_POST["todate"]) && ($_POST["todate"]!=""))
+   $msg="The dates are in the wrong order.";  
+  return $msg;
+}
+
 session_start();
 if (strpos($_SERVER['REQUEST_URI'],"code=")===FALSE)
 {
-  $_SESSION["fromdate"]=$_POST["fromdate"];
-  $_SESSION["group"]=$_POST["group"];
-  $_SESSION["count"]=$_POST["count"];
+  $err=errorCheck();
+  if ($err!="")
+    die($err);
+  $_SESSION=$_POST;
   header("Location:"."https://www.facebook.com/dialog/oauth?client_id=777065655684035&response_type=code&redirect_uri=".rawurlencode("http://localhost/login.php"));
 }
 else 

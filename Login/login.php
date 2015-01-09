@@ -11,7 +11,7 @@ session_start();
 
 if (isset($_SESSION['login_user'])) {
 	// Redirecting To main Page
-	header('Location: ../layout_2/main.php');
+	header('Location: ../main/listpage.php');
 }
 
 // Variable To Store Error Message
@@ -47,7 +47,7 @@ if (isset($_POST['submit'])) {
 			$row = $result -> fetch_assoc();
 			$_SESSION['login_user'] = $username;
 			// go to main page
-			header("Location: ../layout_2/main.php");
+			header("Location: ../main/listpage.php");
 		} else {
 			$error = "Username or Password is invalid";
 		}

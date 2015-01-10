@@ -6,10 +6,10 @@
 - User name 'metricsmonitoring'
 - Password 'azHscyDA28KbZQQJ'*/
 
-$hostname = "db2.sis.uta.fi";
-$db_name = "metricsmonitoring";
-$usrname = "metricsmonitoring";
-$password = "azHscyDA28KbZQQJ";
+$hostname = "localhost";
+$db_name = "metrics";
+$usrname = "root";
+$password = "";
 $con = mysqli_connect($hostname, $usrname, $password, $db_name);
 
 ?>

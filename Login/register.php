@@ -1,6 +1,6 @@
 <?php
 /*
- * TODO register page
+ * register page
  */
 
 // DB NAME
@@ -14,13 +14,21 @@ if (mysqli_connect_errno($con)) {
 	die("Connection failed: " . $conn -> connect_error);
 }
 
-if (isset($_POST['username']) && isset($_POST['password'])){
-	$username = $_POST['username'];
-	$password = $_POST['password'];
-	
-	// TODO ALL OTHER THINGS
-	$query = "INSERT INTO `member`(`account`, `password`, `first_name`, `last_name`, `level_of_priviledges`, `email`, `phonenumber`) VALUES ('$username','$password','','','','','');";
-	
-}
+if (isset($_POST['uname']) && isset($_POST['pass']) && (isset($_POST['reg']))) {
+	$username = $_POST['uname'];
+	$password = $_POST['pass'];
+	$fname = $_POST['fname'];
+	$lname = $_POST['lname'];
+	$email = $_POST['email'];
+	$phone = $_POST['pnumb'];
 
+	$query = "INSERT INTO `member`(`account`, `password`, `first_name`, `last_name`, `level_of_priviledges`, `email`, `phonenumber`) VALUES ('$username','$password','$fname','$lname','','$email','$phone');";
+
+	if (!mysqli_query($con, $query)) {
+	} else {
+	};
+	
+	// Redirect
+	header("Location: ../main/index.php");
+}
 ?>

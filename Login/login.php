@@ -55,4 +55,8 @@ if (isset($_POST['submit'])) {
 		mysql_close();
 	}
 }
+
+if (isset($_POST['register'])) {
+	header("Location: ../main/register.php");
+}
 ?>

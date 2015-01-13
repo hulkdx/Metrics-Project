@@ -40,6 +40,7 @@ function getPosters($arr)
   return $names;  
 }
 
+//Replace with actual path to Facebook SDK
 set_include_path ("C:\Users\omistaja\AppData\Local\Composer\\files\\facebook\php-sdk-v4\\facebook-facebook-php-sdk-v4-e2dc662");
 include "autoload.php";
 use Facebook\FacebookSession;
@@ -47,6 +48,7 @@ use Facebook\FacebookRequest;
 use Facebook\GraphUser;
 use Facebook\GraphObject;
 
+error_reporting(E_ALL);
 session_start();
 FacebookSession::setDefaultApplication('777065655684035', '3648579cf4a413d1dfe490304456cd4c');
 $session = new FacebookSession($_SESSION["token"]);
@@ -69,7 +71,7 @@ while ($outcome)
   $outcome=$graphObject->getProperty('data');
   $j=count($temp);
   for ($i=$j-1; $i>=0; $i--)
-    if ($temp[$i]->created_time<$_SESSION["fromdate"])
+    if ($temp[$i]->created_time<=$_SESSION["fromdate"])
 	{
       $outcome=false;
 	  $j=$i;
@@ -90,24 +92,48 @@ if ($_SESSION["members"]!="Everyone")
 $cnt=count($temp);
 $truecount=min($_SESSION["count"],$cnt);
 $m=getMostRecent($temp);
-echo "<i>Most Recently Updated Post by:</i> <b>" .htmlentities($temp[$m]->from->name). "</b>";
-echo "<i><br><br>Most Recent Post Updated time:</i> <b>".date_format(date_create_from_format('Y-m-d\TH:i:sO', $temp[$m]->created_time), 'r'). "</b>";
+echo "<i>Most Recently Created Post by:</i> <b>" .htmlentities($temp[$m]->from->name). "</b>";
+echo "<i><br><br>Most Recent Post Created time:</i> <b>".date_format(date_create_from_format('Y-m-d\TH:i:sO', $temp[$m]->created_time), 'r'). "</b>";
 echo "<i><br><br>Total Number of Posts:</i> <b> ".$cnt. "</b>";
-echo "<i><br><br> Last ".$truecount." Posts: <br><br>";
+echo "<i><br><br> Last ".$truecount." Posts: <br><br></i>";
 //To get the max creation time and sorting the creation times in an array
-$arr=array();
+$arr=array(array());
 for ($i=0; $i<$cnt; $i++)
-  $arr[$i]=$temp[$i]->created_time;
+  {
+    $arr[$i][0]=$temp[$i]->created_time;
+	$arr[$i][1]=$i;
+  }
 sort($arr);
 //To get the number of last posts that user wants to see
-for ($k=0; $k<$truecount; $k++)
-  echo ($k+1).". ".date_format(date_create_from_format('Y-m-d\TH:i:sO', $arr[$k+$cnt-$truecount]), 'r')."<br>" ;
+for ($k=$truecount-1; $k>=0; $k--)
+{
+  echo ($truecount-$k).". ".date_format(date_create_from_format('Y-m-d\TH:i:sO', $arr[$k+$cnt-$truecount][0]), 'r')."<br>" ;
+  echo htmlentities($temp[$arr[$k+$cnt-$truecount][1]]->message)." ";
+  if (property_exists ($temp[$arr[$k+$cnt-$truecount][1]], "likes"))
+    echo "<b>(".count($temp[$arr[$k+$cnt-$truecount][1]]->likes->data)." <img src='like.png'>, ";
+  else echo "<b>(0 <img src='like.png'>, ";
+  if (property_exists ($temp[$arr[$k+$cnt-$truecount][1]], "comments"))
+  {
+    echo count($temp[$arr[$k+$cnt-$truecount][1]]->comments->data)." <img src='comment.png'>: ";
+	foreach ($temp[$arr[$k+$cnt-$truecount][1]]->comments->data as $i)
+	  echo htmlentities($i->from->name).", ";
+	echo ")</b><br>";
+  }
+  else echo "0 <img src='comment.png'>)</b><br>";
+  
+}
 $p=getPosters($temp);
 $namecount=count($p);
-echo "<i><br><br>Unique posters:</i> <b> ".$namecount." </b>(";
+echo "<i><br><br>Unique Users:</i> <b> ".$namecount." <br>(";
 for ($i=0; $i<$namecount; $i++)
-  if ($i==$namecount-1) echo htmlentities($p[$i]).")";
-  else echo htmlentities($p[$i]).", ";
+  if ($i==$namecount-1)
+  {
+   echo htmlentities($p[$i]).")</b>";
+  }
+  else
+  {
+    echo htmlentities($p[$i]).", ";
+  }
 //echo "<br/>Entire Feed Content <br/>";
 //var_dump($temp);
 ?>

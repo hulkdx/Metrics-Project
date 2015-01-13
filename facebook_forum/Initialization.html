@@ -3,6 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
 <title>Metrics Form</title>
+<!--<link rel="stylesheet" type="text/css" href="style.css">-->
 </head>
 
 <body onload="setDate()">
@@ -16,7 +17,7 @@ Date until: <br><input type="date" id="todate" name="todate" value="2014-01-01" 
 <br><br>
 Group ID: <br><input type="text" name="group" id="group" value="652060828245934" maxlength="15" onchange="checkGroup()"/>
 <select name="members" id="members">
-<option>Everyone</option>
+<!--<option>Everyone</option>
 <option>Timo T. Poranen</option>
 <option>Pekka Mäkiaho</option>
 <option>Shahzad Choudhry</option>
@@ -26,9 +27,10 @@ Group ID: <br><input type="text" name="group" id="group" value="652060828245934"
 <option>Mengyuan Yang</option>
 <option>Muhammad Qasim</option>
 <option>Tommi Tuominen</option>
-<option>Jueran Huang</option>
+<option>Jueran Huang</option>-->
 </select>
 <span id="grouperr" style="background-color: #E39362"></span> 
+<button type="submit" formaction="update.php">Update member list in DB</button>
 <br><br>
 Recent posts: <br><input id="count" name="count" type="number" value="5" min="1" onchange="checkRecent()"/>
 <span id="recenterr" style="background-color: #E39362"></span> 
@@ -37,12 +39,26 @@ Recent posts: <br><input id="count" name="count" type="number" value="5" min="1"
 </form>
 <script>
 
+function fetch()
+{
+  var val=document.getElementById("group").value;
+  var xmlhttp=new XMLHttpRequest();
+  xmlhttp.onreadystatechange=function()
+  {
+    if (xmlhttp.readyState==4 && xmlhttp.status==200)
+      document.getElementById("members").innerHTML=xmlhttp.responseText;
+  }
+  xmlhttp.open("GET","refresh.php?id="+val,true);
+  xmlhttp.send();
+}
+
 function setDate()
 {
   var today=new Date().toISOString().split('T')[0];  
   document.getElementById("fromdate").setAttribute("max",today);
   document.getElementById("todate").setAttribute("max",today);
   document.getElementById("todate").value=today;
+  fetch();
 }
 
 function checkGroup()
@@ -52,10 +68,10 @@ function checkGroup()
   for (var i=0; i<el.length; i++)
     if ((el[i]<'0') || (el[i]>'9'))
 	  b=false;
-  b=b && (el.length==15);
   if (!b)
 	document.getElementById("grouperr").innerHTML="The group ID must contain 15 digits.";
   else document.getElementById("grouperr").innerHTML="";
+  fetch();
 }
 
 function checkDate()
@@ -75,25 +91,6 @@ function checkRecent()
   //  document.getElementById("recenterr").innerHTML="";
   //else document.getElementById("recenterr").innerHTML="This field must be a positive integer.";
 }
-  window.fbAsyncInit = function() {
-    FB.init({
-      appId      : '777065655684035',
-      xfbml      : true,
-      version    : 'v2.1'
-    });
-  };
-
-  (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "//connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
 </script>
 </body>
-
-
-
-
 </html>

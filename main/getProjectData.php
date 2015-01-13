@@ -232,7 +232,7 @@ function getIndividual($project_id, $con, $scope, $where, $equal){
 		"description" => $row_individual['description'],
 		"hours" => $row_individual['hours'],
 		"date" => $row_individual['date'],
-		"problems" => $row_individual['problems']
+		"problems" => $row_individual['issue_id']
 	    );
 	    $individual_table[] = $individual;
 	}    

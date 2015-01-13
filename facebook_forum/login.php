@@ -21,13 +21,13 @@ if (strpos($_SERVER['REQUEST_URI'],"code=")===FALSE)
     die($err);
   $_SESSION=$_POST;
   //Change localhost to actual server address
-  header("Location:"."https://www.facebook.com/dialog/oauth?client_id=777065655684035&response_type=code&redirect_uri=".rawurlencode("http://localhost/login.php"));
+  header("Location:"."https://www.facebook.com/dialog/oauth?client_id=777065655684035&response_type=code&redirect_uri=".rawurlencode("http://localhost/Metrics/facebook_forum/login.php"));
 }
 else 
 {
   $str="https://graph.facebook.com/oauth/access_token";
   //Change localhost to actual server address
-  $str2="?client_id=777065655684035&redirect_uri=http://localhost/login.php&client_secret=3648579cf4a413d1dfe490304456cd4c&code=".substr($_SERVER['REQUEST_URI'],strpos($_SERVER['REQUEST_URI'],"code=")+5);
+  $str2="?client_id=777065655684035&redirect_uri=http://localhost/Metrics/facebook_forum/login.php&client_secret=3648579cf4a413d1dfe490304456cd4c&code=".substr($_SERVER['REQUEST_URI'],strpos($_SERVER['REQUEST_URI'],"code=")+5);
 //substr(string,pos)-copy fragment of string from pos position until the end
   $ch = curl_init($str.$str2);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -39,6 +39,6 @@ else
   curl_close($ch);
   $_SESSION["token"]=substr($data,strpos($data,"token=")+6,strpos($data,"&expires")-strpos($data,"token=")-6);
   //Change localhost to actual server address
-  header("Location:http://localhost/Initialization.php");
+  header("Location:http://localhost/Metrics/facebook_forum/Initialization.php");
 }
 ?>

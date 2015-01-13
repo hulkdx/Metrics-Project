@@ -8,14 +8,13 @@
 
 error_reporting(E_ALL);
 //Replace with true settings above
-$hostname = "localhost";
-$db_name = "metrics";
-$usrname = "root";
-$password = "";
-$con = mysqli_connect($hostname, $usrname, $password, $db_name);
+
+include('../Login/db_connection.php');
+
 $id=$_GET["id"];
-$result=mysqli_query($con,"SELECT member_name FROM facebook_member WHERE group_id=".$id);
+$result=mysqli_query($con,"SELECT `member_name` FROM `facebook_member` WHERE `group_id`=".$id);
 echo "<option>Everyone</option>";
+
 while ($r=mysqli_fetch_array($result))
 {
   echo "<option>".$r[0]."</option>";

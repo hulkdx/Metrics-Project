@@ -11,7 +11,7 @@ creating section divs and adding into them with innerHtml or
 addElement may or may not be a better choice.
 */ 
 
-var menuitems = ["account.php", "listpage.php", "compare.php", "readweekly.php", "redmine.php", "../facebook_forum/login.php"];
+var menuitems = ["account.php", "listpage.php", "compare.php", "readweekly.php", "redmine.php", "../facebook_forum/Initialization.php"];
 var menutext = ["Account Information", "Project List", "Compare Metrics", "Weekly report", "Redmine", "Facebook"];
 var user_privileges = 6;
 

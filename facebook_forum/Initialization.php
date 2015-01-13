@@ -41,7 +41,7 @@ function getPosters($arr)
 }
 
 //Replace with actual path to Facebook SDK
-set_include_path ("C:\Users\omistaja\AppData\Local\Composer\\files\\facebook\php-sdk-v4\\facebook-facebook-php-sdk-v4-e2dc662");
+set_include_path ("Composer\\files\\facebook\php-sdk-v4\\facebook-facebook-php-sdk-v4-e2dc662");
 include "autoload.php";
 use Facebook\FacebookSession;
 use Facebook\FacebookRequest;

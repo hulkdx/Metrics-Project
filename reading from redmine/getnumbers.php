@@ -16,7 +16,7 @@ if (mysqli_connect_errno($con)) {
 	die("Connection failed: " . $conn -> connect_error);
 }
 // Working hours
-mysql_select_db($DATABASE_NAME);
+mysqli_select_db($con, $DATABASE_NAME);
 $query = "SELECT COUNT('work_id') FROM `individual_work`";
 $result = $con -> query($query);
 $row = $result -> fetch_assoc();

@@ -1,14 +1,38 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+
+ <link href="../main/css/style.css" rel="stylesheet" type="text/css" media="screen">
+ <script src="../main/scripts/jquery-1.11.1.min.js"></script>
+ <script src="../main/scripts/SiteElements.js"></script>
+
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
 <title>Metrics Form</title>
 <!--<link rel="stylesheet" type="text/css" href="style.css">-->
 </head>
 
 <body onload="setDate()">
-<!--Sends form data in a POST request, invisible to the user.-->
-<form action="login.php" id="post" method="post">
+
+    <div id="wrapper">
+    	
+	<script>
+	createTop();
+	createNavig();	
+	</script>  
+	
+            
+        <div id="maincontent">
+            
+	<script>
+	createHeader("Project List", 1);
+	</script>
+                
+	<div class="databox_wide" id="projectlistbox">
+
+	
+	
+	
+	<form action="login.php" id="post" method="post">
 <b>
 Date from: <br/><input type="date" id="fromdate" name="fromdate" value="2014-01-01" onChange="checkDate()"/>
 <br><br>
@@ -17,7 +41,7 @@ Date until: <br><input type="date" id="todate" name="todate" value="2014-01-01" 
 <br><br>
 Group ID: <br><input type="text" name="group" id="group" value="652060828245934" maxlength="15" onchange="checkGroup()"/>
 <select name="members" id="members">
-<option>Everyone</option>
+<!--<option>Everyone</option>
 <option>Timo T. Poranen</option>
 <option>Pekka Mäkiaho</option>
 <option>Shahzad Choudhry</option>
@@ -27,7 +51,7 @@ Group ID: <br><input type="text" name="group" id="group" value="652060828245934"
 <option>Mengyuan Yang</option>
 <option>Muhammad Qasim</option>
 <option>Tommi Tuominen</option>
-<option>Jueran Huang</option>
+<option>Jueran Huang</option>-->
 </select>
 <span id="grouperr" style="background-color: #E39362"></span> 
 <button type="submit" formaction="update.php">Update member list in DB</button>
@@ -37,6 +61,49 @@ Recent posts: <br><input id="count" name="count" type="number" value="5" min="1"
 <br><br></b>
 <input type="submit" name="submit" value="Submit"/>
 </form>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+    </div>	
+  
+        </div>
+    
+	<br><br>
+	<script>
+	createFooter();
+	</script>
+	
+    </div>
+    
+
+
 <script>
 
 function fetch()
@@ -92,5 +159,8 @@ function checkRecent()
   //else document.getElementById("recenterr").innerHTML="This field must be a positive integer.";
 }
 </script>
+
+
+    
 </body>
 </html>

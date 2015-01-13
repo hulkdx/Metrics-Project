@@ -10,8 +10,7 @@ document.write() may not be the best option for creating elements.
 creating section divs and adding into them with innerHtml or
 addElement may or may not be a better choice.
 */ 
-
-var menuitems = ["account.php", "listpage.php", "compare.php", "readweekly.php", "redmine.php", "../facebook_forum/Initialization.php"];
+var menuitems = ["../main/account.php", "../main/listpage.php", "../main/compare.php", "../main/readweekly.php", "../main/redmine.php", "../facebook_forum/Initialization.html"];
 var menutext = ["Account Information", "Project List", "Compare Metrics", "Weekly report", "Redmine", "Facebook"];
 var user_privileges = 6;
 
@@ -28,7 +27,7 @@ function createTop(title){
     document.write(""+
         "<div id=\"top\" style=\"border-bottom: 1px solid silver; height: 40px;\">"+
         "<div style=\"float: left; width: 400px;\">"+
-            "<img src=\"images/logo.jpg\" ><br><br>"+
+            "<img src=\"../main/images/logo.jpg\" ><br><br>"+
         "</div>"+
         
         "<div id=\"top_mid\" style=\"width: 300px; float: left;\">Logged in as: "+title+       
@@ -48,7 +47,7 @@ function createNavig(){
         user_privileges = menuitems.length;
     }
     
-    for(i=0; i<user_privileges; i++){
+    for(i=1; i<user_privileges; i++){
         menus += "<li><a href=\""+menuitems[i]+"\">"+menutext[i]+"</a></li>";
     }
     

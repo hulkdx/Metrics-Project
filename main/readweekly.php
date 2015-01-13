@@ -25,7 +25,7 @@
     <div id="wrapper">
     
 	<script>
-	createTop();
+	createTop("<?php Print($user_check); ?>");
 	createNavig();	
 	</script>  
 	

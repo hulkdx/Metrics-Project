@@ -23,7 +23,8 @@ function createTop(title){
     if(title == null){
         title = username;
     }
-    
+//"User" is therefore a placeholder for whenever createTop() is called without parameters,
+//whether deliberately or not.   
     document.write(""+
         "<div id=\"top\" style=\"border-bottom: 1px solid silver; height: 40px;\">"+
         "<div style=\"float: left; width: 400px;\">"+

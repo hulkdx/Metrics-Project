@@ -1,5 +1,15 @@
 <?php
+/*
+Mohammad Jafarzadeh Rezvan
+Metrics Monitoring Tool
+Project Work 2014/2015
+Updated: 5.1.2015
+-------------------------------
+This file is used to send to Database
+ */
+
 include "redmine_working_hours.php";
+include "../Login/db_connection.php";
 
 // DB NAME
 $DATABASE_NAME = "metrics";
@@ -8,14 +18,14 @@ $DATABASE_NAME = "metrics";
 ini_set('max_execution_time', 300);
 
 // Create connection
-$con = mysqli_connect("localhost", "root", "", $DATABASE_NAME);
+$con = mysqli_connect($hostname, $usrname, $password, $db_name);
 
 // Check for connection
 if (mysqli_connect_errno($con)) {
 	die("Connection failed: " . $conn -> connect_error);
 }
 
-mysql_select_db($DATABASE_NAME);
+mysqli_select_db($con,$DATABASE_NAME);
 
 // Tell user that the process is started
 echo '<script language="javascript">document.getElementById("headerinfo").innerHTML="Downloading Projects..."</script>';
@@ -68,7 +78,7 @@ for ($i = 0; $i < $count_issue; $i++) {
 		$required_working_hours = '';
 		//TODO Maybe its better to add some name?
 		
-		$description = mysql_real_escape_string($description);
+		$description = mysqli_real_escape_string($con,$description);
 
 		$query = "INSERT INTO `requirement`(`requirement_id`, `project_id`, `description`, `required_working_hours`, `date`) VALUES ('$requirement_id', '$project_id', '$description', '$required_working_hours', '$date');";
 

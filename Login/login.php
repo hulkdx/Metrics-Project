@@ -1,10 +1,14 @@
 <?php
 /*
- * Login pages
+Mohammad Jafarzadeh Rezvan
+Metrics Monitoring Tool
+Project Work 2014/2015
+Updated: 5.1.2015
+-------------------------------
+Login pages
  */
 
-// DB NAME
-$DATABASE_NAME = "metrics";
+include "db_connection.php";
 
 // Starting Session
 session_start();
@@ -22,17 +26,19 @@ if (isset($_POST['submit'])) {
 	if (empty($_POST['uname']) || empty($_POST['pass'])) {
 		$error = "Username or Password is invalid";
 	} else {
+		
+		// Create connection
+		$con = mysqli_connect($hostname, $usrname, $password, $db_name);
+
 		// Define $username and $password
 		$username = $_POST["uname"];
 		$password = $_POST["pass"];
 		// To protect MySQL injection for Security purpose
 		$username = stripslashes($username);
 		$password = stripslashes($password);
-		$username = mysql_real_escape_string($username);
-		$password = mysql_real_escape_string($password);
+		$username = mysqli_real_escape_string($con, $username);
+		$password = mysqli_real_escape_string($con, $password);
 
-		// Create connection
-		$con = mysqli_connect("localhost", "root", "", $DATABASE_NAME);
 
 		// Check connection
 		if (mysqli_connect_errno($con)) {
@@ -52,7 +58,7 @@ if (isset($_POST['submit'])) {
 			$error = "Username or Password is invalid";
 		}
 		// Closing Connection
-		mysql_close();
+		//mysql_close();
 	}
 }
 

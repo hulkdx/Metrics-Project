@@ -95,7 +95,7 @@ $m=getMostRecent($temp);
 echo "<i>Most Recently Created Post by:</i> <b>" .htmlentities($temp[$m]->from->name). "</b>";
 echo "<i><br><br>Most Recent Post Created time:</i> <b>".date_format(date_create_from_format('Y-m-d\TH:i:sO', $temp[$m]->created_time), 'r'). "</b>";
 echo "<i><br><br>Total Number of Posts:</i> <b> ".$cnt. "</b>";
-echo "<i><br><br> Last ".$truecount." Posts: <br><br></i>";
+echo "<i><br><br> Last ".$truecount." Posts: <br></i>";
 //To get the max creation time and sorting the creation times in an array
 $arr=array(array());
 for ($i=0; $i<$cnt; $i++)
@@ -107,8 +107,9 @@ sort($arr);
 //To get the number of last posts that user wants to see
 for ($k=$truecount-1; $k>=0; $k--)
 {
-  echo ($truecount-$k).". ".date_format(date_create_from_format('Y-m-d\TH:i:sO', $arr[$k+$cnt-$truecount][0]), 'r')."<br>" ;
-  echo htmlentities($temp[$arr[$k+$cnt-$truecount][1]]->message)." ";
+  echo "<br>".($truecount-$k).". ".date_format(date_create_from_format('Y-m-d\TH:i:sO', $arr[$k+$cnt-$truecount][0]), 'r')."<br>" ;
+  if (property_exists ($temp[$arr[$k+$cnt-$truecount][1]], "message"))
+    echo htmlentities($temp[$arr[$k+$cnt-$truecount][1]]->message)." ";
   if (property_exists ($temp[$arr[$k+$cnt-$truecount][1]], "likes"))
     echo "<b>(".count($temp[$arr[$k+$cnt-$truecount][1]]->likes->data)." <img src='like.png'>, ";
   else echo "<b>(0 <img src='like.png'>, ";

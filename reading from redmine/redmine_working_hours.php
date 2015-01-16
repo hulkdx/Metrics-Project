@@ -1,6 +1,11 @@
 <?php
 /*
- * Reading Data from Redmine website (redmine.sis.uta.fi/projects/metrics)
+Mohammad Jafarzadeh Rezvan
+Metrics Monitoring Tool
+Project Work 2014/2015
+Updated: 5.1.2015
+-------------------------------
+Reading Data from Redmine website
  */
 include('getnumbers.php');
 
@@ -8,7 +13,7 @@ include('getnumbers.php');
 $count_workh = $count_workh - $count_workh_localdb;
 // Check if its negative
 if ($count_workh < 0){
-	// TODO
+	// TODO it should be changed.
 	$count_workh = -1 * $count_workh;
 }
 

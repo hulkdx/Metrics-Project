@@ -18,7 +18,7 @@ session_start();
 FacebookSession::setDefaultApplication('777065655684035', '3648579cf4a413d1dfe490304456cd4c');
 $session = new FacebookSession($_SESSION["token"]);
 $request = new FacebookRequest($session, 'GET',
-  "/".$_POST["group"]."/members");
+  "/".$_GET["group"]."/members");
 try{$response = $request->execute();}
 catch (Exception $e) {
     echo 'Caught exception: ',  $e->getMessage(), "\n";
@@ -32,14 +32,15 @@ $db_name = "metrics";
 $usrname = "root";
 $password = "";
 $con = mysqli_connect($hostname, $usrname, $password, $db_name);
-$id=$_POST["group"];
+$id=$_GET["group"];
 mysqli_query($con,"DELETE FROM facebook_member WHERE group_id=".$id);
 $query="INSERT INTO facebook_member (member_id, member_name, group_id) VALUES ";
 foreach ($outcome as $i)
   $query=$query."(".$i->id.",'".$i->name."',".$id."), ";
 $query=substr($query,0,count($query)-3);
-mysqli_query($con,$query);	
+$result=mysqli_query($con,$query);	
 mysqli_close($con);
 //Assuming these files are still in the same folder
-header("Location:Initialization.html");
+if ($result==TRUE) echo "Updated successfully";
+else echo "Did not update";
 ?>

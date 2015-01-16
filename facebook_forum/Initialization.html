@@ -30,8 +30,6 @@
 	<div class="databox_wide" id="projectlistbox">
 
 	
-	
-	
 	<form action="login.php" id="post" method="post">
 <b>
 Date from: <br/><input type="date" id="fromdate" name="fromdate" value="2014-01-01" onChange="checkDate()"/>
@@ -54,42 +52,13 @@ Group ID: <br><input type="text" name="group" id="group" value="652060828245934"
 <option>Jueran Huang</option>-->
 </select>
 <span id="grouperr" style="background-color: #E39362"></span> 
-<button type="submit" formaction="update.php">Update member list in DB</button>
+<button id="update" type="button" onclick="fetch2()">Update member list in DB</button>
 <br><br>
 Recent posts: <br><input id="count" name="count" type="number" value="5" min="1" onchange="checkRecent()"/>
 <span id="recenterr" style="background-color: #E39362"></span> 
 <br><br></b>
-<input type="submit" name="submit" value="Submit"/>
+<input type="submit"/>
 </form>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
     </div>	
   
@@ -102,8 +71,6 @@ Recent posts: <br><input id="count" name="count" type="number" value="5" min="1"
 	
     </div>
     
-
-
 <script>
 
 function fetch()
@@ -116,6 +83,25 @@ function fetch()
       document.getElementById("members").innerHTML=xmlhttp.responseText;
   }
   xmlhttp.open("GET","refresh.php?id="+val,true);
+  xmlhttp.send();
+}
+
+function fetch2()
+{
+  var xmlhttp=new XMLHttpRequest();
+  var val=document.getElementById("group").value;
+  xmlhttp.onreadystatechange=function()
+  {
+    if (xmlhttp.readyState==4 && xmlhttp.status==200)
+      document.getElementById("update").innerHTML=xmlhttp.responseText;
+  }
+  xmlhttp.open("GET","update.php?group="+val,true);
+  //var str="fromdate="+document.getElementById("fromdate").value+
+  //"&todate="+document.getElementById("todate").value+
+  //"&group="+document.getElementById("group").value+
+  //"&members="+document.getElementById("members").value+
+  //"&count="+document.getElementById("count").value;
+  //xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   xmlhttp.send();
 }
 
@@ -154,13 +140,12 @@ function checkRecent()
 {
   var el=document.getElementById("count").value;
   var el2=parseInt(el,10);
-  //if ((parseInt(el,10)==el)&& (el2>0))
-  //  document.getElementById("recenterr").innerHTML="";
-  //else document.getElementById("recenterr").innerHTML="This field must be a positive integer.";
+  if ((parseInt(el,10)==el)&& (el2>0))
+    document.getElementById("recenterr").innerHTML="";
+  else document.getElementById("recenterr").innerHTML="This field must be a positive integer.";
 }
 </script>
 
 
-    
 </body>
 </html>

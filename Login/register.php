@@ -1,13 +1,17 @@
 <?php
 /*
- * register page
+Mohammad Jafarzadeh Rezvan
+Metrics Monitoring Tool
+Project Work 2014/2015
+Updated: 5.1.2015
+-------------------------------
+register page
  */
 
-// DB NAME
-$DATABASE_NAME = "metrics";
+include "db_connection.php";
 
 // Create connection
-$con = mysqli_connect("localhost", "root", "", $DATABASE_NAME);
+$con = mysqli_connect($hostname, $usrname, $password, $db_name);
 
 // Check connection
 if (mysqli_connect_errno($con)) {

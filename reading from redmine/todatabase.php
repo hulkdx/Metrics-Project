@@ -6,6 +6,8 @@ Project Work 2014/2015
 Updated: 5.1.2015
 -------------------------------
 This file is used to send to Database
+
+thing TODO is mysqli_real_escape_string to all attributes.
  */
 
 include "redmine_working_hours.php";
@@ -74,14 +76,13 @@ for ($i = 0; $i < $count_issue; $i++) {
 		$project_id = $issue['issues'][$i]['project']['id'];
 		$description = $issue['issues'][$i]['description'];
 		$date = $issue['issues'][$i]['start_date'];
-		// TODO what is required_working_hours?
-		$required_working_hours = '';
-		//TODO Maybe its better to add some name?
+		$requirement_name = $issue['issues'][$i]['subject'];
+		// 1 is new, 2 is in progress
+		$requirement_status = $issue['issues'][$i]['status']['id'];	
 		
 		$description = mysqli_real_escape_string($con,$description);
 
-		$query = "INSERT INTO `requirement`(`requirement_id`, `project_id`, `description`, `required_working_hours`, `date`) VALUES ('$requirement_id', '$project_id', '$description', '$required_working_hours', '$date');";
-
+		$query = "INSERT INTO `requirement`(`requirement_id`, `project_id`, `description`, `date`, `requirement_name`, `requirement_status`) VALUES ('$requirement_id', '$project_id', '$description', '$date', '$requirement_name', '$requirement_status');";
 		if (!mysqli_query($con, $query)) {
 			
 		} else {

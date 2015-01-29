@@ -3,8 +3,8 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 29, 2015 at 03:57 PM
--- Server version: 5.6.21
+-- Generation Time: 29.01.2015 klo 17:59
+-- Palvelimen versio: 5.6.21
 -- PHP Version: 5.6.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -23,11 +23,11 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `facebook_group`
+-- Rakenne taululle `facebook_group`
 --
 
 CREATE TABLE IF NOT EXISTS `facebook_group` (
-`group_id` int(20) NOT NULL,
+  `group_id` int(20) NOT NULL,
   `fgroup_id` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
   `group_name` varchar(50) CHARACTER SET latin1 DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -35,11 +35,11 @@ CREATE TABLE IF NOT EXISTS `facebook_group` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `facebook_member`
+-- Rakenne taululle `facebook_member`
 --
 
 CREATE TABLE IF NOT EXISTS `facebook_member` (
-`member_id` int(10) NOT NULL,
+  `member_id` int(10) NOT NULL,
   `member_name` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
   `fmember_id` varchar(30) CHARACTER SET latin1 DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `facebook_member` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `individual_work`
+-- Rakenne taululle `individual_work`
 --
 
 CREATE TABLE IF NOT EXISTS `individual_work` (
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `individual_work` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `individual_work`
+-- Vedos taulusta `individual_work`
 --
 
 INSERT INTO `individual_work` (`work_id`, `name`, `project_id`, `member_id`, `description`, `hours`, `date`, `issue_id`) VALUES
@@ -994,11 +994,11 @@ INSERT INTO `individual_work` (`work_id`, `name`, `project_id`, `member_id`, `de
 -- --------------------------------------------------------
 
 --
--- Table structure for table `link_table`
+-- Rakenne taululle `link_table`
 --
 
 CREATE TABLE IF NOT EXISTS `link_table` (
-`link_id` int(20) NOT NULL,
+  `link_id` int(20) NOT NULL,
   `group_id` int(20) DEFAULT NULL,
   `member_id` int(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -1006,7 +1006,7 @@ CREATE TABLE IF NOT EXISTS `link_table` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `member`
+-- Rakenne taululle `member`
 --
 
 CREATE TABLE IF NOT EXISTS `member` (
@@ -1021,7 +1021,7 @@ CREATE TABLE IF NOT EXISTS `member` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `member`
+-- Vedos taulusta `member`
 --
 
 INSERT INTO `member` (`member_id`, `account`, `password`, `first_name`, `last_name`, `level_of_priviledges`, `email`, `phonenumber`) VALUES
@@ -1030,7 +1030,7 @@ INSERT INTO `member` (`member_id`, `account`, `password`, `first_name`, `last_na
 -- --------------------------------------------------------
 
 --
--- Table structure for table `metrics`
+-- Rakenne taululle `metrics`
 --
 
 CREATE TABLE IF NOT EXISTS `metrics` (
@@ -1043,7 +1043,7 @@ CREATE TABLE IF NOT EXISTS `metrics` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `metric_values`
+-- Rakenne taululle `metric_values`
 --
 
 CREATE TABLE IF NOT EXISTS `metric_values` (
@@ -1058,7 +1058,7 @@ CREATE TABLE IF NOT EXISTS `metric_values` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `participation`
+-- Rakenne taululle `participation`
 --
 
 CREATE TABLE IF NOT EXISTS `participation` (
@@ -1073,7 +1073,7 @@ CREATE TABLE IF NOT EXISTS `participation` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `project`
+-- Rakenne taululle `project`
 --
 
 CREATE TABLE IF NOT EXISTS `project` (
@@ -1083,14 +1083,14 @@ CREATE TABLE IF NOT EXISTS `project` (
   `updated_on` datetime DEFAULT NULL,
   `status` int(100) DEFAULT NULL,
   `version` int(100) DEFAULT NULL,
-  `description` varchar(500) CHARACTER SET latin1 DEFAULT NULL
+  `discription` varchar(500) CHARACTER SET latin1 DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `project`
+-- Vedos taulusta `project`
 --
 
-INSERT INTO `project` (`project_id`, `project_name`, `created_on`, `updated_on`, `status`, `version`, `description`) VALUES
+INSERT INTO `project` (`project_id`, `project_name`, `created_on`, `updated_on`, `status`, `version`, `discription`) VALUES
 (18, 'Majava', '2012-09-13 07:27:31', '2012-09-13 07:27:31', 0, 0, ''),
 (56, 'Metrics Monitoring Tool', '2014-10-04 07:02:50', '2014-10-04 07:02:50', 0, 0, ''),
 (65, 'ampere', NULL, NULL, NULL, NULL, NULL),
@@ -1099,7 +1099,7 @@ INSERT INTO `project` (`project_id`, `project_name`, `created_on`, `updated_on`,
 -- --------------------------------------------------------
 
 --
--- Table structure for table `requirement`
+-- Rakenne taululle `requirement`
 --
 
 CREATE TABLE IF NOT EXISTS `requirement` (
@@ -1112,7 +1112,7 @@ CREATE TABLE IF NOT EXISTS `requirement` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `requirement`
+-- Vedos taulusta `requirement`
 --
 
 INSERT INTO `requirement` (`requirement_id`, `project_id`, `description`, `date`, `requirement_name`, `requirement_status`) VALUES
@@ -1154,7 +1154,7 @@ INSERT INTO `requirement` (`requirement_id`, `project_id`, `description`, `date`
 -- --------------------------------------------------------
 
 --
--- Table structure for table `weekly_report`
+-- Rakenne taululle `weekly_report`
 --
 
 CREATE TABLE IF NOT EXISTS `weekly_report` (
@@ -1176,13 +1176,15 @@ CREATE TABLE IF NOT EXISTS `weekly_report` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `weekly_report`
+-- Vedos taulusta `weekly_report`
 --
 
 INSERT INTO `weekly_report` (`report_id`, `project_id`, `number_of_week`, `project_phase`, `completed_tasks`, `task_for_nextweek`, `schedule_status`, `next_milestone`, `working_hours`, `unit_testcases`, `other_testcases`, `code_revisions`, `problems`, `changes_in_project_plan`, `things_to_mention`) VALUES
 (34, 18, 4, '', 'x', 'x', 'x', 'x', '35', 0, 0, 0, 'x', 'x', 'x'),
 (55, 56, 4, '', 'x', 'x', 'x', 'x', '0', 0, 0, 0, 'x', 'x', 'x'),
 (98, 65, 4, '', 'x', 'x', 'x', 'x', '35', 0, 0, 0, 'x', 'x', 'x'),
+(423, 65, 2, 'sfdsf', '5', '1', '3', NULL, '[{"name": "John","weekhours": "30","totalhours":"34"},{"name": "Jane","weekhours": "10","totalhours":"55"}]', 42, 32, 24, '77', '67', 'hgjhggjhgjhgjh'),
+(424, 65, 3, 'very good', '10', '3', '4', '5', '[{"name": "John","weekhours": "30","totalhours":"34"},{"name": "Jane","weekhours": "10","totalhours":"55"}]', 53, 41, 53, '14', '42', 'dasd3dd3'),
 (1234, 18, 45, NULL, '5', '5', '5', NULL, NULL, 31, 43, 53, NULL, NULL, NULL),
 (5589, 56, 4, '', 'x', 'x', 'x', 'x', '0', 0, 0, 0, 'x', 'x', 'x'),
 (6456, 65, 4, '', 'x', 'x', 'x', 'x', '35', 0, 0, 0, 'x', 'x', 'x'),
@@ -1195,13 +1197,13 @@ INSERT INTO `weekly_report` (`report_id`, `project_id`, `number_of_week`, `proje
 -- --------------------------------------------------------
 
 --
--- Table structure for table `weekly_report_manager`
+-- Rakenne taululle `weekly_report_manager`
 --
 
 CREATE TABLE IF NOT EXISTS `weekly_report_manager` (
 `manager_id` int(50) NOT NULL,
   `project_id` int(50) NOT NULL,
-  `weekly_report_id` int(50) NOT NULL,
+  `report_id` int(50) NOT NULL,
   `manager_name` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
   `manager_email` varchar(50) CHARACTER SET latin1 DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -1209,16 +1211,28 @@ CREATE TABLE IF NOT EXISTS `weekly_report_manager` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `weekly_report_requirement`
+-- Rakenne taululle `weekly_report_requirement`
 --
 
 CREATE TABLE IF NOT EXISTS `weekly_report_requirement` (
   `project_id` int(50) DEFAULT NULL,
-  `weekly_report_id` int(50) DEFAULT NULL,
+  `report_id` int(50) DEFAULT NULL,
   `requirement_id` int(50) DEFAULT NULL,
   `requirement_name` varchar(60) CHARACTER SET latin1 DEFAULT NULL,
   `requirement_status` varchar(50) CHARACTER SET latin1 DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Vedos taulusta `weekly_report_requirement`
+--
+
+INSERT INTO `weekly_report_requirement` (`project_id`, `report_id`, `requirement_id`, `requirement_name`, `requirement_status`) VALUES
+(65, 423, 1, 'REQ NAME', 'open'),
+(65, 423, 34, 'Urgent requirement', 'closed'),
+(65, 423, 13, 'Another requirement', 'testing'),
+(65, 423, 13, 'Requirement', 'implemented'),
+(65, 364, 23, 'requirement', 'open'),
+(65, 364, 23, 'requirement', 'open');
 
 --
 -- Indexes for dumped tables
@@ -1288,75 +1302,23 @@ ALTER TABLE `requirement`
 -- Indexes for table `weekly_report`
 --
 ALTER TABLE `weekly_report`
- ADD PRIMARY KEY (`report_id`), ADD KEY `project_id` (`project_id`);
+ ADD PRIMARY KEY (`report_id`);
 
 --
 -- Indexes for table `weekly_report_manager`
 --
 ALTER TABLE `weekly_report_manager`
- ADD PRIMARY KEY (`manager_id`,`project_id`,`weekly_report_id`);
+ ADD PRIMARY KEY (`manager_id`,`project_id`,`report_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `facebook_group`
---
-ALTER TABLE `facebook_group`
-MODIFY `group_id` int(20) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `facebook_member`
---
-ALTER TABLE `facebook_member`
-MODIFY `member_id` int(10) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `link_table`
---
-ALTER TABLE `link_table`
-MODIFY `link_id` int(20) NOT NULL AUTO_INCREMENT;
---
 -- AUTO_INCREMENT for table `weekly_report_manager`
 --
 ALTER TABLE `weekly_report_manager`
 MODIFY `manager_id` int(50) NOT NULL AUTO_INCREMENT;
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `individual_work`
---
-ALTER TABLE `individual_work`
-ADD CONSTRAINT `individual_work_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`project_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `link_table`
---
-ALTER TABLE `link_table`
-ADD CONSTRAINT `link_table_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `facebook_group` (`group_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `link_table_ibfk_2` FOREIGN KEY (`member_id`) REFERENCES `facebook_member` (`member_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `metric_values`
---
-ALTER TABLE `metric_values`
-ADD CONSTRAINT `metric_values_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`project_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `metric_values_ibfk_2` FOREIGN KEY (`metric_id`) REFERENCES `metrics` (`metric_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `participation`
---
-ALTER TABLE `participation`
-ADD CONSTRAINT `participation_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`project_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `participation_ibfk_2` FOREIGN KEY (`member_id`) REFERENCES `member` (`member_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `weekly_report`
---
-ALTER TABLE `weekly_report`
-ADD CONSTRAINT `weekly_report_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`project_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

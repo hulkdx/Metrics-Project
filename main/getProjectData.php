@@ -46,6 +46,8 @@ function echoResults($operation, $project_id, $con, $scope, $where, $equal){
 	echo json_encode(getParticipation($project_id, $con, $scope, $where, $equal));	
     }else if($operation == 3){
 	echo json_encode(getIndividual($project_id, $con, $scope, $where, $equal));
+    }else if($operation == 4){
+	echo json_encode(getWeeklyRequirements($project_id, $con, $scope, $where, $equal));
     }  
 }
 
@@ -66,14 +68,14 @@ function getWeeklyReports($project_id, $con, $scope, $where, $equal){
 		
 		$weeklyreport = array(
 		    "project_id" => $row_weekly['project_id'],
-		    "project_manager" => $row_weekly['project_manager'],
+		    "report_id" => $row_weekly['report_id'],
+		    "number_of_week" => $row_weekly['number_of_week'],
 		    "project_phase" => $row_weekly['project_phase'],
 		    "completed_tasks" => $row_weekly['completed_tasks'],
 		    "task_for_nextweek" => $row_weekly['task_for_nextweek'],
 		    "schedule_status" => $row_weekly['schedule_status'],
 		    "next_milestone" => $row_weekly['next_milestone'],
 		    "working_hours" => $row_weekly['working_hours'],
-		    "requirements" => $row_weekly['requirements'],
 		    "unit_testcases" => $row_weekly['unit_testcases'],
 		    "other_testcases" => $row_weekly['other_testcases'],
 		    "code_revisions" => $row_weekly['code_revisions'],
@@ -89,6 +91,37 @@ function getWeeklyReports($project_id, $con, $scope, $where, $equal){
 	    return 0;
 	}
 	
+}
+
+/*----------------------------------------------
+
+    GET DATA FROM WEEKLY_REPORT_REQUIREMENTS TABLE
+
+-----------------------------------------------*/
+function getWeeklyRequirements($project_id, $con, $scope, $where, $equal){
+    $sql_req = "SELECT ".$scope." FROM `weekly_report_requirement` WHERE ".$where."".$equal;
+    $result_req = mysqli_query($con, $sql_req);
+    $num_of_requirements = mysqli_num_rows($result_req);
+    
+    //$req_table = array();
+    
+    if($num_of_requirements != null || $num_of_requirements != 0){
+	
+	while ($row_req = mysqli_fetch_array($result_req)){
+	    $requirements = array(
+		"project_id" => $row_req['project_id'],
+		"report_id" => $row_req['report_id'],
+		"requirement_id" => $row_req['requirement_id'],
+		"requirement_name" => $row_req['requirement_name'],
+		"requirement_status" => $row_req['requirement_status']
+	    );
+	    $requirements_table[] = $requirements;
+	}
+	
+	return $requirements_table; 
+    }else{
+	return 0;
+    }
 }
 
 /*----------------------------------------------
@@ -184,7 +217,7 @@ function getMember($memberid, $x, $con){
 
 /*----------------------------------------------
 
-    GET DATA FROM REQUIREMENTS TABLE
+    GET DATA FROM REQUIREMENT TABLE
 
 -----------------------------------------------*/
 function getRequirements($project_id, $con, $scope, $where, $equal){
@@ -199,8 +232,9 @@ function getRequirements($project_id, $con, $scope, $where, $equal){
 	    "requirement_id" => $row_requirements['requirement_id'],
 	    "project_id" => $row_requirements['project_id'],
 	    "description" => $row_requirements['description'],
-	    "required_working_hours" => $row_requirements['required_working_hours'],
-	    "date" => $row_requirements['date']   
+	    "date" => $row_requirements['date'],
+	    "requirement_name" => $row_requirements['requirement_name'],
+	    "requirement_status" => $row_requirements['requirement_status']
 	);
 	$requirements_table[] = $requirements;
     }
@@ -274,7 +308,8 @@ function getDataForCharts($project_id, $con){
 	    "project" => getProjects($project_id, $con, "*", "project_id", " = ".$project_id),
 	    "participation" => getParticipation($project_id, $con, "*", "project_id", " = ".$project_id),
 	    "individual" => getIndividual($project_id, $con, "*", "project_id", " = ".$project_id),
-	    "requirement" => getRequirements($project_id, $con, "*", "project_id", " = ".$project_id)
+	    "requirement" => getRequirements($project_id, $con, "*", "project_id", " = ".$project_id),
+	    "weekly_requirement" => getWeeklyRequirements($project_id, $con, "*", "project_id", " = ".$project_id)
 	);
 	
 	echo json_encode($mega);

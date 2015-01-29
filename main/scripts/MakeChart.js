@@ -113,20 +113,23 @@ function change(newstyle){
     }
 }
 
-function addLine(DataArray, times, xCategories, containername, chart_title, types, seriesname, reset){
+function addLine(DataArray, times, xCategories, containername, chart_title, types, seriesname, reset, chartno){
 
     var chart = $("#"+containername).highcharts();
     new_type = types;
-
+    
+    Highcharts.charts[chartno].xAxis[0].update({categories:xCategories}, true);
+    
     if(new_type == old_type || old_type == -1){
     
       console.log("DataArray: "+JSON.stringify(DataArray));
+      
       chart.addSeries({name: seriesname,data: DataArray});
 
       if(chart_title != ""){
           chart.setTitle({text: chart_title});    
       }      
-      Highcharts.charts[0].xAxis[0].update({categories:xCategories}, true);
+      Highcharts.charts[chartno].xAxis[0].update({categories:xCategories}, true);
       
       old_type = new_type;
     
@@ -142,7 +145,7 @@ function addLine(DataArray, times, xCategories, containername, chart_title, type
         if(chart_title != ""){
             chart.setTitle({text: chart_title});    
         }      
-        Highcharts.charts[0].xAxis[0].update({categories:xCategories}, true);
+        Highcharts.charts[chartno].xAxis[0].update({categories:xCategories}, true);
         
         old_type = new_type;
     }

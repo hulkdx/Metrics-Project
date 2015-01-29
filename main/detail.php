@@ -26,11 +26,11 @@ mysqli_close($con);
 
 	<head>
     
-    	<Title>Project Detail</title>
+    	<Title>Project Details</title>
         <link href="css/style.css" rel="stylesheet" type="text/css" media="screen">
         <script src="scripts/SiteElements.js"></script>
 	<script src="scripts/jquery-1.11.1.min.js"></script>
-	<script src="scripts/comparison.js"></script>
+	<script src="scripts/formulateData.js"></script>
 	<script src="scripts/highcharts/js/highcharts.js"></script>
     </head>
     
@@ -39,7 +39,7 @@ mysqli_close($con);
     <div id="wrapper">
 	
 	<script>
-	createTop("<?php Print($user_check); ?>");
+	createTop();
 	createNavig();	
 	</script>
             
@@ -55,11 +55,11 @@ mysqli_close($con);
 		</div>
 
                   <div class="databox_small">
-			<div id="container2" style="margin:0px; min-width: 300px; width: 100%; height: 100%; margin: 0 auto">adsads</div>
+			<div id="container" style="margin:0px; min-width: 300px; width: 100%; height: 100%; margin: 0 auto"></div>
                   </div>
 
                   <div class="databox_small">
-			<div id="container" style="margin:0px; min-width: 300px; width: 100%; height: 100%; margin: 0 auto"></div>
+			<div id="container2" style="margin:0px; min-width: 300px; width: 100%; height: 100%; margin: 0 auto"></div>
                   </div>
    
                   <div class="databox_small">
@@ -85,15 +85,17 @@ mysqli_close($con);
                 
                   <div class="databox_small">
                       <h2>Commits to Version Control</h2>
-                      <p>obj6</p>
+		      <div id="commitbox" style="margin-top: 20px;">
+			
+		      </div>
                   </div>
 		  
           </div>
 	 
         <script src="scripts/MakeChart.js"></script>   
 	<script>
-	CreateChart("bar", "x label", "y label", "container2", "Individual hours");
-	CreateChart("spline", "x label", "y label", "container", "Total hours");
+	CreateChart("bar", "x label", "y label", "container", "Individual hours");
+	CreateChart("column", "x label", "y label", "container2", "Total hours");
 	getData(<?php echo $projectid;?>,0,1,2,"container");
 	createFooter();
 	</script>

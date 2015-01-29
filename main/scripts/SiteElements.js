@@ -10,7 +10,7 @@ document.write() may not be the best option for creating elements.
 creating section divs and adding into them with innerHtml or
 addElement may or may not be a better choice.
 */ 
-var menuitems = ["../main/account.php", "../main/listpage.php", "../main/compare.php", "../main/readweekly.php", "../main/redmine.php", "../facebook_forum/initialization.php"];
+var menuitems = ["../main/account.php", "../main/listpage.php", "../main/compare.php", "../main/readweekly.php", "../main/redmine.php", "../facebook_forum/Initialization.html"];
 var menutext = ["Account Information", "Project List", "Compare Metrics", "Weekly report", "Redmine", "Facebook"];
 var user_privileges = 6;
 
@@ -55,8 +55,8 @@ function createNavig(){
     document.write(""+
             "<div id=\"navigation\">"+
                     "<div id=\"headerinfo\" style=\"width\"></div>"+
-        			"<div id=\"progress\" style=\"width:150px;border:1px solid #ccc;\"></div>"+
-       				"<div id=\"information\" style=\"width\"></div>"+
+			"<div id=\"progress\" style=\"width:150px;border:1px solid #ccc;\"></div>"+
+			"<div id=\"information\" style=\"width\"></div>"+
                    "<ul>"+menus+
                    "</ul>"+
             "</div>");
@@ -98,7 +98,7 @@ function createHeader(text, type){
     document.write(""+
             "<div id=\"header\">"+
 		"<h2>"+text+"</h2>"+
-                "<div style='float: left; margin-left: 20px;'>"+
+                "<div style='float: right; margin-left: 20px;'>"+
                 "<input type=\"file\" id=\"fileinput\" value=\"Browse\"/>"+
                 "<input type=\"text\" id=\"projectid\" placeholder=\"project id\"/>"+
                 "<input type=\"text\" id=\"reportid\" placeholder=\"report id\"/>"+
@@ -129,8 +129,7 @@ function CreateProjectList(projectList, i){
                 "<div class='newsheader'>"+
                 "<span class='projname'><a href='detail.php?id="+projectList[i].project_id+"'>"+projectList[i].project_name+" ("+projectList[i].project_id+")</a></span>"+
                 "<span class='projinfo_head'>Created: <b>"+ParseDate(projectList[i].created_on)+"</b></span>"+              
-                "<span class='projinfo_head'>Updated: <b>"+ParseDate(projectList[i].updated_on)+"</b></span>"+ 
-                "<span class='projstatus_"+projectList[i].status+"'>"+projectList[i].status+"</span>"+
+                "<span class='projinfo_head'>Updated: <b>"+ParseDate(projectList[i].updated_on)+"</b></span>"+
                 "</div>"+
                 "<br>"+
                 "<span class='projinfo_left'>Version: "+projectList[i].version+"</span><br>"+

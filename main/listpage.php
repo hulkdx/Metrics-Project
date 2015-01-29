@@ -11,7 +11,7 @@
  <link href="css/style.css" rel="stylesheet" type="text/css" media="screen">
  <script src="scripts/jquery-1.11.1.min.js"></script>
  <script src="scripts/SiteElements.js"></script>
- <script src="scripts/comparison.js"></script>
+ <script src="scripts/formulateData.js"></script>
 </head>
 
 <body>

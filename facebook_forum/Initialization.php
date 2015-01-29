@@ -1,140 +1,157 @@
 <?php
-
-function getMostRecent($arr)
-{
-  $max=$arr[0]->created_time;
-  $n=0;
-  $cnt=count($arr);
-  for ($i=1; $i<$cnt; $i++)
-  {  
-    if ($max<$arr[$i]->created_time)
-    { 
-      $max=$arr[$i]->created_time;
-	  $n=$i;
-	}
-  }
-  return $n;
-}
-
-function getPosters($arr)
-{
-  $cnt=count($arr);
-  $names=array();
-  $namecnt=0;
-  for ($i=0; $i<$cnt; $i++) 
-  {
-    $nameflag=false;
-    $buf=$arr[$i]->from->name;
-    for ($j=0; $j<$namecnt; $j++)
-      if ($buf==$names[$j])
-	  {
-	    $nameflag=true;
-	    break;
-	  }
-    if ($nameflag==false)
-    {
-      $names[$namecnt]=$buf;
-	  $namecnt++;
-    }
-  }
-  return $names;  
-}
-
-//Replace with actual path to Facebook SDK
-set_include_path ("Composer\\files\\facebook\php-sdk-v4\\facebook-facebook-php-sdk-v4-e2dc662");
-include "autoload.php";
-use Facebook\FacebookSession;
-use Facebook\FacebookRequest;
-use Facebook\GraphUser;
-use Facebook\GraphObject;
-
-error_reporting(E_ALL);
-session_start();
-FacebookSession::setDefaultApplication('777065655684035', '3648579cf4a413d1dfe490304456cd4c');
-$session = new FacebookSession($_SESSION["token"]);
-$request = new FacebookRequest($session, 'GET',
-  "/".$_SESSION["group"]."/feed?since=".$_SESSION["fromdate"]."&until=".$_SESSION["todate"]);
-try{$response = $request->execute();}
-catch (Exception $e) {
-    echo 'Caught exception: ',  $e->getMessage(), "\n";
-}
-$graphObject = $response->getGraphObject(GraphUser::className());
-$outcome=$graphObject->getProperty('data');
-$temp=[];
-while ($outcome) 
-{ 
-  $temp=array_merge($temp,$graphObject->getProperty('data')->asArray());
-  $next=$graphObject->getProperty('paging')->asArray();
-  $request = new FacebookRequest(  $session,  'GET', substr($next["next"],31));
-  $response=$request->execute();
-  $graphObject = $response->getGraphObject(GraphUser::className());
-  $outcome=$graphObject->getProperty('data');
-  $j=count($temp);
-  for ($i=$j-1; $i>=0; $i--)
-    if ($temp[$i]->created_time<=$_SESSION["fromdate"])
-	{
-      $outcome=false;
-	  $j=$i;
-	}
-   if ($outcome==false) $temp=array_slice($temp,0,$j);	
-}
-if ($_SESSION["members"]!="Everyone")
-{
-  $j=0;
-  for ($i=0; $i<count($temp); $i++)
-    if ($temp[$i]->from->name==$_SESSION["members"])
-	{
-	  $temp[$j]=$temp[$i];
-	  $j++;
-	}
-  $temp=array_slice($temp,0,$j);
-}
-$cnt=count($temp);
-$truecount=min($_SESSION["count"],$cnt);
-$m=getMostRecent($temp);
-echo "<i>Most Recently Created Post by:</i> <b>" .htmlentities($temp[$m]->from->name). "</b>";
-echo "<i><br><br>Most Recent Post Created time:</i> <b>".date_format(date_create_from_format('Y-m-d\TH:i:sO', $temp[$m]->created_time), 'r'). "</b>";
-echo "<i><br><br>Total Number of Posts:</i> <b> ".$cnt. "</b>";
-echo "<i><br><br> Last ".$truecount." Posts: <br></i>";
-//To get the max creation time and sorting the creation times in an array
-$arr=array(array());
-for ($i=0; $i<$cnt; $i++)
-  {
-    $arr[$i][0]=$temp[$i]->created_time;
-	$arr[$i][1]=$i;
-  }
-sort($arr);
-//To get the number of last posts that user wants to see
-for ($k=$truecount-1; $k>=0; $k--)
-{
-  echo "<br>".($truecount-$k).". ".date_format(date_create_from_format('Y-m-d\TH:i:sO', $arr[$k+$cnt-$truecount][0]), 'r')."<br>" ;
-  if (property_exists ($temp[$arr[$k+$cnt-$truecount][1]], "message"))
-    echo htmlentities($temp[$arr[$k+$cnt-$truecount][1]]->message)." ";
-  if (property_exists ($temp[$arr[$k+$cnt-$truecount][1]], "likes"))
-    echo "<b>(".count($temp[$arr[$k+$cnt-$truecount][1]]->likes->data)." <img src='like.png'>, ";
-  else echo "<b>(0 <img src='like.png'>, ";
-  if (property_exists ($temp[$arr[$k+$cnt-$truecount][1]], "comments"))
-  {
-    echo count($temp[$arr[$k+$cnt-$truecount][1]]->comments->data)." <img src='comment.png'>: ";
-	foreach ($temp[$arr[$k+$cnt-$truecount][1]]->comments->data as $i)
-	  echo htmlentities($i->from->name).", ";
-	echo ")</b><br>";
-  }
-  else echo "0 <img src='comment.png'>)</b><br>";
-  
-}
-$p=getPosters($temp);
-$namecount=count($p);
-echo "<i><br><br>Unique Users:</i> <b> ".$namecount." <br>(";
-for ($i=0; $i<$namecount; $i++)
-  if ($i==$namecount-1)
-  {
-   echo htmlentities($p[$i]).")</b>";
-  }
-  else
-  {
-    echo htmlentities($p[$i]).", ";
-  }
-//echo "<br/>Entire Feed Content <br/>";
-//var_dump($temp);
+	include('../Login/session.php');
 ?>
+
+<!DOCTYPE HTML>
+<html>
+<head>
+
+ <link href="../main/css/style.css" rel="stylesheet" type="text/css" media="screen">
+ <script src="../main/scripts/jquery-1.11.1.min.js"></script>
+ <script src="../main/scripts/SiteElements.js"></script>
+
+
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Metrics Form</title>
+</head>
+
+<body>
+
+    <div id="wrapper">
+    	
+	<script>
+	document.body.onload=function()
+	{
+	  setDate();
+	  fetch();
+	}
+	createTop("<?php print($user_check); ?>");
+	createNavig();	
+	</script>  
+	
+            
+        <div id="maincontent">
+            
+	<script>
+	createHeader("Facebook Query", 1);
+	</script>
+                
+	<div class="databox_wide" id="projectlistbox">
+
+	
+	<form action="login.php" id="post" method="post">
+<b>
+Date from: <br/><input type="date" id="fromdate" name="fromdate" value="2014-01-01" onChange="checkDate()"/>
+<br><br>
+Date until: <br><input type="date" id="todate" name="todate" value="2014-01-01" onChange="checkDate()"/>
+<span id="dateerr" style="background-color: #E39362"></span> 
+<br><br>
+Group ID: <br><input type="text" name="group" id="group" value="652060828245934" onchange="checkGroup()"/>
+<select name="members" id="members"></select>
+<span id="grouperr" style="background-color: #E39362"></span> 
+<button id="update" type="button" onclick="refreshGroup()">Update member list in DB</button>
+<button id="addgroup" type="button" onclick="addGroup()">Add group to list</button>
+<br><br>
+Recent posts: <br><input id="count" name="count" type="number" value="5" min="1" onchange="checkRecent()"/>
+<span id="recenterr" style="background-color: #E39362"></span> 
+<br><br></b>
+<input type="submit"/>
+</form>
+	
+    </div>	
+  
+        </div>
+    
+	<br><br>
+	<script>
+	createFooter();
+	</script>
+	
+    </div>
+    
+<script>
+
+function fetch()
+{
+  var val=document.getElementById("group").value;
+  var xmlhttp=new XMLHttpRequest();
+  xmlhttp.onreadystatechange=function()
+  {
+    if (xmlhttp.readyState==4 && xmlhttp.status==200)
+      document.getElementById("members").innerHTML=xmlhttp.responseText;
+  }
+  xmlhttp.open("GET","refresh.php?id="+val,true);
+  xmlhttp.send();
+}
+
+function refreshGroup()
+{
+  var xmlhttp=new XMLHttpRequest();
+  var val=document.getElementById("group").value;
+  xmlhttp.onreadystatechange=function()
+  {
+    if (xmlhttp.readyState==4 && xmlhttp.status==200)
+      document.getElementById("update").innerHTML=xmlhttp.responseText;
+  }
+  xmlhttp.open("GET","update.php?group="+val,true);
+  xmlhttp.send();
+}
+
+function addGroup()
+{
+  var xmlhttp=new XMLHttpRequest();
+  var val=document.getElementById("group").value;
+  xmlhttp.onreadystatechange=function()
+  {
+    if (xmlhttp.readyState==4 && xmlhttp.status==200)
+      document.getElementById("addgroup").innerHTML=xmlhttp.responseText;
+  }
+  xmlhttp.open("GET","addgroup.php?addgroup="+val,true);
+  xmlhttp.send();
+}
+
+function setDate()
+{
+  var today=new Date();
+  var y=today.getFullYear().toString(),
+  m=(today.getMonth()+1).toString(),
+  d=today.getDate().toString();
+  today=y+'-'+(m[1]?m:"0"+m[0])+'-'+(d[1]?d:"0"+d[0]); // padding
+  document.getElementById("fromdate").setAttribute("max",today);
+  document.getElementById("todate").setAttribute("max",today);
+  document.getElementById("todate").value=today;
+}
+
+function checkGroup()
+{
+  var b=true;
+  var el=document.getElementById("group").value;
+  for (var i=0; i<el.length; i++)
+    if ((el[i]<'0') || (el[i]>'9'))
+	  b=false;
+  if (!b)
+	document.getElementById("grouperr").innerHTML="The group ID must contain digits only.";
+  else document.getElementById("grouperr").innerHTML="";
+  fetch();
+}
+
+function checkDate()
+{
+  var d1=document.getElementById("fromdate").value,
+  d2=document.getElementById("todate").value;
+  if ((d1>d2) && (d2!=""))
+    document.getElementById("dateerr").innerHTML="The dates are in the wrong order.";
+  else document.getElementById("dateerr").innerHTML="";  
+}
+
+function checkRecent()
+{
+  var el=document.getElementById("count").value;
+  var el2=parseInt(el,10);
+  if ((parseInt(el,10)==el)&& (el2>0))
+    document.getElementById("recenterr").innerHTML="";
+  else document.getElementById("recenterr").innerHTML="This field must be a positive integer.";
+}
+</script>
+</body>
+</html>

@@ -10,7 +10,7 @@ document.write() may not be the best option for creating elements.
 creating section divs and adding into them with innerHtml or
 addElement may or may not be a better choice.
 */ 
-var menuitems = ["../main/account.php", "../main/listpage.php", "../main/compare.php", "../main/readweekly.php", "../main/redmine.php", "../facebook_forum/Initialization.html"];
+var menuitems = ["../main/account.php", "../main/listpage.php", "../main/compare.php", "../main/readweekly.php", "../main/redmine.php", "../facebook_forum/initialization.php"];
 var menutext = ["Account Information", "Project List", "Compare Metrics", "Weekly report", "Redmine", "Facebook"];
 var user_privileges = 6;
 
@@ -98,7 +98,7 @@ function createHeader(text, type){
     document.write(""+
             "<div id=\"header\">"+
 		"<h2>"+text+"</h2>"+
-                "<div style='float: right; margin-left: 20px;'>"+
+                "<div style='float: left; margin-left: 20px;'>"+
                 "<input type=\"file\" id=\"fileinput\" value=\"Browse\"/>"+
                 "<input type=\"text\" id=\"projectid\" placeholder=\"project id\"/>"+
                 "<input type=\"text\" id=\"reportid\" placeholder=\"report id\"/>"+

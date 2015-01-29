@@ -8,7 +8,7 @@
 
 	<head>
 
-		<Title>Logint</title>
+		<Title>Login</title>
 		<link href="css/style.css" rel="stylesheet" type="text/css" media="screen">
 		<script src="scripts/SiteElements.js"></script>
 	</head>

@@ -11,5 +11,5 @@ $db_name = "metrics";
 $usrname = "root";
 $password = "";
 $con = mysqli_connect($hostname, $usrname, $password, $db_name);
-
+mysqli_set_charset($con, "utf8");
 ?>

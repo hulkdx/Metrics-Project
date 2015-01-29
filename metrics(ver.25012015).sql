@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 25, 2015 at 06:55 PM
+-- Generation Time: Jan 25, 2015 at 02:24 PM
 -- Server version: 5.6.11
 -- PHP Version: 5.5.1
 
@@ -1067,10 +1067,10 @@ INSERT INTO `weekly_report` (`report_id`, `project_id`, `number_of_week`, `proje
 CREATE TABLE IF NOT EXISTS `weekly_report_manager` (
   `manager_id` int(50) NOT NULL AUTO_INCREMENT,
   `project_id` int(50) NOT NULL,
-  `report_id` int(50) NOT NULL,
+  `weekly_report_id` int(50) NOT NULL,
   `manager_name` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
   `manager_email` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
-  PRIMARY KEY (`manager_id`,`project_id`,`report_id`)
+  PRIMARY KEY (`manager_id`,`project_id`,`weekly_report_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -1081,22 +1081,11 @@ CREATE TABLE IF NOT EXISTS `weekly_report_manager` (
 
 CREATE TABLE IF NOT EXISTS `weekly_report_requirement` (
   `project_id` int(50) DEFAULT NULL,
-  `report_id` int(50) DEFAULT NULL,
+  `weekly_report_id` int(50) DEFAULT NULL,
   `requirement_id` int(50) DEFAULT NULL,
   `requirement_name` varchar(60) CHARACTER SET latin1 DEFAULT NULL,
-  `requirement_status` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
-  KEY `fk` (`project_id`)
+  `requirement_status` varchar(50) CHARACTER SET latin1 DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `weekly_report_requirement`
---
-ALTER TABLE `weekly_report_requirement`
-  ADD CONSTRAINT `fk` FOREIGN KEY (`project_id`) REFERENCES `project` (`project_id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -48,6 +48,7 @@
 					<input type="button" title="Show total working hours of selected project" onClick="GetSelectedOptions(3)" value="Total hours"/>
 					<input type="button" title="Show individual working hours of selected project" onClick="GetSelectedOptions(1)" value="Individual total hours"/>
 					<input type="button" title="Show monthly working hours of selected project" onClick="GetSelectedOptions(0)" value="Monthly total hours"/>
+					<input type="button" title="Show project's requirements" onClick="GetSelectedOptions(4)" value="Requirements"/>
 				</div>
 				<br/><br/><br/>
 				<div style="float: left; width: 100%; height: 20px; padding-left: 10px; margin-top: 10px;">
@@ -67,7 +68,7 @@
   
         </div>
     
-	<script src="scripts/comparison.js"></script>
+	<script src="scripts/formulateData.js"></script>
 	<script src="scripts/MakeChart.js"></script>
 	<script>
 	getProjectList(1);

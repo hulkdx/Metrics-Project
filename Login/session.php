@@ -15,6 +15,7 @@ $user_check = $_SESSION['login_user'];
 if(!isset($user_check)){
 	//	header('Location: ../layout_2/index.php'); 
 	// Redirecting To Login Page
-	header('Location: index.php');
+	header('Location: ../main/index.php');
+	exit();
 }
 ?>

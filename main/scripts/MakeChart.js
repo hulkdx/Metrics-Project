@@ -82,38 +82,7 @@ function CreateChart(type, x_label, y_label, container_id, chart_title){
 var new_type = -1;
 var old_type = -1;
 
-function removeSeries(){
-    var chart = $("#container").highcharts();
-     
-    if(document.getElementById("affectall").checked || chart.series.length == 1 ){
-        while(chart.series.length > 0){
-            chart.series[0].remove(true);
-        }
-    }else{
-        chart.series[seriesIndex].remove(true);
-    }
-
-}
-
-
-function change(newstyle){
-    var chart = $("#container").highcharts();
-    
-    if(document.getElementById("affectall").checked){
-        for(var i = 0; i<chart.series.length; i++){
-            chart.series[i].update({
-                type: newstyle
-            });            
-        }
-        chart.xAxis[0].setCategories([]);
-    }else{
-        chart.series[seriesIndex].update({
-            type: newstyle
-        });        
-    }
-}
-
-function addLine(DataArray, times, xCategories, containername, chart_title, types, seriesname, reset, chartno){
+function addLine(DataArray, xCategories, containername, chart_title, types, seriesname, chartno){
 
     var chart = $("#"+containername).highcharts();
     new_type = types;
@@ -122,7 +91,7 @@ function addLine(DataArray, times, xCategories, containername, chart_title, type
     
     if(new_type == old_type || old_type == -1){
     
-      console.log("DataArray: "+JSON.stringify(DataArray));
+      //console.log("DataArray: "+JSON.stringify(DataArray));
       
       chart.addSeries({name: seriesname,data: DataArray});
 
@@ -151,40 +120,38 @@ function addLine(DataArray, times, xCategories, containername, chart_title, type
     }
 }
 
-function RandomizeData(){
-    
-    dataArraya = [Math.round(Math.random()*200),Math.round(Math.random()*200),Math.round(Math.random()*200),
-                      Math.round(Math.random()*200),Math.round(Math.random()*200),Math.round(Math.random()*200),
-                      Math.round(Math.random()*200),Math.round(Math.random()*200)];
-    dataArrayb = [Math.round(Math.random()*200),Math.round(Math.random()*200),Math.round(Math.random()*200),
-                      Math.round(Math.random()*200),Math.round(Math.random()*200),Math.round(Math.random()*200),
-                      Math.round(Math.random()*200),Math.round(Math.random()*200)];
-    
-    for(i = 0; i < dataArraya.length; i++){
-            if(dataArraya[i] <= warning_treshold){
-                    dataArraya[i] = {y: dataArraya[i], marker:{symbol: 'url(images/warning.png)'}};
-            }else if(dataArraya[i] >= ok_treshold){
-                    dataArraya[i] = {y: dataArraya[i], marker:{symbol: 'url(images/ok.png)'},
-                            onclick: function() {
-                            console.log('click!');
-                        }
-                    };	
-            }
+function removeSeries(){
+    var chart = $("#container").highcharts();
+     
+    if(document.getElementById("affectall").checked || chart.series.length == 1 ){
+        while(chart.series.length > 0){
+            chart.series[0].remove(true);
+        }
+    }else{
+        chart.series[seriesIndex].remove(true);
     }
-    
-    for(i = 0; i < dataArrayb.length; i++){		
-            if(dataArrayb[i] <= warning_treshold){
-                    dataArrayb[i] = {y: dataArrayb[i], marker:{symbol: 'url(images/warning.png)'}};
-            }else if(dataArrayb[i] >= ok_treshold){
-                    dataArrayb[i] = {y: dataArrayb[i], marker:{symbol: 'url(images/ok.png)'},
-                            onclick: function() {
-                            console.log('click!');
-                        }
-                    };	
-            }
-    }
-    
+
 }
+
+function change(newstyle){
+    var chart = $("#container").highcharts();
+    
+    if(document.getElementById("affectall").checked){
+        for(var i = 0; i<chart.series.length; i++){
+            chart.series[i].update({
+                type: newstyle
+            });            
+        }
+        chart.xAxis[0].setCategories([]);
+    }else{
+        chart.series[seriesIndex].update({
+            type: newstyle
+        });        
+    }
+}
+
+
+/* RANDOMIZED DATA FOR TESTING PURPOSES */
 
 //Create a chart with random attributes
 function ChartWithRandomData(type){
@@ -242,4 +209,40 @@ function ChartWithRandomData(type){
             
             
     });
+}
+
+//Where the randomizing happens
+function RandomizeData(){
+    
+    dataArraya = [Math.round(Math.random()*200),Math.round(Math.random()*200),Math.round(Math.random()*200),
+                      Math.round(Math.random()*200),Math.round(Math.random()*200),Math.round(Math.random()*200),
+                      Math.round(Math.random()*200),Math.round(Math.random()*200)];
+    dataArrayb = [Math.round(Math.random()*200),Math.round(Math.random()*200),Math.round(Math.random()*200),
+                      Math.round(Math.random()*200),Math.round(Math.random()*200),Math.round(Math.random()*200),
+                      Math.round(Math.random()*200),Math.round(Math.random()*200)];
+    
+    for(i = 0; i < dataArraya.length; i++){
+            if(dataArraya[i] <= warning_treshold){
+                    dataArraya[i] = {y: dataArraya[i], marker:{symbol: 'url(images/warning.png)'}};
+            }else if(dataArraya[i] >= ok_treshold){
+                    dataArraya[i] = {y: dataArraya[i], marker:{symbol: 'url(images/ok.png)'},
+                            onclick: function() {
+                            console.log('click!');
+                        }
+                    };	
+            }
+    }
+    
+    for(i = 0; i < dataArrayb.length; i++){		
+            if(dataArrayb[i] <= warning_treshold){
+                    dataArrayb[i] = {y: dataArrayb[i], marker:{symbol: 'url(images/warning.png)'}};
+            }else if(dataArrayb[i] >= ok_treshold){
+                    dataArrayb[i] = {y: dataArrayb[i], marker:{symbol: 'url(images/ok.png)'},
+                            onclick: function() {
+                            console.log('click!');
+                        }
+                    };	
+            }
+    }
+    
 }

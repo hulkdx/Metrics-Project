@@ -25,11 +25,17 @@ var dataArray = [];
 var monthlyArray  = [];
 var indiArray = [];
 var xCategories = [];
-var xCategories_b = ["Open","Implemented","Testing","Closed","Other"];
+//REQUIREMENTS: New / In progress / Resolved / Feedback / Closed / Rejected 
+var xCategories_b = ["New","In progress","Resolved","Feedback","Closed","Rejected"];
 var yCategories = [];
 var parsedDates = [];
 var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
+var newreq = 0;
+var inprog  = 0;
+var resolved = 0;
+var feedback = 0;
+var closedd = 0;
+var rejected = 0;
 
 /*-------------------
 
@@ -124,106 +130,24 @@ var title = "Requirements";
 function makeLineData(value, containername){
     
     if(value == 0){
-       addLine(GetMonthlyHours(), 1, months, containername, "Monthly hours", 0, objects.project[0].project_name, 0, 0);
+       addLine(GetMonthlyHours(), months, containername, "Monthly hours", 0, objects.project[0].project_name, 0);
     }else if(value == 1){
-       addLine(GetIndiHours(), 1, xCategories, containername, "Individual hours", 1, objects.project[0].project_name, 1, 0);
+       addLine(GetIndiHours(), xCategories, containername, "Individual hours", 1, objects.project[0].project_name, 0);
     }else if(value == 2){
-        addLine(GetRequirements(1), 1, xCategories_b, containername+"2", title, 2, objects.project[0].project_name, 1, 1);
-        addLine(GetIndiHours(), 1, xCategories, containername, "Individual hours", 1, objects.project[0].project_name, 1, 0); 
+        addLine(GetRequirements(1), xCategories_b, containername+"2", title, 2, objects.project[0].project_name, 1);
+        addLine(GetIndiHours(), xCategories, containername, "Individual hours", 1, objects.project[0].project_name, 0); 
         projectRequirements();
         projectTestcases();
         projectCoderevisions();
         commitsToVersionCtrl();
     }else if(value == 3){
-       addLine(GetAllHours(), 1, xCategories, containername, "Total Hours", 1, objects.project[0].project_name, 1, 0);
+       addLine(GetAllHours(), xCategories, containername, "Total Hours", 1, objects.project[0].project_name, 0);
     }else if(value == 4){
-       addLine(GetRequirements(1), 1, xCategories_b, containername, "Requirements", 2, objects.project[0].project_name, 1, 0);
+       addLine(GetRequirements(1), xCategories_b, containername, "Requirements", 2, objects.project[0].project_name, 0);
     }else{
        alert("Button action not defined!");
     }
 }
-
-
-function GetRequirements(value){
-
-//xCategories_b = ["Open","Implemented","Testing","Closed","Other"];
-var open = 0;
-var impl = 0;
-var testing = 0;
-var closed = 0;
-var other = 0;
-dataArray = [];
-
-if(value == 1){
-    if(objects.weekly_requirement){
-        for(var i=0; i<objects.weekly_requirement.length; i++){
-
-            if(objects.weekly_requirement[i].requirement_status == "open" || objects.weekly_requirement[i].requirement_status == "Open"){
-                open = open+1;  
-            }else if(objects.weekly_requirement[i].requirement_status == "implemented" || objects.weekly_requirement[i].requirement_status == "Implemented"){
-                impl = impl+1;
-            }else if(objects.weekly_requirement[i].requirement_status == "testing" || objects.weekly_requirement[i].requirement_status == "Testing"){
-                testing = testing+1;    
-            }else if(objects.weekly_requirement[i].requirement_status == "closed" || objects.weekly_requirement[i].requirement_status == "Closed"){
-                closed = closed+1;    
-            }else{
-                other = other+1;   
-            }
-            
-            dataArray = [{y: open},{y:impl},{y:testing},{y:closed},{y:other}];
-        }        
-    }else if(objects.requirement){
-        for(var i=0; i<objects.requirement.length; i++){
-
-            if(objects.requirement[i].requirement_status == 1){
-                open = open+1;  
-            }else if(objects.requirement[i].requirement_status == 2){
-                impl = impl+1;
-            }else if(objects.requirement[i].requirement_status == 3){
-                testing = testing+1;    
-            }else if(objects.requirement[i].requirement_status == 4){
-                closed = closed+1;    
-            }else{
-                other = other+1;   
-            }
-            
-            dataArray = [{y: open},{y:impl},{y:testing},{y:closed},{y:other}];
-        }
-        /*
-        dataArray = GetMonthlyHours();
-        xCategories_b = months;
-        title = "Monthly hours";*/
-    }
-}
-
-else{
-    if(objects.weekly_requirement){
-        for(var i=0; i<objects.weekly_requirement.length; i++){
-            if(objects.weekly_requirement[i].requirement_status == "open" || objects.weekly_requirement[i].requirement_status == "Open"){
-                open = open+1;  
-            }else if(objects.weekly_requirement[i].requirement_status == "implemented" || objects.weekly_requirement[i].requirement_status == "Implemented"){
-                impl = impl+1;
-            }else if(objects.weekly_requirement[i].requirement_status == "testing" || objects.weekly_requirement[i].requirement_status == "Testing"){
-                testing = testing+1;    
-            }else if(objects.weekly_requirement[i].requirement_status == "closed" || objects.weekly_requirement[i].requirement_status == "Closed"){
-                closed = closed+1;    
-            }else{
-                other = other+1;   
-            }
-            
-            dataArray = [{y: open},{y:impl},{y:testing},{y:closed},{y:other}];
-            console.log(dataArray);
-        }        
-    }else if(objects.requirement){
-        for(var i=0; i<objects.requirement.length; i++){
-            dataArray.push({y: 1, name: objects.requirement[i].description});
-        }
-    }
-}
-    
-    return dataArray;
-}
-
 
 /*---------------------------
 
@@ -441,7 +365,7 @@ totalhours = 0;
 var reArray = [];
 var indidate = "";
 
-if(objects.individual){
+if(objects.individual || objects.individual.length > 1){
     for(var i=0; i<objects.individual.length; i++){
         indidate = objects.individual[i].date;
         
@@ -476,9 +400,13 @@ var newArraySeries = []
     for(var i = 0; i<newArraySeries.length; i++){
         monthlyArray[newArraySeries[i].month-1].y = newArraySeries[i].y;
     }
+}else if(objects.individual.length == 1){
+
+    return addHours(objects.individual);
 }else{
     alert("Unable to get data!");
 }
+
 return monthlyArray;
 }
 
@@ -520,6 +448,63 @@ function addHours(indiArray){
     
 return newArraySeries;
 }
+
+/* COUNT REQUIREMENT STATUSES */
+
+function GetRequirements(value){
+
+newreq = 0;
+inprog  = 0;
+resolved = 0;
+feedback = 0;
+closedd = 0;
+rejected = 0;
+dataArray = [];
+
+    if(value == 1){
+        //If project has weekly_requirement use only that
+        //else check requirement
+        if(objects.weekly_requirement){
+            for(var i=0; i<objects.weekly_requirement.length; i++){           
+                detectRequirement(parseInt(objects.weekly_requirement[i].requirement_status));
+            }        
+        }else if(objects.requirement){
+            for(var i=0; i<objects.requirement.length; i++){
+                detectRequirement(parseInt(objects.requirement[i].requirement_status));
+            }
+        }else{
+            console.log("No requirement data!");
+            return 0;
+        }
+
+    dataArray = [{y:newreq},{y:inprog},{y:resolved},{y:feedback},{y:closedd},{y:rejected}];
+    }else{
+        console.log("No requirement data!");
+        return 0;    
+    }
+
+return dataArray;
+}
+
+//Used for counting requirement statuses
+function detectRequirement(reqValue){
+
+    if(reqValue == 1){
+        newreq = newreq+1;  
+    }else if(reqValue == 2){
+        inprog = inprog+1;
+    }else if(reqValue == 3){
+        resolved = resolved+1;    
+    }else if(reqValue == 4){
+        feedback = feedback+1;    
+    }else if(reqValue == 5){
+        closedd = closedd+1;
+    }else if(reqValue >= 6){
+        rejected = rejected+1;
+    }
+
+}
+
 
 /* FORMAT DATE VALUES */
 

@@ -31,7 +31,7 @@
 	</script>
                 
 	<div class="databox_wide" id="projectlistbox">
-	<p><?php print(run());?> 
+	<p><?php run();?> 
         </div>	
   
         </div>
@@ -73,11 +73,11 @@ function getMostRecent($arr)
 function errorCheck()
 {
   $msg="";
-  if (!is_numeric($_SESSION["group"]))
+  if (!is_numeric($_POST["group"]))
     $msg="Make sure that the group ID contains digits only.";
-  if ((!is_numeric($_SESSION["count"])) || ($_SESSION["count"]<=0))
+  if ((!is_numeric($_POST["count"])) || ($_POST["count"]<=0))
     $msg="Make sure that the recent posts count is a positive integer.";
-  if (($_SESSION["fromdate"]>$_SESSION["todate"]) && ($_SESSION["todate"]!=""))
+  if (($_POST["fromdate"]>$_POST["todate"]) && ($_POST["todate"]!=""))
    $msg="The dates are in the wrong order.";  
   return $msg;
 }
@@ -112,15 +112,20 @@ set_include_path ("..\\Composer\\files\\facebook\php-sdk-v4\\facebook-facebook-p
 include "autoload.php";
 
 error_reporting(E_ALL);
+if (!isset($_SESSION["token"]))
+  header("Location:login.php");
 $err=errorCheck();
 if ($err!="")
-  return $err;
-$date=(new DateTime($_SESSION["todate"]))->modify('+1 day');
-$_SESSION["todate"]=$date->format('Y-m-d');
+{ 
+  echo $err;
+  return;
+}
+$date=(new DateTime($_POST["todate"]))->modify('+1 day');
+$_POST["todate"]=$date->format('Y-m-d');
 FacebookSession::setDefaultApplication('777065655684035', '3648579cf4a413d1dfe490304456cd4c');
 $session = new FacebookSession($_SESSION["token"]);
 $request = new FacebookRequest($session, 'GET',
-  "/".$_SESSION["group"]."/feed?since=".$_SESSION["fromdate"]."&until=".$_SESSION["todate"]);
+  "/".$_POST["group"]."/feed?since=".$_POST["fromdate"]."&until=".$_POST["todate"]);
 try{
 $response = $request->execute();
 $graphObject = $response->getGraphObject(GraphUser::className());
@@ -136,7 +141,7 @@ while ($outcome)
   $outcome=$graphObject->getProperty('data');
   $j=count($temp);
   for ($i=$j-1; $i>=0; $i--)
-    if ($temp[$i]->created_time<=$_SESSION["fromdate"])
+    if ($temp[$i]->created_time<=$_POST["fromdate"])
 	{
       $outcome=false;
 	  $j=$i;
@@ -144,11 +149,11 @@ while ($outcome)
    if ($outcome==false) $temp=array_slice($temp,0,$j);	
 }
 
-if ($_SESSION["members"]!="Everyone")
+if ($_POST["members"]!="Everyone")
 {
   $j=0;
   for ($i=0; $i<count($temp); $i++)
-    if ($temp[$i]->from->name==$_SESSION["members"])
+    if ($temp[$i]->from->name==$_POST["members"])
 	{
 	  $temp[$j]=$temp[$i];
 	  $j++;
@@ -156,7 +161,7 @@ if ($_SESSION["members"]!="Everyone")
   $temp=array_slice($temp,0,$j);
 }
 $cnt=count($temp);
-$truecount=min($_SESSION["count"],$cnt);
+$truecount=min($_POST["count"],$cnt);
 $m=getMostRecent($temp);
 echo "<i>Most Recently Created Post by:</i> <b>" .htmlentities($temp[$m]->from->name). "</b>";
 echo "<i><br><br>Most Recent Post Created time:</i> <b>".date_format(date_create_from_format('Y-m-d\TH:i:sO', $temp[$m]->created_time), 'r'). "</b>";
@@ -197,18 +202,13 @@ $namecount=count($p);
 echo "<i><br><br>Unique Users:</i> <b> ".$namecount." <br>(";
 for ($i=0; $i<$namecount; $i++)
   if ($i==$namecount-1)
-  {
    echo htmlentities($p[$i]).")</b>";
-  }
   else
-  {
     echo htmlentities($p[$i]).", ";
-  }
 //echo "<br/>Entire Feed Content <br/>";
 //var_dump($temp);
-return $string;
 }
 catch (Exception $e) 
-{return 'Caught exception: '.$e->getMessage()."\n";}
+{echo 'Caught exception: '.$e->getMessage()."\n";}
 }
 ?>

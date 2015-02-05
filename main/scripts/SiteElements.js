@@ -10,7 +10,7 @@ document.write() may not be the best option for creating elements.
 creating section divs and adding into them with innerHtml or
 addElement may or may not be a better choice.
 */ 
-var menuitems = ["../main/account.php", "../main/listpage.php", "../main/compare.php", "../main/readweekly.php", "../main/redmine.php", "../facebook_forum/initialization.php"];
+var menuitems = ["../main/account.php", "../main/listpage.php", "../main/compare.php", "../main/readweekly.php", "../main/redmine.php", "../facebook_forum/login.php"];
 var menutext = ["Account Information", "Project List", "Compare Metrics", "Weekly report", "Redmine", "Facebook"];
 var user_privileges = 6;
 

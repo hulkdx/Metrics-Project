@@ -2,6 +2,8 @@
 error_reporting(E_ALL);
 include('../Login/db_connection.php');
 
+if (!isset($_GET["id"]))
+  header("Location:login.php");
 $id=$_GET["id"];
 $result=mysqli_query($con,"SELECT member_name FROM facebook_member
 INNER JOIN link_table ON facebook_member.member_id=link_table.member_id

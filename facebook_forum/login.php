@@ -3,13 +3,8 @@ session_start();
 
 if (strpos($_SERVER['REQUEST_URI'],"code=")===FALSE) //First run through the script
 {
-  $_SESSION["group"]=$_POST["group"];
-  $_SESSION["count"]=$_POST["count"];
-  $_SESSION["fromdate"]=$_POST["fromdate"];
-  $_SESSION["todate"]=$_POST["todate"];
-  $_SESSION["members"]=$_POST["members"];
   if (isset($_SESSION["token"]))
-    header("Location:results.php");
+    header("Location:initialization.php");
   //Change localhost to actual server address
   else
     header("Location:"."https://www.facebook.com/dialog/oauth?client_id=777065655684035&response_type=code&redirect_uri=".rawurlencode("http://localhost/Metrics/facebook_forum/login.php"));
@@ -24,13 +19,12 @@ else //Second run, coming back from the Facebook login page
   $ch = curl_init($str.$str2);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
   curl_setopt($ch, CURLOPT_HEADER, 0);
-  curl_setopt($ch, CURLOPT_URL, $str.$str2);
   curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, FALSE);
   curl_setopt($ch,CURLOPT_SSL_VERIFYHOST,FALSE);
   $data = curl_exec($ch);
   curl_close($ch);
   $_SESSION["token"]=substr($data,strpos($data,"token=")+6,strpos($data,"&expires")-strpos($data,"token=")-6);
-  header("Location:results.php");
+  header("Location:initialization.php");
   exit();
 }
 ?>

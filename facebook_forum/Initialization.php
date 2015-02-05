@@ -1,5 +1,7 @@
 <?php
 	include('../Login/session.php');
+	if (!isset($_SESSION["token"]))
+      header("Location:login.php");
 ?>
 
 <!DOCTYPE HTML>
@@ -23,7 +25,7 @@
 	document.body.onload=function()
 	{
 	  setDate();
-	  fetch();
+	  fetch("group","refresh","id","members");
 	}
 	createTop("<?php print($user_check); ?>");
 	createNavig();	
@@ -39,7 +41,7 @@
 	<div class="databox_wide" id="projectlistbox">
 
 	
-	<form action="login.php" id="post" method="post">
+	<form action="results.php" id="post" method="post">
 <b>
 Date from: <br/><input type="date" id="fromdate" name="fromdate" value="2014-01-01" onChange="checkDate()"/>
 <br><br>
@@ -49,8 +51,8 @@ Date until: <br><input type="date" id="todate" name="todate" value="2014-01-01" 
 Group ID: <br><input type="text" name="group" id="group" value="652060828245934" onchange="checkGroup()"/>
 <select name="members" id="members"></select>
 <span id="grouperr" style="background-color: #E39362"></span> 
-<button id="update" type="button" onclick="refreshGroup()">Update member list in DB</button>
-<button id="addgroup" type="button" onclick="addGroup()">Add group to list</button>
+<button id="addgroup" type="button" onclick="fetch('group','addgroup','addgroup','addgroup')">Add group to list</button>
+<button id="update" type="button" onclick="fetch('group','update','group','update')">Update member list in DB</button>
 <br><br>
 Recent posts: <br><input id="count" name="count" type="number" value="5" min="1" onchange="checkRecent()"/>
 <span id="recenterr" style="background-color: #E39362"></span> 
@@ -71,42 +73,16 @@ Recent posts: <br><input id="count" name="count" type="number" value="5" min="1"
     
 <script>
 
-function fetch()
+function fetch(source_elem,filename,param,target_elem)
 {
-  var val=document.getElementById("group").value;
+  var val=document.getElementById(source_elem).value;
   var xmlhttp=new XMLHttpRequest();
   xmlhttp.onreadystatechange=function()
   {
     if (xmlhttp.readyState==4 && xmlhttp.status==200)
-      document.getElementById("members").innerHTML=xmlhttp.responseText;
+      document.getElementById(target_elem).innerHTML=xmlhttp.responseText;
   }
-  xmlhttp.open("GET","refresh.php?id="+val,true);
-  xmlhttp.send();
-}
-
-function refreshGroup()
-{
-  var xmlhttp=new XMLHttpRequest();
-  var val=document.getElementById("group").value;
-  xmlhttp.onreadystatechange=function()
-  {
-    if (xmlhttp.readyState==4 && xmlhttp.status==200)
-      document.getElementById("update").innerHTML=xmlhttp.responseText;
-  }
-  xmlhttp.open("GET","update.php?group="+val,true);
-  xmlhttp.send();
-}
-
-function addGroup()
-{
-  var xmlhttp=new XMLHttpRequest();
-  var val=document.getElementById("group").value;
-  xmlhttp.onreadystatechange=function()
-  {
-    if (xmlhttp.readyState==4 && xmlhttp.status==200)
-      document.getElementById("addgroup").innerHTML=xmlhttp.responseText;
-  }
-  xmlhttp.open("GET","addgroup.php?addgroup="+val,true);
+  xmlhttp.open("GET",filename+".php?"+param+"="+val,true);
   xmlhttp.send();
 }
 
@@ -132,7 +108,7 @@ function checkGroup()
   if (!b)
 	document.getElementById("grouperr").innerHTML="The group ID must contain digits only.";
   else document.getElementById("grouperr").innerHTML="";
-  fetch();
+  fetch("group","refresh","id","members");
 }
 
 function checkDate()

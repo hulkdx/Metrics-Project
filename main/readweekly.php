@@ -15,7 +15,7 @@
     
 <!--JavaScript-->
 <script src="scripts/jquery-1.11.1.min.js"></script>
-<script src="scripts/SiteElements.js"></script>
+<script src="scripts/metrics-elements-1.0.0.js"></script>
 
 
 </head>

@@ -159,6 +159,7 @@ function addToSection(detectedkey){
         }
         else if(detectedkey == "#req"){
         	CreateInput("",subkey+"_name",0,parseInt(numofitems)+1,detectedkey,"text_input");
+        	CreateInput("",subkey+"_status",1,parseInt(numofitems)+1,detectedkey,"text_input");
         }
         else if(detectedkey == "#milestone" || detectedkey == "#revisions" || detectedkey == "#problems"){
         	if(!document.getElementById(subkey)){

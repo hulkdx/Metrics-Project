@@ -6,12 +6,12 @@
 var contents;
 
 var headers = ["WEEKLY REPORT","TIME OF REPORT","CLIENT","PROJECT","DESCRIPTION","PROJECT MANAGERS","PHASE OF PROJECT",
-                "REQUIREMENTS","COMPLETED TASKS","TASKS FOR THE NEXT WEEK","NEXT MILESTONE","UNIT TEST","OTHER TEST CASES",
-                "CODE REVISIONS","PROBLEMS","WORKING HOURS (this week/so far)","ADDITIONAL INFORMATION"];
+               "REQUIREMENTS","COMPLETED TASKS","TASKS FOR THE NEXT WEEK","NEXT MILESTONE","PASSED UNIT TEST CASES","TOTAL UNIT TEST CASES",
+               "PASSED OTHER TEST CASES","TOTAL OTHER TEST CASES","CODE REVISIONS","PROBLEMS","WORKING HOURS (this week/so far)","ADDITIONAL INFORMATION"];
 
 var keywords = ["#title","#time","#client","#project","#desc","#managers","#phase",
-                "#req","#tasks_comp","#tasks_next","#milestone","#unit_test","#other_test",
-                "#revisions","#problems","#hours","#additional"];
+               "#req","#tasks_comp","#tasks_next","#milestone","#passed_unit_test","#total_unit_test","#passed_other_test","#total_other_test",
+               "#revisions","#problems","#hours","#additional"];
 var selecteddiv;
 var headerdiv;
 var selectedbtn;
@@ -119,7 +119,7 @@ initFields();
         document.getElementById("handledContents").innerHTML = "";
     }
      
-    function addToSection(detectedkey){
+function addToSection(detectedkey){
         
         var numofitems = document.getElementById(detectedkey+"_container").getAttribute("name");
         var subkey = detectedkey.substr(1);
@@ -136,14 +136,23 @@ initFields();
             CreateInput("",subkey+"_email",1,parseInt(numofitems)+1,detectedkey,"text_input");
         }
         
-        else if(detectedkey == "#req" || detectedkey == "#tasks_comp" || detectedkey == "#tasks_next"){
+        else if(detectedkey == "#tasks_comp" || detectedkey == "#tasks_next"){
             CreateInput("",subkey,1,parseInt(numofitems)+1,detectedkey,"text_input");
         }
-        
-        else if(detectedkey == "#milestone" || detectedkey == "#unit_test" || detectedkey == "#other_test" || detectedkey == "#revisions" || detectedkey == "#problems"){
-            CreateInput("",subkey,1,parseInt(numofitems)+1,detectedkey,"text_input");
+        else if(detectedkey == "#req"){
+        	CreateInput("",subkey+"_name",0,parseInt(numofitems)+1,detectedkey,"text_input");
+            //CreateInput("",subkey+"_status",1,parseInt(numofitems)+1,detectedkey,"text_input");
         }
-        
+        else if(detectedkey == "#milestone" || detectedkey == "#revisions" || detectedkey == "#problems"){
+        	if(!document.getElementById(subkey)){
+        	CreateInput("",subkey,1,parseInt(numofitems)+1,detectedkey,"text_input");
+        	}
+        }
+        else if(detectedkey == "#total_unit_test" || detectedkey == "#total_other_test"|| detectedkey == "#passed_unit_test" || detectedkey == "#passed_other_test"){
+        	if(!document.getElementById(subkey+"_0")){
+                CreateInput("",subkey,1,0,detectedkey,"text_input");
+        	}
+        }
         else if(detectedkey == "#hours"){
             CreateInput("",subkey+"_name",0,parseInt(numofitems)+1,detectedkey,"text_input");
             CreateInput("",subkey+"_spent",0,parseInt(numofitems)+1,detectedkey,"hour_input");
@@ -211,13 +220,28 @@ function getData(i, regex, idprefix, arrayOfLines, detectedkey){
             break;
         }else{
 
-            if(detectedkey == "#title"){
-            }
             
-            else if(detectedkey == "#time" || detectedkey == "#project"){   
+     
+            
+            if(detectedkey == "#time" || detectedkey == "#project" || detectedkey == "#passed_unit_test" 
+            	|| detectedkey == "#passed_other_test"|| detectedkey == "#total_unit_test" || detectedkey == "#total_other_test"){   
                 CreateInput(arrayOfLines[k], keywordsub, 1, 0, detectedkey, "text_input");    
             }
-            
+            else if(detectedkey == "#req"){
+                
+                //Gets email from the string
+                //Separates email from name
+                extractedRegex = regex.exec(arrayOfLines[k]);
+                
+                if(extractedRegex != null){
+                    excludedRegex = arrayOfLines[k].replace(extractedRegex[0],'');
+                    excludedRegex = excludedRegex.trim();
+                }else{
+                    extractedRegex = ""; 
+                }
+                CreateInput(excludedRegex, keywordsub+"_name", 0, counter, detectedkey, "text_input");
+                CreateInput(extractedRegex[0], keywordsub+"_status", 1, counter, detectedkey, "text_input");   
+            }
             else if(detectedkey == "#client" || detectedkey == "#managers"){
                 
                 //Gets email from the string
@@ -233,9 +257,8 @@ function getData(i, regex, idprefix, arrayOfLines, detectedkey){
                 CreateInput(excludedRegex, keywordsub+"_name", 0, counter, detectedkey, "text_input");
                 CreateInput(extractedRegex[0], keywordsub+"_email", 1, counter, detectedkey, "text_input");   
             }
-            else if(detectedkey == "#req" || detectedkey == "#tasks_comp" || detectedkey == "#tasks_next"
-                    || detectedkey == "#milestone" || detectedkey == "#unit_test" || detectedkey == "#other_test"
-                    || detectedkey == "#revisions" || detectedkey == "#problems"){
+            else if(detectedkey == "#tasks_comp" || detectedkey == "#tasks_next"|| detectedkey == "#milestone"
+                   || detectedkey == "#revisions" || detectedkey == "#problems"){
                 CreateInput(arrayOfLines[k], keywordsub, 1, counter, detectedkey, "text_input", "text_input");
             }
             
@@ -292,25 +315,29 @@ function getData(i, regex, idprefix, arrayOfLines, detectedkey){
  
 //Function used for creating input text fields
 function CreateInput(text,idprefix,order,counter,detectedkey,classname){
-     
-    if(idprefix == "client_name" || idprefix == "managers_name" || idprefix == "hours_name"){
+    
+    if(idprefix == "client_name" || idprefix == "managers_name" || idprefix == "hours_name"|| idprefix == "req_name"){
         placeholder = "Name";
     }else if(idprefix == "client_email" || idprefix == "managers_email"){
         placeholder = "Email";
     }else if(idprefix == "project"){
         placeholder = "Project name";
-    }else if(idprefix == "req"){
-        placeholder = "Requirement";
+    }else if(idprefix == "req_status"){
+        placeholder = "Requirement_status";
     }else if(idprefix == "tasks_comp"){
         placeholder = "Completed task";
     }else if(idprefix == "tasks_next"){
         placeholder = "Task for next week";
     }else if(idprefix == "milestone"){
         placeholder = "Next milestone";
-    }else if(idprefix == "unit_test"){
-        placeholder = "Unit test case";
-    }else if(idprefix == "other_test"){
-        placeholder = "Other test case";
+    }else if(idprefix == "passed_unit_test"){
+        placeholder = "Passed unit test case";
+    }else if(idprefix == "passed_other_test"){
+        placeholder = "Passed other test case";
+    }else if(idprefix == "total_unit_test"){
+        placeholder = "Total unit test case";
+    }else if(idprefix == "total_other_test"){
+        placeholder = "Total other test case";
     }else if(idprefix == "revision"){
         placeholder = "revision";
     }else if(idprefix == "revision"){
@@ -370,8 +397,7 @@ var placeholder = "";
     var completed_tasks = [];
     var tasks_next = [];
     var milestone = [];
-    var unit_test = [];
-    var other_test = [];
+  
     var revisions = [];
     var problems = [];
     
@@ -379,6 +405,7 @@ var placeholder = "";
 
     var finalObject = [];
     var otherinfo = [{time: "", project_name: "", description: "",
+    	            passed_unit_test: 0 , passed_other_test: 0, total_unit_test: 0,total_other_test: 0,
                     reportid: 0, projectid: 0, phase: "", additional:"",}];
 
     /*---------------------
@@ -389,183 +416,181 @@ var placeholder = "";
     -----------------------*/
     
     function clicked(){
-    var i = 0;
-    finalObject = [];
-    
-        if(document.getElementById("reportid").value != null && document.getElementById("projectid").value != null){
-            
-            projectid = document.getElementById("projectid").value;
-            reportid = document.getElementById("reportid").value;
+        var i = 0;
+        finalObject = [];
+        
+            if(document.getElementById("reportid").value != null && document.getElementById("projectid").value != null){
+                
+                projectid = document.getElementById("projectid").value;
+                reportid = document.getElementById("reportid").value;
 
-            //Time, project name, desc, phase and additional
-            //are pushed into otherinfo array
-            
-            if(document.getElementById("time_0")){
-                otherinfo[0].time = document.getElementById("time_0").value;
-            }else{console.log("error getting time!");}
-            
-            if(document.getElementById("project_0")){
-                otherinfo[0].project_name = document.getElementById("project_0").value;
-            }else{console.log("error getting projectname!");}
-            
-            if(document.getElementById("desc")){
-                otherinfo[0].description = document.getElementById("desc").value;
-            }else{console.log("error getting desc!");}
-            
-            if(document.getElementById("phase")){
-                otherinfo[0].phase = document.getElementById("phase").value;
-            }else{console.log("error getting phase!");}
-            
-            if(document.getElementById("additional")){
-                otherinfo[0].additional = document.getElementById("additional").value;
-            }else{console.log("error getting additional!");}
-            
-            otherinfo[0].reportid = reportid;
-            otherinfo[0].projectid = projectid;
-            
-            //Client name
-            while(true){
-            i++;
-                if(document.getElementById("client_name_"+i)){
-                    client.push({name: document.getElementById("client_name_"+i).value, email: document.getElementById("client_email_"+i).value});
-                }else{
-                    i = 0;
-                    break;
+                //Time, project name, desc, phase ,unit_test,oother_test and additional
+                //are pushed into otherinfo array
+                
+                if(document.getElementById("time_0")){
+                    otherinfo[0].time = document.getElementById("time_0").value;
+                }else{console.log("error getting time!");}
+                
+                if(document.getElementById("project_0")){
+                    otherinfo[0].project_name = document.getElementById("project_0").value;
+                }else{console.log("error getting projectname!");}
+                
+                if(document.getElementById("desc")){
+                    otherinfo[0].description = document.getElementById("desc").value;
+                }else{console.log("error getting desc!");}
+                
+                if(document.getElementById("phase")){
+                    otherinfo[0].phase = document.getElementById("phase").value;
+                }else{console.log("error getting phase!");}
+                
+                if(document.getElementById("additional")){
+                    otherinfo[0].additional = document.getElementById("additional").value;
+                }else{console.log("error getting additional!");}
+               //Unit Test
+                
+                if(document.getElementById("passed_unit_test_0")){
+                	otherinfo[0].passed_unit_test = document.getElementById("passed_unit_test_0").value;
+                }else{console.log("error getting passed_unit_test!");}      
+                
+               
+                if(document.getElementById("total_unit_test_0")){
+                	otherinfo[0].total_unit_test = document.getElementById("total_unit_test_0").value;
+                }else{console.log("error getting total_unit_test!");}     
+                //Other Test
+               
+                if(document.getElementById("passed_other_test_0")){
+                	otherinfo[0].passed_other_test = document.getElementById("passed_other_test_0").value;
+                }else{console.log("error getting passed_other_test!");}
+                
+                if(document.getElementById("total_other_test_0")){
+                	otherinfo[0].total_unit_test = document.getElementById("total_unit_test_0").value;
+                }else{console.log("error getting total_unit_test!");}
+                
+                otherinfo[0].reportid = reportid;
+                otherinfo[0].projectid = projectid;
+                
+                //Client name
+                while(true){
+                i++;
+                    if(document.getElementById("client_name_"+i)){
+                        client.push({name: document.getElementById("client_name_"+i).value, email: document.getElementById("client_email_"+i).value});
+                    }else{
+                        i = 0;
+                        break;
+                    }
                 }
-            }
-            
-            //Managers
-            while(true){
-            i++;
-                if(document.getElementById("managers_name_"+i)){
-                    managers.push({name:document.getElementById("managers_name_"+i).value, email: document.getElementById("managers_email_"+i).value });
-                }else{
-                    i = 0;
-                    break;
+                
+                //Managers
+                while(true){
+                i++;
+                    if(document.getElementById("managers_name_"+i)){
+                        managers.push({name:document.getElementById("managers_name_"+i).value, email: document.getElementById("managers_email_"+i).value });
+                    }else{
+                        i = 0;
+                        break;
+                    }
                 }
-            }           
-            
-            //Requirements
-            while(true){
-            i++;
-                if(document.getElementById("req_"+i)){
-                    requirements.push({name:document.getElementById("req_"+i).value});
-                }else{
-                    i = 0;
-                    break;
+                   
+                
+                //Requirements
+                while(true){
+                i++;
+                    if(document.getElementById("req_name_"+i)){
+                        requirements.push({name:document.getElementById("req_name_"+i).value, status: document.getElementById("req_status_"+i).value});
+                    }else{
+                        i = 0;
+                        break;
+                    }
                 }
-            }
-            
-            //Completed tasks
-            while(true){
-            i++;
-                if(document.getElementById("tasks_comp_"+i)){
-                    completed_tasks.push({name:document.getElementById("tasks_comp_"+i).value});
-                }else{
-                    i = 0;
-                    break;
+                
+                
+                //Completed tasks
+                while(true){
+                i++;
+                    if(document.getElementById("tasks_comp_"+i)){
+                        completed_tasks.push({name:document.getElementById("tasks_comp_"+i).value});
+                    }else{
+                        i = 0;
+                        break;
+                    }
                 }
-            }
-            
-            //Next tasks
-            while(true){
-            i++;
-                if(document.getElementById("tasks_next_"+i)){
-                    tasks_next.push({name:document.getElementById("tasks_next_"+i).value});
-                }else{
-                    i = 0;
-                    break;
+                
+                //Next tasks
+                while(true){
+                i++;
+                    if(document.getElementById("tasks_next_"+i)){
+                        tasks_next.push({name:document.getElementById("tasks_next_"+i).value});
+                    }else{
+                        i = 0;
+                        break;
+                    }
                 }
-            }
-            
-            //Milestone
-            while(true){
-            i++;
-                if(document.getElementById("milestone_"+i)){
-                    milestone.push({name:document.getElementById("milestone_"+i).value});
-                }else{
-                    i = 0;
-                    break;
+                
+                //Milestone
+                while(true){
+                i++;
+                    if(document.getElementById("milestone_"+i)){
+                        milestone.push({name:document.getElementById("milestone_"+i).value});
+                    }else{
+                        i = 0;
+                        break;
+                    }
                 }
-            }
-            
-            //Unit Test
-            while(true){
-            i++;
-                if(document.getElementById("unit_test_"+i)){
-                    unit_test.push({name:document.getElementById("unit_test_"+i).value});
-                }else{
-                    i = 0;
-                    break;
+                
+                
+                //Code revisions
+                while(true){
+                i++;
+                    if(document.getElementById("revisions_"+i)){
+                        revisions.push({name:document.getElementById("revisions_"+i).value});
+                    }else{
+                        i = 0;
+                        break;
+                    }
                 }
-            }
-            
-            //Other Test
-            while(true){
-            i++;
-                if(document.getElementById("other_test_"+i)){
-                    other_test.push({name:document.getElementById("other_test_"+i).value});
-                }else{
-                    i = 0;
-                    break;
+                
+                //Problems
+                while(true){
+                i++;
+                    if(document.getElementById("problems_"+i)){
+                        problems.push({name:document.getElementById("problems_"+i).value});
+                    }else{
+                        i = 0;
+                        break;
+                    }
                 }
-            }
-            
-            //Code revisions
-            while(true){
-            i++;
-                if(document.getElementById("revisions_"+i)){
-                    revisions.push({name:document.getElementById("revisions_"+i).value});
-                }else{
-                    i = 0;
-                    break;
+                
+                //Working hours
+                while(true){
+                i++;
+                    if(document.getElementById("hours_name_"+i)){
+                        working_hours.push({name: document.getElementById("hours_name_"+i).value,
+                                           weekhours: document.getElementById("hours_spent_"+i).value,
+                                           totalhours: document.getElementById("hours_total_"+i).value});
+                    }else{
+                        i = 0;
+                        break;
+                    }
                 }
-            }
-            
-            //Problems
-            while(true){
-            i++;
-                if(document.getElementById("problems_"+i)){
-                    problems.push({name:document.getElementById("problems_"+i).value});
-                }else{
-                    i = 0;
-                    break;
-                }
-            }
-            
-            //Working hours
-            while(true){
-            i++;
-                if(document.getElementById("hours_name_"+i)){
-                    working_hours.push({name: document.getElementById("hours_name_"+i).value,
-                                       weekhours: document.getElementById("hours_spent_"+i).value,
-                                       totalhours: document.getElementById("hours_total_"+i).value});
-                }else{
-                    i = 0;
-                    break;
-                }
-            }
-    
-            finalObject = {
-                otherinfo: otherinfo,
-                client: client,
-                managers: managers,
-                requirements: requirements,
-                completed_tasks: completed_tasks,
-                tasks_next: tasks_next,
-                milestone: milestone,
-                unit_test: unit_test,
-                other_test: other_test,
-                revisions: revisions,
-                workinghours: working_hours,
-                problems: problems                
-            };
-            
-            console.log(JSON.stringify(finalObject));            
-        } 
-    
-    sendData();    
-    }
+        
+                finalObject = {
+                    otherinfo: otherinfo,
+                    client: client,
+                    managers: managers,
+                    requirements: requirements,
+                    completed_tasks: completed_tasks,
+                    tasks_next: tasks_next,
+                    milestone: milestone,
+                    revisions: revisions,
+                    workinghours: working_hours,
+                    problems: problems                
+                };
+                
+                //console.log(JSON.stringify(finalObject));            
+            } 
+        
+        sendData();    
+        }
     
     /*---------------------
     

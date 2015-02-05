@@ -293,7 +293,7 @@ input[type=button].typebtn{
 
 .projectbox{
     float: left;
-    width: 1138px;
+    width: 97%;
     padding: 5px;
     margin-bottom: 5px;
     margin-left: 5px;
@@ -302,6 +302,11 @@ input[type=button].typebtn{
     font-weigth: bold;
     background-color: white;
     /*transition: background-color 0.5s, border-color 0.5s;*/
+}
+
+.projectbox:hover{
+    background-color: #e2f3f7;
+    border: 2px solid #72b1c0;
 }
 
 .newsbox{
@@ -326,11 +331,6 @@ input[type=button].typebtn{
     color:#3F3F3F;
     font-family:Arial, Helvetica, sans-serif;
     font-size: 10pt;
-}
-
-.projectbox:hover{
-    /*background-color: #e2f3f7;*/
-    border: thin solid #72b1c0;
 }
 
 .projname{

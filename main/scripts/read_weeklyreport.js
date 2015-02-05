@@ -1,8 +1,18 @@
-//  Tommi Tuominen
-//  Project Work course work 2014
-//
+/*
+Tommi Tuominen and Jueran Huang
+Metrics Monitoring Tool
+Project Work 2014/2015
+Updated: 6.2.2015
+This file includes functions for loading a text file,
+parsing it and creating input fields. The data is then
+constructed into an object that is sent forward to the
+server. Uses Ajax for connection with database_in.php
+---------------------------
+TODO:
+optimization and increased usability of the tool.
+User messages and error handling.
+*/
 
-//var reportcontents = document.getElementById('reportContents');
 var contents;
 
 var headers = ["WEEKLY REPORT","TIME OF REPORT","CLIENT","PROJECT","DESCRIPTION","PROJECT MANAGERS","PHASE OF PROJECT",
@@ -12,12 +22,12 @@ var headers = ["WEEKLY REPORT","TIME OF REPORT","CLIENT","PROJECT","DESCRIPTION"
 var keywords = ["#title","#time","#client","#project","#desc","#managers","#phase",
                "#req","#tasks_comp","#tasks_next","#milestone","#passed_unit_test","#total_unit_test","#passed_other_test","#total_other_test",
                "#revisions","#problems","#hours","#additional"];
+
 var selecteddiv;
 var headerdiv;
 var selectedbtn;
-
-
-    
+ 
+//Gets today's date
 var today = new Date();
 var dd = today.getDate();
 var mm = today.getMonth()+1; //January is 0!
@@ -33,11 +43,17 @@ if(mm<10) {
 
 today = mm+'.'+dd+'.'+yyyy;
 
-
 //Load defaults
 initFields();
 
-//Reads weekly report text file
+
+/*----------------
+
+Text file parser.
+Called after choosing a text file.
+
+-----------------*/
+
     function readSingleFile(evt) {
         clearFields();
         var f = evt.target.files[0];
@@ -49,9 +65,10 @@ initFields();
         //Creates an array matching regex:
         var arrayOfLines = contents.match(/[^\r\n]+/g);
         
-        //initFields();
+        //Regex patterns used for matching certain strings
         var emailregex = /(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
         var hashtagregex = /(^|\s)(#[a-z\d-]+)/;
+        
         var withouthashtag = "";   
         var detectedkey = "";
         var divs_open = "";
@@ -118,7 +135,8 @@ initFields();
     function clearFields(){
         document.getElementById("handledContents").innerHTML = "";
     }
-     
+
+/* Function used for adding input fields into the report */
 function addToSection(detectedkey){
         
         var numofitems = document.getElementById(detectedkey+"_container").getAttribute("name");
@@ -141,7 +159,6 @@ function addToSection(detectedkey){
         }
         else if(detectedkey == "#req"){
         	CreateInput("",subkey+"_name",0,parseInt(numofitems)+1,detectedkey,"text_input");
-            //CreateInput("",subkey+"_status",1,parseInt(numofitems)+1,detectedkey,"text_input");
         }
         else if(detectedkey == "#milestone" || detectedkey == "#revisions" || detectedkey == "#problems"){
         	if(!document.getElementById(subkey)){
@@ -159,7 +176,7 @@ function addToSection(detectedkey){
             CreateInput("",subkey+"_total",1,parseInt(numofitems)+1,detectedkey,"hour_input");
         }
         
-    /* TEXT AREAS*/    
+    //TEXT AREAS  
         else if(detectedkey == "#desc" || detectedkey == "#phase" || detectedkey == "#additional"){
             if(!document.getElementById(subkey)){
                 CreateInput("",subkey,0,0,detectedkey,"textarea");
@@ -167,7 +184,7 @@ function addToSection(detectedkey){
         }        
     }
     
-  
+/* Hides the wanted segment */
 function hideSection(targetid, headerid, btnid){
 
     selecteddiv = document.getElementById(targetid);
@@ -186,18 +203,6 @@ function hideSection(targetid, headerid, btnid){
         selecteddiv.style.display = 'none';  
     }
     
-}
-
-function CheckForKeyWord(input){
-    var result = false;
-    
-    for(i=0;keywords.length;i++){
-        if(keywords[i] == input){
-            result = true;
-        }     
-    }
-    
-    return result;
 }
 
 //Function used for displaying the data
@@ -219,9 +224,6 @@ function getData(i, regex, idprefix, arrayOfLines, detectedkey){
             counter = 0;
             break;
         }else{
-
-            
-     
             
             if(detectedkey == "#time" || detectedkey == "#project" || detectedkey == "#passed_unit_test" 
             	|| detectedkey == "#passed_other_test"|| detectedkey == "#total_unit_test" || detectedkey == "#total_other_test"){   
@@ -313,7 +315,7 @@ function getData(i, regex, idprefix, arrayOfLines, detectedkey){
     } 
 }
  
-//Function used for creating input text fields
+/* Function used for creating input and textarea elements. */
 function CreateInput(text,idprefix,order,counter,detectedkey,classname){
     
     if(idprefix == "client_name" || idprefix == "managers_name" || idprefix == "hours_name"|| idprefix == "req_name"){
@@ -390,7 +392,6 @@ var placeholder = "";
     var phase = "";
     
     //Weeklyreport info
-
     var managers = [];
     var manageremails = [];
     var requirements = [];
@@ -407,6 +408,7 @@ var placeholder = "";
     var otherinfo = [{time: "", project_name: "", description: "",
     	            passed_unit_test: 0 , passed_other_test: 0, total_unit_test: 0,total_other_test: 0,
                     reportid: 0, projectid: 0, phase: "", additional:"",}];
+
 
     /*---------------------
     
@@ -573,6 +575,7 @@ var placeholder = "";
                     }
                 }
         
+                //Final object is created from all the data objects:
                 finalObject = {
                     otherinfo: otherinfo,
                     client: client,

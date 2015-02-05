@@ -10,8 +10,8 @@
 <Title>Query Results</title>
  <link href="../main/css/style.css" rel="stylesheet" type="text/css" media="screen">
  <script src="../main/scripts/jquery-1.11.1.min.js"></script>
- <script src="../main/scripts/SiteElements.js"></script>
- <script src="../main/scripts/comparison.js"></script>
+ <script src="../main/scripts/metrics-elements-1.0.0.js"></script>
+ <script src="../main/scripts/metrics-makedata-1.0.0.js"></script>
 </head>
 
 <body>

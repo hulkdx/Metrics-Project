@@ -28,9 +28,9 @@ mysqli_close($con);
     
     	<Title>Project Details</title>
         <link href="css/style.css" rel="stylesheet" type="text/css" media="screen">
-        <script src="scripts/SiteElements.js"></script>
+        <script src="scripts/metrics-elements-1.0.0.js"></script>
 	<script src="scripts/jquery-1.11.1.min.js"></script>
-	<script src="scripts/formulateData.js"></script>
+	<script src="scripts/metrics-makedata-1.0.0.js"></script>
 	<script src="scripts/highcharts/js/highcharts.js"></script>
     </head>
     
@@ -46,7 +46,7 @@ mysqli_close($con);
          <div id="maincontent">
  
 	<script>
-	//getData(<?php $projectid ?>, operation, querytype, value, containername)
+	//getProjectData(<?php $projectid ?>, operation, querytype, value, containername)
 	createHeader("<?php echo $projectname;?>", 0);
 	</script>
                 	
@@ -92,11 +92,11 @@ mysqli_close($con);
 		  
           </div>
 	 
-        <script src="scripts/MakeChart.js"></script>   
+        <script src="scripts/metrics-makechart-1.0.0.js"></script>  
 	<script>
-	CreateChart("bar", "x label", "y label", "container", "Individual hours");
-	CreateChart("column", "x label", "y label", "container2", "Total hours");
-	getData(<?php echo $projectid;?>,0,1,2,"container");
+	createChart("bar", "x label", "y label", "container", "Individual hours");
+	createChart("column", "x label", "y label", "container2", "Total hours");
+	getProjectData(<?php echo $projectid;?>,0,1,2,"container");
 	createFooter();
 	</script>
 	

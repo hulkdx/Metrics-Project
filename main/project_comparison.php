@@ -9,8 +9,7 @@
     
     	<Title>Project Main</title>
         <link href="css/style.css" rel="stylesheet" type="text/css" media="screen">
-	<link href="scripts/multiple-select-master/multiple-select.css" rel="stylesheet"/>
-	<script src="scripts/SiteElements.js"></script>
+	<script src="scripts/metrics-elements-1.0.0.js"></script>
 	<script src="scripts/jquery-1.11.1.min.js"></script>	
 	<style type="text/css">
 	${demo.css}
@@ -45,10 +44,10 @@
 			<div style="float: left; width: 500px; height: 200px; padding-left: 10px;">
 				
 				<div style="float: left; width: 100%; height: 20px; padding-left: 10px; margin-top: 10px;">
-					<input type="button" title="Show total working hours of selected project" onClick="GetSelectedOptions(3)" value="Total hours"/>
-					<input type="button" title="Show individual working hours of selected project" onClick="GetSelectedOptions(1)" value="Individual total hours"/>
-					<input type="button" title="Show monthly working hours of selected project" onClick="GetSelectedOptions(0)" value="Monthly total hours"/>
-					<input type="button" title="Show project's requirements" onClick="GetSelectedOptions(4)" value="Requirements"/>
+					<input type="button" title="Show total working hours of selected project" onClick="getSelectedOptions(3)" value="Total hours"/>
+					<input type="button" title="Show individual working hours of selected project" onClick="getSelectedOptions(1)" value="Individual total hours"/>
+					<input type="button" title="Show monthly working hours of selected project" onClick="getSelectedOptions(0)" value="Monthly total hours"/>
+					<input type="button" title="Show project's requirements" onClick="getSelectedOptions(4)" value="Requirements"/>
 				</div>
 				<br/><br/><br/>
 				<div style="float: left; width: 100%; height: 20px; padding-left: 10px; margin-top: 10px;">
@@ -68,11 +67,11 @@
   
         </div>
     
-	<script src="scripts/formulateData.js"></script>
-	<script src="scripts/MakeChart.js"></script>
+	<script src="scripts/metrics-makedata-1.0.0.js"></script>
+	<script src="scripts/metrics-makechart-1.0.0.js"></script>
 	<script>
 	getProjectList(1);
-	CreateChart("column", "Hours", "Member", "container", "");
+	createChart("column", "Hours", "Member", "container", "");
 	createFooter();
 	</script>
 	

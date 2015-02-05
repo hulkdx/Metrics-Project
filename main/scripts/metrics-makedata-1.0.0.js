@@ -3,7 +3,7 @@ Tommi Tuominen 99710
 Metrics Monitoring Tool
 Project Work 2014/2015
 Updated: 5.1.2015
-This file includes the functions used for AJAX (getProjectData.php).
+This file includes the functions used for AJAX (database_out.php).
 The necessary functions for creating charts are also included here.
 Project's data is first loaded into a javascript object for easy handling,
 then the wanted information is extracted and reformed for the charts.
@@ -53,7 +53,7 @@ function getProjectList(options) {
     };
 
     $.ajax({  
-        url : "getProjectData.php",
+        url : "database_out.php",
         type : "POST",
         dataType: "json",
         data : reportData,
@@ -64,7 +64,7 @@ function getProjectList(options) {
         
         if(options == 1){    
             for(var i=0; i<projectList.length; i++){
-                CreateOptions(projectList[i].project_name, projectList[i].project_id);
+                createOptions(projectList[i].project_name, projectList[i].project_id);
             }
         }else{
             for(var i=0; i<projectList.length; i++){
@@ -87,7 +87,7 @@ GET ALL DATA FROM SELECTED PROJECT
 
 ---------------------*/
 
-function getData(id, operation, querytype, value, containername) {
+function getProjectData(id, operation, querytype, value, containername) {
 
     if(parseInt(id) != -1 && parseInt(id) != null){
     
@@ -98,7 +98,7 @@ function getData(id, operation, querytype, value, containername) {
     };
     
     $.ajax({  
-        url : "getProjectData.php",
+        url : "database_out.php",
         type : "POST",
         dataType: "json",
         data : reportData,
@@ -130,20 +130,20 @@ var title = "Requirements";
 function makeLineData(value, containername){
     
     if(value == 0){
-       addLine(GetMonthlyHours(), months, containername, "Monthly hours", 0, objects.project[0].project_name, 0);
+       addLine(getMonthlyHours(), months, containername, "Monthly hours", 0, objects.project[0].project_name, 0);
     }else if(value == 1){
-       addLine(GetIndiHours(), xCategories, containername, "Individual hours", 1, objects.project[0].project_name, 0);
+       addLine(getIndiHours(), xCategories, containername, "Individual hours", 1, objects.project[0].project_name, 0);
     }else if(value == 2){
-        addLine(GetRequirements(1), xCategories_b, containername+"2", title, 2, objects.project[0].project_name, 1);
-        addLine(GetIndiHours(), xCategories, containername, "Individual hours", 1, objects.project[0].project_name, 0); 
+        addLine(getRequirements(1), xCategories_b, containername+"2", title, 2, objects.project[0].project_name, 1);
+        addLine(getIndiHours(), xCategories, containername, "Individual hours", 1, objects.project[0].project_name, 0); 
         projectRequirements();
         projectTestcases();
         projectCoderevisions();
         commitsToVersionCtrl();
     }else if(value == 3){
-       addLine(GetAllHours(), xCategories, containername, "Total Hours", 1, objects.project[0].project_name, 0);
+       addLine(getAllHours(), xCategories, containername, "Total Hours", 1, objects.project[0].project_name, 0);
     }else if(value == 4){
-       addLine(GetRequirements(1), xCategories_b, containername, "Requirements", 2, objects.project[0].project_name, 0);
+       addLine(getRequirements(1), xCategories_b, containername, "Requirements", 2, objects.project[0].project_name, 0);
     }else{
        alert("Button action not defined!");
     }
@@ -270,7 +270,7 @@ and details.
     
 ----------------------------*/
 
-function GetAllHours(){
+function getAllHours(){
 clearArrays();
 totalhours = 0;
 
@@ -300,7 +300,7 @@ return dataArray;
 
 ----------------------------*/
 
-function GetIndiHours(){
+function getIndiHours(){
 clearArrays();
 
 var memberid = "";
@@ -359,13 +359,13 @@ return 0;
     
 ----------------------------*/
 
-function GetMonthlyHours(){
+function getMonthlyHours(){
 clearArrays();
 totalhours = 0;
 var reArray = [];
 var indidate = "";
 
-if(objects.individual || objects.individual.length > 1){
+if(objects.individual && objects.individual.length > 1){
     for(var i=0; i<objects.individual.length; i++){
         indidate = objects.individual[i].date;
         
@@ -451,7 +451,7 @@ return newArraySeries;
 
 /* COUNT REQUIREMENT STATUSES */
 
-function GetRequirements(value){
+function getRequirements(){
 
 newreq = 0;
 inprog  = 0;
@@ -461,27 +461,22 @@ closedd = 0;
 rejected = 0;
 dataArray = [];
 
-    if(value == 1){
-        //If project has weekly_requirement use only that
-        //else check requirement
-        if(objects.weekly_requirement){
-            for(var i=0; i<objects.weekly_requirement.length; i++){           
-                detectRequirement(parseInt(objects.weekly_requirement[i].requirement_status));
-            }        
-        }else if(objects.requirement){
-            for(var i=0; i<objects.requirement.length; i++){
-                detectRequirement(parseInt(objects.requirement[i].requirement_status));
-            }
-        }else{
-            console.log("No requirement data!");
-            return 0;
+    //If project has weekly_requirement use only that
+    //else check requirement
+    if(objects.weekly_requirement){
+        for(var i=0; i<objects.weekly_requirement.length; i++){           
+            detectRequirement(parseInt(objects.weekly_requirement[i].requirement_status));
+        }        
+    }else if(objects.requirement){
+        for(var i=0; i<objects.requirement.length; i++){
+            detectRequirement(parseInt(objects.requirement[i].requirement_status));
         }
-
-    dataArray = [{y:newreq},{y:inprog},{y:resolved},{y:feedback},{y:closedd},{y:rejected}];
     }else{
         console.log("No requirement data!");
-        return 0;    
+        return 0;
     }
+
+    dataArray = [{y:newreq},{y:inprog},{y:resolved},{y:feedback},{y:closedd},{y:rejected}];
 
 return dataArray;
 }
@@ -508,7 +503,7 @@ function detectRequirement(reqValue){
 
 /* FORMAT DATE VALUES */
 
-function ParseDate(date){
+function parseDate(date){
     parsedDates = [];
     var formattedDate = "";
 
@@ -548,6 +543,7 @@ if(datetime != null){
     return parsedTime;    
 }
 
+/*
 function GetDates(){
 clearArrays();
 
@@ -557,6 +553,7 @@ clearArrays();
     
     return parsedDates;
 }
+*/
 
 /* CLEAR ARRAYS */
 
@@ -582,7 +579,7 @@ function clearArrays(){
 
 /* POPULATE DROPDOWN MULTISELECT LIST */
 
-function CreateOptions(name, id){
+function createOptions(name, id){
     var option = document.createElement("option");
     option.textContent = name+" ("+id+")";
     option.value = name+" ("+id+")";
@@ -592,7 +589,7 @@ function CreateOptions(name, id){
 
 /* CHECK SELECTED LIST OPTION */
 
-function GetSelectedOptions(value){
+function getSelectedOptions(value){
     var projForm = document.forms.projectForm;
     var SelBranchVal = "";
     var selectedid = -1;
@@ -605,5 +602,5 @@ function GetSelectedOptions(value){
         }
     }
 
-    getData(selectedid,0,1,value, "container"); 
+    getProjectData(selectedid,0,1,value, "container"); 
 }

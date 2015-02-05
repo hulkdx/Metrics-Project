@@ -10,7 +10,7 @@ document.write() may not be the best option for creating elements.
 creating section divs and adding into them with innerHtml or
 addElement may or may not be a better choice.
 */ 
-var menuitems = ["../main/account.php", "../main/listpage.php", "../main/compare.php", "../main/readweekly.php", "../main/redmine.php", "../facebook_forum/login.php"];
+var menuitems = ["../main/account.php", "../main/project_list.php", "../main/project_comparison.php", "../main/readweekly.php", "../main/redmine.php", "../facebook_forum/initialization.php"];
 var menutext = ["Account Information", "Project List", "Compare Metrics", "Weekly report", "Redmine", "Facebook"];
 var user_privileges = 6;
 
@@ -127,9 +127,9 @@ function CreateProjectList(projectList, i){
     document.getElementById("projectlistbox").innerHTML +=
             "<div class=\"projectbox\">"+
                 "<div class='newsheader'>"+
-                "<span class='projname'><a href='detail.php?id="+projectList[i].project_id+"'>"+projectList[i].project_name+" ("+projectList[i].project_id+")</a></span>"+
-                "<span class='projinfo_head'>Created: <b>"+ParseDate(projectList[i].created_on)+"</b></span>"+              
-                "<span class='projinfo_head'>Updated: <b>"+ParseDate(projectList[i].updated_on)+"</b></span>"+
+                "<span class='projname'><a href='project_details.php?id="+projectList[i].project_id+"'>"+projectList[i].project_name+" ("+projectList[i].project_id+")</a></span>"+
+                "<span class='projinfo_head'>Created: <b>"+parseDate(projectList[i].created_on)+"</b></span>"+              
+                "<span class='projinfo_head'>Updated: <b>"+parseDate(projectList[i].updated_on)+"</b></span>"+
                 "</div>"+
                 "<br>"+
                 "<span class='projinfo_left'>Version: "+projectList[i].version+"</span><br>"+

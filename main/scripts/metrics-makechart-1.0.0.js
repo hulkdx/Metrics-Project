@@ -13,7 +13,7 @@ Fancier charts?
 var seriesIndex = 0;
 
 //Create a chart with given attributes
-function CreateChart(type, x_label, y_label, container_id, chart_title){
+function createChart(type, x_label, y_label, container_id, chart_title){
     //RandomizeData();
     
     $(function () {

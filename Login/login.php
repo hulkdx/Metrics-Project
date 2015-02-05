@@ -15,7 +15,7 @@ session_start();
 
 if (isset($_SESSION['login_user'])) {
 	// Redirecting To main Page
-	header('Location: ../main/listpage.php');
+	header('Location: ../main/project_list.php');
 }
 
 // Variable To Store Error Message

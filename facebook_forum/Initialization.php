@@ -10,7 +10,7 @@
 
  <link href="../main/css/style.css" rel="stylesheet" type="text/css" media="screen">
  <script src="../main/scripts/jquery-1.11.1.min.js"></script>
- <script src="../main/scripts/SiteElements.js"></script>
+ <script src="../main/scripts/metrics-elements-1.0.0.js"></script>
 
 
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8">

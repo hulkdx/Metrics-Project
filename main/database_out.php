@@ -30,7 +30,7 @@ if (mysqli_connect_errno($con)) {
     
     //Type 1 is for chart data
     else if($querytype == 1){
-	getDataForCharts($project_id, $con);
+	getProjectDataForCharts($project_id, $con);
     }     
   
 }
@@ -277,7 +277,7 @@ function getIndividual($project_id, $con, $scope, $where, $equal){
     }
 }
 
-
+/*
 function individualHours($project_id, $con, $scope, $where, $equal){
     
     $sql = "SELECT ".$scope." FROM `individual_work` WHERE ".$where."".$equal;
@@ -294,14 +294,14 @@ function individualHours($project_id, $con, $scope, $where, $equal){
     
     
     return $totalhours;
-}
+}*/
 
 /*----------------------------------------------
 
     GET DATA FOR CHARTS
     
 -----------------------------------------------*/
-function getDataForCharts($project_id, $con){
+function getProjectDataForCharts($project_id, $con){
 	
 	$mega = array(
 	    "weekly_report" => getWeeklyReports($project_id, $con, "*", "`project_id`", " = ".$project_id),

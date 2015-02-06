@@ -53,7 +53,7 @@ if (isset($_POST['submit'])) {
 			$row = $result -> fetch_assoc();
 			$_SESSION['login_user'] = $username;
 			// go to main page
-			header("Location: ../main/listpage.php");
+			header("Location: ../main/project_list.php");
 		} else {
 			$error = "Username or Password is invalid";
 		}

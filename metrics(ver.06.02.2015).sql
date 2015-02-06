@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 06.02.2015 klo 10:53
+-- Generation Time: 06.02.2015 klo 10:58
 -- Palvelimen versio: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -66,7 +66,6 @@ CREATE TABLE IF NOT EXISTS `individual_work` (
 --
 
 INSERT INTO `individual_work` (`work_id`, `name`, `project_id`, `member_id`, `description`, `hours`, `date`, `issue_id`) VALUES
-(0, NULL, 55555, 0, 'x', '0', '0000-00-00 00:00:00.000000', '0'),
 (5065, NULL, 18, 108, '', '1.5', '2012-09-05 00:00:00.000000', '996'),
 (5066, NULL, 18, 108, '', '1.5', '2012-09-12 00:00:00.000000', '996'),
 (5067, NULL, 18, 108, '', '0.5', '2012-09-12 00:00:00.000000', '996'),
@@ -788,9 +787,9 @@ INSERT INTO `individual_work` (`work_id`, `name`, `project_id`, `member_id`, `de
 (16026, NULL, 56, 311, '', '2', '2014-11-01 00:00:00.000000', '0'),
 (16039, NULL, 56, 312, '', '2', '2014-11-02 00:00:00.000000', '2492'),
 (16040, NULL, 56, 312, '', '3', '2014-10-30 00:00:00.000000', '2491'),
-(16095, NULL, 56, 310, '', '3', '2014-10-30 00:00:00.000000', '0');
+(16095, NULL, 56, 310, '', '3', '2014-10-30 00:00:00.000000', '0'),
+(16098, NULL, 56, 308, '', '3', '2014-10-30 00:00:00.000000', '0');
 INSERT INTO `individual_work` (`work_id`, `name`, `project_id`, `member_id`, `description`, `hours`, `date`, `issue_id`) VALUES
-(16098, NULL, 56, 308, '', '3', '2014-10-30 00:00:00.000000', '0'),
 (16099, NULL, 56, 308, '', '2', '2014-11-02 00:00:00.000000', '0'),
 (16100, NULL, 56, 240, '', '3', '2014-10-01 00:00:00.000000', '0'),
 (16101, NULL, 56, 240, '', '3', '2014-10-30 00:00:00.000000', '0'),
@@ -1093,8 +1092,7 @@ CREATE TABLE IF NOT EXISTS `project` (
 INSERT INTO `project` (`project_id`, `project_name`, `created_on`, `updated_on`, `status`, `version`, `discription`) VALUES
 (18, 'Majava', '2012-09-13 07:27:31', '2012-09-13 07:27:31', 0, 0, ''),
 (56, 'Metrics Monitoring Tool', '2014-10-04 07:02:50', '2014-10-04 07:02:50', 0, 0, ''),
-(65, 'ampere', NULL, NULL, NULL, NULL, NULL),
-(55555, '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, 0, 'project desc');
+(65, 'ampere', NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1180,12 +1178,8 @@ CREATE TABLE IF NOT EXISTS `weekly_report` (
 --
 
 INSERT INTO `weekly_report` (`report_id`, `project_id`, `number_of_week`, `project_phase`, `completed_tasks`, `task_for_nextweek`, `schedule_status`, `next_milestone`, `working_hours`, `unit_testcases`, `other_testcases`, `code_revisions`, `problems`, `changes_in_project_plan`, `things_to_mention`) VALUES
-(34, 18, 4, '', 'x', 'x', 'x', 'x', '35', 0, 0, 0, 'x', 'x', 'x'),
-(55, 56, 4, '', 'x', 'x', 'x', 'x', '0', 0, 0, 0, 'x', 'x', 'x'),
-(423, 65, 2, 'sfdsf', '5', '1', '3', NULL, '[{"name": "John","weekhours": "30","totalhours":"34"},{"name": "Jane","weekhours": "10","totalhours":"55"}]', 42, 32, 24, '77', '67', 'hgjhggjhgjhgjh'),
-(424, 65, 3, 'very good', '10', '3', '4', '5', '[{"name": "John","weekhours": "30","totalhours":"34"},{"name": "Jane","weekhours": "10","totalhours":"55"}]', 53, 41, 53, '14', '42', 'dasd3dd3'),
-(1234, 18, 45, NULL, '5', '5', '5', NULL, NULL, 31, 43, 53, NULL, NULL, NULL),
-(5589, 56, 4, '', 'x', 'x', 'x', 'x', '0', 0, 0, 0, 'x', 'x', 'x');
+(423, 65, 2, 'sfdsf', '5', '1', '3', '7', '[{"name": "John","weekhours": "30","totalhours":"34"},{"name": "Jane","weekhours": "10","totalhours":"55"}]', 42, 32, 24, '77', '67', 'hgjhggjhgjhgjh'),
+(424, 65, 3, 'very good', '10', '3', '4', '5', '[{"name": "John","weekhours": "30","totalhours":"34"},{"name": "Jane","weekhours": "10","totalhours":"55"}]', 53, 41, 53, '14', '42', 'dasd3dd3');
 
 -- --------------------------------------------------------
 
@@ -1212,7 +1206,7 @@ CREATE TABLE IF NOT EXISTS `weekly_report_requirement` (
   `report_id` int(50) DEFAULT NULL,
   `requirement_id` int(50) NOT NULL DEFAULT '0',
   `requirement_name` varchar(60) CHARACTER SET latin1 DEFAULT NULL,
-  `requirement_status` int(2) DEFAULT NULL
+  `requirement_status` int(4) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --

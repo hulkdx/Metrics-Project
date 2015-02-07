@@ -1,4 +1,9 @@
 <?php
+/*Shahzad Choudhary 99707
+Metrics Monitoring Tool
+Project Work 2014/2015
+Updated: 7.2.2015
+This file serves to process and display the outcome of a Facebook query made from initialization.php.*/
 	include('../Login/session.php');
 ?>
 
@@ -54,7 +59,7 @@ use Facebook\FacebookRequest;
 use Facebook\GraphUser;
 use Facebook\GraphObject;
 
-function getMostRecent($arr)
+function getMostRecent($arr) //by creation time, whereas Facebook returns by last update time
 {
   $max=$arr[0]->created_time;
   $n=0;
@@ -82,7 +87,7 @@ function errorCheck()
   return $msg;
 }
 
-function getPosters($arr)
+function getPosters($arr) //unique ones
 {
   $cnt=count($arr);
   $names=array();
@@ -120,9 +125,9 @@ if ($err!="")
   echo $err;
   return;
 }
-$date=(new DateTime($_POST["todate"]))->modify('+1 day');
+$date=(new DateTime($_POST["todate"]))->modify('+1 day'); //in the Facebook request, "until" is exclusive
 $_POST["todate"]=$date->format('Y-m-d');
-FacebookSession::setDefaultApplication('777065655684035', '3648579cf4a413d1dfe490304456cd4c');
+FacebookSession::setDefaultApplication('777065655684035', '3648579cf4a413d1dfe490304456cd4c'); //app ID, app secret
 $session = new FacebookSession($_SESSION["token"]);
 $request = new FacebookRequest($session, 'GET',
   "/".$_POST["group"]."/feed?since=".$_POST["fromdate"]."&until=".$_POST["todate"]);
@@ -133,23 +138,23 @@ $outcome=$graphObject->getProperty('data');
 $temp=[];
 while ($outcome) 
 { 
-  $temp=array_merge($temp,$graphObject->getProperty('data')->asArray());
-  $next=$graphObject->getProperty('paging')->asArray();
-  $request = new FacebookRequest(  $session,  'GET', substr($next["next"],31));
+  $temp=array_merge($temp,$graphObject->getProperty('data')->asArray()); //merge array with the previous block
+  $next=$graphObject->getProperty('paging')->asArray(); //get the link to the next results page
+  $request = new FacebookRequest(  $session,  'GET', substr($next["next"],31)); //request the next page
   $response=$request->execute();
   $graphObject = $response->getGraphObject(GraphUser::className());
   $outcome=$graphObject->getProperty('data');
   $j=count($temp);
-  for ($i=$j-1; $i>=0; $i--)
+  for ($i=$j-1; $i>=0; $i--) //going from less recent to more recent, cut out posts created too early
     if ($temp[$i]->created_time<=$_POST["fromdate"])
 	{
       $outcome=false;
 	  $j=$i;
 	}
-   if ($outcome==false) $temp=array_slice($temp,0,$j);	
+   if ($outcome==false) $temp=array_slice($temp,0,$j); //if anything has been cut, or the page is empty, move on
 }
 
-if ($_POST["members"]!="Everyone")
+if ($_POST["members"]!="Everyone") //filtering by a particular name
 {
   $j=0;
   for ($i=0; $i<count($temp); $i++)
@@ -161,30 +166,28 @@ if ($_POST["members"]!="Everyone")
   $temp=array_slice($temp,0,$j);
 }
 $cnt=count($temp);
-$truecount=min($_POST["count"],$cnt);
-$m=getMostRecent($temp);
+$truecount=min($_POST["count"],$cnt); //display the queried number of recent posts, but as many as truly exist
+$m=getMostRecent($temp); //only returns the index
 echo "<i>Most Recently Created Post by:</i> <b>" .htmlentities($temp[$m]->from->name). "</b>";
 echo "<i><br><br>Most Recent Post Created time:</i> <b>".date_format(date_create_from_format('Y-m-d\TH:i:sO', $temp[$m]->created_time), 'r'). "</b>";
 echo "<i><br><br>Total Number of Posts:</i> <b> ".$cnt. "</b>";
 echo "<i><br><br> Last ".$truecount." Posts: <br></i>";
-//To get the max creation time and sorting the creation times in an array
 $arr=array(array());
 for ($i=0; $i<$cnt; $i++)
   {
     $arr[$i][0]=$temp[$i]->created_time;
 	$arr[$i][1]=$i;
   }
-sort($arr);
-//To get the number of last posts that user wants to see
+sort($arr); //sort the indexes of posts, from most to least recent
 for ($k=$truecount-1; $k>=0; $k--)
 {
   echo "<br>".($truecount-$k).". ".date_format(date_create_from_format('Y-m-d\TH:i:sO', $arr[$k+$cnt-$truecount][0]), 'r')."<br>" ;
-  if (property_exists ($temp[$arr[$k+$cnt-$truecount][1]], "message"))
+  if (property_exists ($temp[$arr[$k+$cnt-$truecount][1]], "message")) //not all posts have text, likes or comments
     echo "<p style='text-align:justify'>".htmlentities($temp[$arr[$k+$cnt-$truecount][1]]->message)." ";
   if (property_exists ($temp[$arr[$k+$cnt-$truecount][1]], "likes"))
     echo "<b>(".count($temp[$arr[$k+$cnt-$truecount][1]]->likes->data)." <img src='like.png'>, ";
   else echo "<b>(0 <img src='like.png'>, ";
-  if (property_exists ($temp[$arr[$k+$cnt-$truecount][1]], "comments"))
+  if (property_exists ($temp[$arr[$k+$cnt-$truecount][1]], "comments")) //iterate through every comment, then
   {
     echo count($temp[$arr[$k+$cnt-$truecount][1]]->comments->data)." <img src='comment.png'>) <ul>";
 	foreach ($temp[$arr[$k+$cnt-$truecount][1]]->comments->data as $i)
@@ -203,9 +206,10 @@ echo "<i><br><br>Unique Users:</i> <b> ".$namecount." <br>(";
 for ($i=0; $i<$namecount; $i++)
   if ($i==$namecount-1)
    echo htmlentities($p[$i]).")</b>";
+//htmlentities to handle all kinds of ö's and ä's
   else
     echo htmlentities($p[$i]).", ";
-//echo "<br/>Entire Feed Content <br/>";
+//Display entire feed, for debugging purposes:
 //var_dump($temp);
 }
 catch (Exception $e) 

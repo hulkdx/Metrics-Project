@@ -1,4 +1,9 @@
 <?php
+/*Shahzad Choudhary 99707
+Metrics Monitoring Tool
+Project Work 2014/2015
+Updated: 7.2.2015
+This file serves to display the form for Facebook-related queries and handle AJAX requests.*/
 	include('../Login/session.php');
 	if (!isset($_SESSION["token"]))
       header("Location:login.php");
@@ -73,14 +78,14 @@ Recent posts: <br><input id="count" name="count" type="number" value="5" min="1"
     
 <script>
 
-function fetch(source_elem,filename,param,target_elem)
+function fetch(source_elem,filename,param,target_elem) //allows producing all kinds of AJAX requests
 {
   var val=document.getElementById(source_elem).value;
   var xmlhttp=new XMLHttpRequest();
   xmlhttp.onreadystatechange=function()
   {
     if (xmlhttp.readyState==4 && xmlhttp.status==200)
-      document.getElementById(target_elem).innerHTML=xmlhttp.responseText;
+      document.getElementById(target_elem).innerHTML=xmlhttp.responseText; //must have innerHTML; a text field would not
   }
   xmlhttp.open("GET",filename+".php?"+param+"="+val,true);
   xmlhttp.send();

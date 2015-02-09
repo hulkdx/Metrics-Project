@@ -323,6 +323,9 @@ class Client
         $this->responseCode = null;
 
         $curl = curl_init();
+
+	curl_setopt($curl, CURLOPT_SSLVERSION, 1);
+
         if (isset($this->apikeyOrUsername) && $this->useHttpAuth) {
             if (null === $this->pass) {
                 curl_setopt($curl, CURLOPT_USERPWD, $this->apikeyOrUsername.':'.rand(100000, 199999) );
@@ -331,6 +334,7 @@ class Client
             }
             curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         }
+        
         curl_setopt($curl, CURLOPT_URL, $this->url.$path);
         curl_setopt($curl, CURLOPT_VERBOSE, 0);
         curl_setopt($curl, CURLOPT_HEADER, 0);
@@ -386,6 +390,7 @@ class Client
             default: // GET
                 break;
         }
+
         $response = curl_exec($curl);
         $this->responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         $contentType = curl_getinfo($curl, CURLINFO_CONTENT_TYPE);

@@ -123,7 +123,7 @@ var title = "Requirements";
 
 /*--------------------------------------
 
- INITIATE SERIES DRAW in MakeChart.js
+ INITIATE SERIES DRAW in metrics-makechart-1.0.0.js
 
 --------------------------------------*/
 
@@ -152,7 +152,7 @@ function makeLineData(value, containername){
 /*---------------------------
 
 UNIQUE TO PROJECT DETAILS SITE
-    
+
 ---------------------------*/
 
 /* CREATE REQUIREMENTS */
@@ -177,47 +177,23 @@ function projectRequirements(){
 
 function projectTestcases(){
     if(objects.weekly_report){
-        var unittest = [];
-        var othertest = [];
         
-        if(objects.weekly_report[0].unit_testcases){
-            //unittest = JSON.parse(objects.weekly_report[0].unit_testcases);
-            
-            document.getElementById("testbox").innerHTML += "<b>Unit Test Cases:</b><br>";
-            document.getElementById("testbox").innerHTML += objects.weekly_report[0].unit_testcases+"<br>";
-            
-            /*for(var i=0; i<unittest.length; i++){ 
-                document.getElementById("testbox").innerHTML += unittest[i].name+"<br>";
-            }*/
-        }
-        if(objects.weekly_report[0].other_testcases){
-            //othertest = JSON.parse(objects.weekly_report[0].other_testcases);
-            
-            document.getElementById("testbox").innerHTML += "<b>Other Test Cases:</b><br>";
-            document.getElementById("testbox").innerHTML += objects.weekly_report[0].other_testcases+"<br>";
-            
-            /*for(var i=0; i<othertest.length; i++){         
-                document.getElementById("testbox").innerHTML += othertest[i].name+"<br>";
-            }*/
-        }  
+            document.getElementById("testbox").innerHTML += "Total Unit Test Cases:&nbsp";
+            document.getElementById("testbox").innerHTML += objects.weekly_report[0].total_unit_testcases;
+            document.getElementById("testbox").innerHTML += "<br>Passed Unit Test Cases:&nbsp";
+            document.getElementById("testbox").innerHTML += objects.weekly_report[0].passed_unit_testcases;
+            document.getElementById("testbox").innerHTML += "<br><br>Total Other Test Cases:&nbsp";
+            document.getElementById("testbox").innerHTML += objects.weekly_report[0].total_other_testcases+"<br>";
+            document.getElementById("testbox").innerHTML += "Passed Other Test Cases:&nbsp";
+            document.getElementById("testbox").innerHTML += objects.weekly_report[0].passed_other_testcases+"<br>"; 
     }
 }
 
 /* CREATE CODE REVISIONS */
 
 function projectCoderevisions(){
-    if(objects.weekly_report){
-       var revisions = []; 
-        
-       if(objects.weekly_report[0].code_revisions){
-        //revisions = JSON.parse(objects.weekly_report[0].code_revisions);
+    if(objects.weekly_report){  
         document.getElementById("revisionbox").innerHTML += objects.weekly_report[0].code_revisions+"<br>";
-        /*
-        for(var i=0; i<revisions.length; i++){
-            document.getElementById("revisionbox").innerHTML += revisions[i].name+"<br>";
-        }*/
-        
-       }
     }
 }
 
@@ -226,16 +202,9 @@ function projectCoderevisions(){
 
 function commitsToVersionCtrl(){
     if(objects.weekly_report){
-       var revisions = []; 
         
        if(objects.weekly_report[0].code_revisions){
-        //revisions = JSON.parse(objects.weekly_report[0].code_revisions);
-        document.getElementById("commitbox").innerHTML += objects.weekly_report[0].code_revisions+"<br>";
-        /*
-        for(var i=0; i<revisions.length; i++){
-            document.getElementById("revisionbox").innerHTML += revisions[i].name+"<br>";
-        }*/
-        
+        document.getElementById("commitbox").innerHTML += objects.weekly_report[0].code_revisions+"<br>";        
        }
     }
 }

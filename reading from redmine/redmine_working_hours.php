@@ -19,17 +19,12 @@ if ($count_workh < 0){
 }*/
 
 // individual working hours
-$working_hours = $client->api('time_entry')->all([
-    'limit' => $count_workh
-]);
+$working_hours = $client->api('time_entry')->all(array('limit' => $count_workh));
 
 // Issue
-$issue = $client->api('issue')->all([
-    'limit' => $count_issue
-]);
+$issue = $client->api('issue')->all(array('limit' => $count_issue));
 
 // Project
-$project = $client->api('project')->all([
-    'limit' => $count_project
-]);
+$project = $client->api('project')->all(array('limit' => $count_project));
+
 ?>

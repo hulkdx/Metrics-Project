@@ -1,4 +1,4 @@
-#title
+﻿#title
 WEEKLY REPORT
 
 #time
@@ -38,11 +38,8 @@ the phase is good and this is testing.
 
 #req
 REQUIREMENTS
-must work
-easy to use
-annoy users
-serve drinks
-take money
+
+more coding   in_progress
 
 #tasks_comp
 COMPLETED TASKS
@@ -67,22 +64,25 @@ NEXT MILESTONE
 milestone 1
 milestone 2
 
-#unit_test
-UNIT TEST
-test 1
-test 2
-test 3
+#passed_unit_test
+PASSED UNIT TEST CASES
+3
 
-#other_test
-OTHER TEST CASES
-test 1
-test 2
-test 3
+#total_unit_test
+TOTAL UNIT TEST CASES
+8
+
+#passed_other_test
+PASSED OTHER TEST CASES
+5
+
+#total_other_test
+TOTAL OTHER TEST CASES
+12
 
 #revisions
 CODE REVISIONS
-revision 1
-revision 2
+5
 
 #problems
 PROBLEMS

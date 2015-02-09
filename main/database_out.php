@@ -76,12 +76,8 @@ function getWeeklyReports($project_id, $con, $scope, $where, $equal){
 		    "schedule_status" => $row_weekly['schedule_status'],
 		    "next_milestone" => $row_weekly['next_milestone'],
 		    "working_hours" => $row_weekly['working_hours'],
-		    
-		    "passed_unit_testcases" => $row_weekly['passed_unit_testcases'],
-		    "total_unit_testcases" => $row_weekly['total_unit_testcases'],
-		    "passed_other_testcases" => $row_weekly['passed_other_testcases'],
-		    "total_other_testcases" => $row_weekly['total_other_testcases'],
-		    
+		    "unit_testcases" => $row_weekly['unit_testcases'],
+		    "other_testcases" => $row_weekly['other_testcases'],
 		    "code_revisions" => $row_weekly['code_revisions'],
 		    "problems" => $row_weekly['problems'],
 		    "changes_in_project_plan" => $row_weekly['changes_in_project_plan'],

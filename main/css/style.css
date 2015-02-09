@@ -305,6 +305,7 @@ input[type=button].typebtn{
 }
 
 .projectbox:hover{
+    background-color: #e2f3f7;
     border: 2px solid #72b1c0;
 }
 

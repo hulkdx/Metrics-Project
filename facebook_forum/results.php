@@ -126,7 +126,7 @@ if ($err!="")
   return;
 }
 
-$tmp = new DateTime($_POST["todate"])
+$tmp = new DateTime($_POST["todate"]);
 $date=$tmp->modify('+1 day'); //in the Facebook request, "until" is exclusive
 //Equivalent, if PHP>=5.4 is available:
 //$date=(new DateTime($_POST["todate"]))->modify('+1 day'); 

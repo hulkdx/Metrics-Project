@@ -30,7 +30,7 @@ USE `metrics`;
 
 CREATE TABLE IF NOT EXISTS `facebook_group` (
   `group_id` int(20) NOT NULL AUTO_INCREMENT,
-  `fgroup_id` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
+  `fgroup_id` varchar(50) CHARACTER SET latin1 UNIQUE DEFAULT NULL,
   `group_name` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
   PRIMARY KEY (`group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
@@ -41,10 +41,13 @@ CREATE TABLE IF NOT EXISTS `facebook_group` (
 -- Table structure for table `facebook_member`
 --
 
+-- Removed CHARACTER SET from member_name column so that it takes the default UTF-8 charset.
+-- Needed to avoid mixing collations when comparing names with characters like ä and ü.
+-- Probably would benefit other columns as well.
 CREATE TABLE IF NOT EXISTS `facebook_member` (
   `member_id` int(10) NOT NULL AUTO_INCREMENT,
-  `member_name` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
-  `fmember_id` varchar(30) CHARACTER SET latin1 DEFAULT NULL,
+  `member_name` varchar(50) DEFAULT NULL,
+  `fmember_id` varchar(30) CHARACTER SET latin1 UNIQUE DEFAULT NULL,
   PRIMARY KEY (`member_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 

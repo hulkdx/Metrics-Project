@@ -113,7 +113,7 @@ function getPosters($arr) //unique ones
 
 function run()
 {
-set_include_path ("..\\Composer\\files\\facebook\php-sdk-v4\\facebook-facebook-php-sdk-v4-e2dc662");
+set_include_path ("../Composer/files/facebook/php-sdk-v4/facebook-facebook-php-sdk-v4-e2dc662");
 include "autoload.php";
 
 error_reporting(E_ALL);
@@ -125,7 +125,11 @@ if ($err!="")
   echo $err;
   return;
 }
-$date=(new DateTime($_POST["todate"]))->modify('+1 day'); //in the Facebook request, "until" is exclusive
+
+$tmp = new DateTime($_POST["todate"])
+$date=$tmp->modify('+1 day'); //in the Facebook request, "until" is exclusive
+//Equivalent, if PHP>=5.4 is available:
+//$date=(new DateTime($_POST["todate"]))->modify('+1 day'); 
 $_POST["todate"]=$date->format('Y-m-d');
 FacebookSession::setDefaultApplication('777065655684035', '3648579cf4a413d1dfe490304456cd4c'); //app ID, app secret
 $session = new FacebookSession($_SESSION["token"]);

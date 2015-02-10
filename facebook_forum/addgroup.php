@@ -4,7 +4,7 @@ Metrics Monitoring Tool
 Project Work 2014/2015
 Updated: 7.2.2015
 This file serves to add new Facebook groups and their members to the DB.*/
-set_include_path ("..\\Composer\\files\\facebook\php-sdk-v4\\facebook-facebook-php-sdk-v4-e2dc662");
+set_include_path ("../Composer/files/facebook/php-sdk-v4/facebook-facebook-php-sdk-v4-e2dc662");
 include "autoload.php";
 include('../Login/db_connection.php');
 use Facebook\FacebookSession;

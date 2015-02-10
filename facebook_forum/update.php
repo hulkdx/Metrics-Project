@@ -4,7 +4,7 @@ Metrics Monitoring Tool
 Project Work 2014/2015
 Updated: 7.2.2015
 This file serves to update a particular Facebook group's list of members in the DB.*/
-set_include_path ("..\\Composer\\files\\facebook\php-sdk-v4\\facebook-facebook-php-sdk-v4-e2dc662");
+set_include_path ("../Composer/files/facebook/php-sdk-v4/facebook-facebook-php-sdk-v4-e2dc662");
 include "autoload.php";
 include('../Login/db_connection.php');
 use Facebook\FacebookSession;
@@ -29,23 +29,24 @@ $outcome=$graphObject->getProperty('data')->asArray();
 $id=$_GET["group"];
 $query="SELECT group_id FROM facebook_group WHERE fgroup_id=".$id." LIMIT 1";
 $result=mysqli_query($con,$query);
-if ($result)
+if (($result) && (mysqli_num_rows($result)>0)) //a successful query might return a valid result, yet with no rows
+{
   $id=mysqli_fetch_array($result)[0];
+  mysqli_query($con,"DELETE FROM link_table WHERE group_id=".$id); //clear all existing group relations
 
-mysqli_query($con,"DELETE FROM link_table WHERE group_id=".$id); //clear all existing group relations
+  $query="SELECT member_id FROM facebook_member WHERE member_name IN ("; //questionable - fetch all members again
+  foreach ($outcome as $i)
+    $query=$query."'".mysqli_real_escape_string($con,$i->name)."',";
+  $query=substr($query,0,count($query)-2).")";
+  $result=mysqli_query($con,$query);
 
-$query="SELECT member_id FROM facebook_member WHERE member_name IN ("; //questionable - fetch all members again
-foreach ($outcome as $i)
-  $query=$query."'".mysqli_real_escape_string($con,$i->name)."',";
-$query=substr($query,0,count($query)-2).")";
-$result=mysqli_query($con,$query);
-
-$query="INSERT INTO link_table (group_id, member_id) VALUES "; //and write the new relations, using the above query's results
-while ($r=mysqli_fetch_array($result))
-  $query=$query."(".$id.",".$r[0]."), ";
-$query=substr($query,0,count($query)-3);
-$result=mysqli_query($con,$query);
-	
+  $query="INSERT INTO link_table (group_id, member_id) VALUES "; //and write the new relations, using the above query's results
+  while ($r=mysqli_fetch_array($result))
+    $query=$query."(".$id.",".$r[0]."), ";
+  $query=substr($query,0,count($query)-3);
+  $result=mysqli_query($con,$query);
+}
+else $result=FALSE;	
 mysqli_close($con);
 if ($result==TRUE) echo "Updated successfully"; //doesn't really report on any errors above
 else echo "Did not update (is the group added to DB?)";

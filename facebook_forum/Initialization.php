@@ -85,7 +85,11 @@ function fetch(source_elem,filename,param,target_elem) //allows producing all ki
   xmlhttp.onreadystatechange=function()
   {
     if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	{
       document.getElementById(target_elem).innerHTML=xmlhttp.responseText; //must have innerHTML; a text field would not
+	  if (filename=="update") //upon updating in DB, refresh the HTML select as well
+	    fetch("group","refresh","id","members");
+	}
   }
   xmlhttp.open("GET",filename+".php?"+param+"="+val,true);
   xmlhttp.send();
@@ -113,6 +117,7 @@ function checkGroup()
   if (!b)
 	document.getElementById("grouperr").innerHTML="The group ID must contain digits only.";
   else document.getElementById("grouperr").innerHTML="";
+  document.getElementById("update").innerHTML="Update member list in DB";
   fetch("group","refresh","id","members");
 }
 

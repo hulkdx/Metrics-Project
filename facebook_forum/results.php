@@ -139,7 +139,7 @@ try{
 $response = $request->execute();
 $graphObject = $response->getGraphObject(GraphUser::className());
 $outcome=$graphObject->getProperty('data');
-$temp=[];
+$temp=array();
 while ($outcome) 
 { 
   $temp=array_merge($temp,$graphObject->getProperty('data')->asArray()); //merge array with the previous block

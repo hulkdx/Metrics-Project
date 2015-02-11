@@ -31,7 +31,8 @@ $query="SELECT group_id FROM facebook_group WHERE fgroup_id=".$id." LIMIT 1";
 $result=mysqli_query($con,$query);
 if (($result) && (mysqli_num_rows($result)>0)) //a successful query might return a valid result, yet with no rows
 {
-  $id=mysqli_fetch_array($result)[0];
+  $tmp=mysqli_fetch_array($result);
+  $id=$tmp[0];
   mysqli_query($con,"DELETE FROM link_table WHERE group_id=".$id); //clear all existing group relations
 
   $query="SELECT member_id FROM facebook_member WHERE member_name IN ("; //questionable - fetch all members again

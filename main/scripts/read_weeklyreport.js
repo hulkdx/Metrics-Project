@@ -23,6 +23,8 @@ var keywords = ["#title","#time","#client","#project","#desc","#managers","#phas
                "#req","#tasks_comp","#tasks_next","#milestone","#passed_unit_test","#total_unit_test","#passed_other_test","#total_other_test",
                "#revisions","#problems","#hours","#additional"];
 
+var statuses = ["New","In_progress","Resolved","Feedback","Closed","Rejected"];
+
 var selecteddiv;
 var headerdiv;
 var selectedbtn;
@@ -159,7 +161,8 @@ function addToSection(detectedkey){
         }
         else if(detectedkey == "#req"){
         	CreateInput("",subkey+"_name",0,parseInt(numofitems)+1,detectedkey,"text_input");
-        	CreateInput("",subkey+"_status",1,parseInt(numofitems)+1,detectedkey,"text_input");
+        	//CreateInput("",subkey+"_status",1,parseInt(numofitems)+1,detectedkey,"text_input");
+            CreateInput("", subkey+"_status", 1, parseInt(numofitems)+1, detectedkey, "dropdown");
         }
         else if(detectedkey == "#milestone" || detectedkey == "#revisions" || detectedkey == "#problems"){
         	if(!document.getElementById(subkey)){
@@ -230,21 +233,89 @@ function getData(i, regex, idprefix, arrayOfLines, detectedkey){
             	|| detectedkey == "#passed_other_test"|| detectedkey == "#total_unit_test" || detectedkey == "#total_other_test"){   
                 CreateInput(arrayOfLines[k], keywordsub, 1, 0, detectedkey, "text_input");    
             }
+
+
+/* REQUIREMENTS */
+//match(/(^|\s)(#[a-z\d-]+)/) = Matches for '#' in text
+
             else if(detectedkey == "#req"){
                 
-                //Gets email from the string
-                //Separates email from name
-                extractedRegex = regex.exec(arrayOfLines[k]);
-                
-                if(extractedRegex != null){
-                    excludedRegex = arrayOfLines[k].replace(extractedRegex[0],'');
-                    excludedRegex = excludedRegex.trim();
-                }else{
-                    extractedRegex = ""; 
+                if(arrayOfLines[k] == "New:"){
+
+                    for(t = k+1; t<arrayOfLines.length; t++){
+
+                        if(arrayOfLines[t] == "In_progress:" || arrayOfLines[t].match(/(^|\s)(#[a-z\d-]+)/)) {
+                            break;
+                        }
+                        CreateInput(arrayOfLines[t], keywordsub+"_name", 0, counter, detectedkey, "text_input");
+                        CreateInput("New", keywordsub+"_status", 1, counter, detectedkey, "text_input");
+                    }
                 }
-                CreateInput(excludedRegex, keywordsub+"_name", 0, counter, detectedkey, "text_input");
-                CreateInput(extractedRegex[0], keywordsub+"_status", 1, counter, detectedkey, "text_input");   
+
+                if(arrayOfLines[k] == "In_progress:"){
+
+                    for(t = k+1; t<arrayOfLines.length; t++){
+
+                        if(arrayOfLines[t] == "Resolved:" || arrayOfLines[t].match(/(^|\s)(#[a-z\d-]+)/)) {
+                            break;
+                        }
+                        CreateInput(arrayOfLines[t], keywordsub+"_name", 0, counter, detectedkey, "text_input");
+                        CreateInput("In_progress", keywordsub+"_status", 1, counter, detectedkey, "text_input");
+                    }   
+                }
+
+                if(arrayOfLines[k] == "Resolved:"){
+
+                    for(t = k+1; t<arrayOfLines.length; t++){
+
+                        if(arrayOfLines[t] == "Feedback:" || arrayOfLines[t].match(/(^|\s)(#[a-z\d-]+)/)) {
+                            break;
+                        }
+                        CreateInput(arrayOfLines[t], keywordsub+"_name", 0, counter, detectedkey, "text_input");
+                        CreateInput("Resolved", keywordsub+"_status", 1, counter, detectedkey, "text_input");
+                    }   
+                }
+
+                if(arrayOfLines[k] == "Feedback:"){
+
+                    for(t = k+1; t<arrayOfLines.length; t++){
+
+                        if(arrayOfLines[t] == "Closed:" || arrayOfLines[t].match(/(^|\s)(#[a-z\d-]+)/)) {
+                            break;
+                        }
+                        CreateInput(arrayOfLines[t], keywordsub+"_name", 0, counter, detectedkey, "text_input");
+                        CreateInput("3", keywordsub+"_status", 1, counter, detectedkey, "dropdown");
+                    }   
+                }
+
+                if(arrayOfLines[k] == "Closed:"){
+
+                    for(t = k+1; t<arrayOfLines.length; t++){
+
+                        if(arrayOfLines[t] == "Rejected:" || arrayOfLines[t].match(/(^|\s)(#[a-z\d-]+)/)) {
+                            break;
+                        }
+                        CreateInput(arrayOfLines[t], keywordsub+"_name", 0, counter, detectedkey, "text_input");
+                        CreateInput("3", keywordsub+"_status", 1, counter, detectedkey, "dropdown");
+                    }   
+                }
+
+                if(arrayOfLines[k] == "Rejected:"){
+
+                    for(t = k+1; t<arrayOfLines.length; t++){
+
+                        if(arrayOfLines[t].match(/(^|\s)(#[a-z\d-]+)/)) {
+                            break;
+                        }
+                        CreateInput(arrayOfLines[t], keywordsub+"_name", 0, counter, detectedkey, "text_input");
+                        CreateInput("2", keywordsub+"_status", 1, counter, detectedkey, "dropdown");
+                    }   
+                }             
+
             }
+
+/*------------------*/
+
             else if(detectedkey == "#client" || detectedkey == "#managers"){
                 
                 //Gets email from the string
@@ -315,7 +386,9 @@ function getData(i, regex, idprefix, arrayOfLines, detectedkey){
         }
     } 
 }
- 
+
+
+
 /* Function used for creating input and textarea elements. */
 function CreateInput(text,idprefix,order,counter,detectedkey,classname){
     
@@ -355,7 +428,33 @@ function CreateInput(text,idprefix,order,counter,detectedkey,classname){
     
     var container = document.getElementById(detectedkey+"_container");
     
-    if(classname != "textarea"){
+    if(classname == "dropdown"){
+        //Create and append select list
+        var selectList = document.createElement("select");
+        selectList.selectedIndex = parseInt(text);
+        selectList.id = "req_select_"+counter;
+        container.appendChild(selectList);
+        var option = document.createElement("option");
+        option.value = "New";
+        option.text = "New";
+        selectList.appendChild(option);
+        var option = document.createElement("option");
+        option.value = "In progress";
+        option.text = "In progress";
+        selectList.appendChild(option);
+        var option = document.createElement("option");
+        option.value = "Resolved";
+        option.text = "Resolved";
+        selectList.appendChild(option);
+        var option = document.createElement("option");
+        option.value = "Feedback";
+        option.text = "Feedback";
+        selectList.appendChild(option);
+
+        document.getElementById("req_select_"+counter).selectedIndex = parseInt(text);
+    }else{
+
+    if(classname == "text_input" || classname == "hour_input"){
         var input = document.createElement("input");
         input.type = "text";
         input.className = classname;
@@ -376,6 +475,7 @@ function CreateInput(text,idprefix,order,counter,detectedkey,classname){
         texta.cols = "40";
         texta.rows = "5";
         container.appendChild(texta);
+    }
     }
 
     document.getElementById(detectedkey+"_container").setAttribute("name",counter);
@@ -499,7 +599,7 @@ var placeholder = "";
                 while(true){
                 i++;
                     if(document.getElementById("req_name_"+i)){
-                        requirements.push({name:document.getElementById("req_name_"+i).value, status: document.getElementById("req_status_"+i).value});
+                        requirements.push({name:document.getElementById("req_name_"+i).value, status: document.getElementById("req_select_"+i).selectedIndex});
                     }else{
                         i = 0;
                         break;

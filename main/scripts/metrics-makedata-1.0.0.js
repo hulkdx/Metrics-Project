@@ -169,7 +169,7 @@ function projectRequirements(){
             document.getElementById("reqbox").innerHTML += "<b>"+objects.requirement[i].description+"</b><br>";
         }
     }else{
-        document.getElementById("reqbox").innerHTML += "No Requirements";   
+        document.getElementById("reqbox").innerHTML += "No Requirements";
     }  
 }
 

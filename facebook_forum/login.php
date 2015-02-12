@@ -12,14 +12,14 @@ if (strpos($_SERVER['REQUEST_URI'],"code=")===FALSE) //First run through the scr
     header("Location:initialization.php");
   //Change localhost to actual server address - Facebook demands absolute URLs
   else
-    header("Location:"."https://www.facebook.com/dialog/oauth?client_id=777065655684035&response_type=code&redirect_uri=".rawurlencode("http://localhost/Metrics/facebook_forum/login.php"));
+    header("Location:"."https://www.facebook.com/dialog/oauth?client_id=777065655684035&response_type=code&redirect_uri=".rawurlencode("http://metricsmonitoring.sis.uta.fi/facebook_forum/login.php"));
   exit();
 }
 else //Second run, coming back from the Facebook login page
 {
   $str="https://graph.facebook.com/oauth/access_token";
   //Change localhost to actual server address
-  $str2="?client_id=777065655684035&redirect_uri=http://localhost/Metrics/facebook_forum/login.php&client_secret=3648579cf4a413d1dfe490304456cd4c&code=".substr($_SERVER['REQUEST_URI'],strpos($_SERVER['REQUEST_URI'],"code=")+5);
+  $str2="?client_id=777065655684035&redirect_uri=http://metricmonitoring.sis.uta.fi/facebook_forum/login.php&client_secret=3648579cf4a413d1dfe490304456cd4c&code=".substr($_SERVER['REQUEST_URI'],strpos($_SERVER['REQUEST_URI'],"code=")+5);
 //substr(string,pos)-copy from pos until the end
   $ch = curl_init($str.$str2);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

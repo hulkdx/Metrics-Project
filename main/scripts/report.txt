@@ -40,7 +40,7 @@ Requirement 4
 Closed:
 Requirement 5
 Rejected:
-Requiremetn 6
+Requirement 6
 
 #tasks_comp
 COMPLETED TASKS

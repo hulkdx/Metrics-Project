@@ -1,17 +1,14 @@
-﻿#title
+#title
 WEEKLY REPORT
 
 #time
 TIME OF REPORT
-27.10.2014
+01.01.2015
 
 #client
 CLIENT
 Pekka Mäkiaho pekka.makiaho@uta.fi
-John Doe asdsdd@uta.fi
-Matti Meikäläinen 3d3d3d@uta.fi
-Maija Meikäläinen v5v55v@uta.fi
-Jane Doe acsccscs@uta.fi
+Maija Meikäläinen meikalainen.maija@uta.fi
 
 #project
 PROJECT
@@ -19,44 +16,42 @@ Monitoring Metrics Tool
 
 #desc
 DESCRIPTION
-Web-based program for monitoring project metrics
-like complete and incomplete tasks and working hours.
-Some more lines just for testing.
-This here is just for testing aswell.
-asddsaasdsadsd.
+Text block with text
 
 #managers
 PROJECT MANAGERS
-Muhammad Qasim  Muhammad.Qasim@uta.fi
-Zhang Yichi     zhang.yichi.x@student.uta.fi
-Yang Mengyuan   ymykueen@gmail.com
+Matti Meikäläinen meikalainen.matti@uta.fi
+Muhammad Qasim muhammad.qasim@uta.fi
 
 #phase
 PHASE OF PROJECT
-Planning and study. this is the phase of the project field.
-the phase is good and this is testing.
+Text block with text
 
 #req
 REQUIREMENTS
-more coding   in_progress
+New:
+Requirement1
+In_progress:
+Requirement 2
+Resolved:
+Requirement 3
+Feedback:
+Requirement 4
+Closed:
+Requirement 5
+Rejected:
+Requiremetn 6
 
 #tasks_comp
 COMPLETED TASKS
-- Requirements specification meeting with client
-- Development environment decided
-- Developing outlook built
-- Making the project plan
-- First version mockup make
+Requirements specification meeting with client
+Project plan document
+Project design document
 
 #tasks_next
 TASKS FOR THE NEXT WEEK
-- Editor for reporters to read (weekly report's) information in
-- Development skill study
-- Requirements specification
-- Define a format for weekly report
-- Create interactive charts
-- Make a database to store the data
-- UI design
+tasks1
+tasks2
 
 #milestone
 NEXT MILESTONE
@@ -85,22 +80,14 @@ CODE REVISIONS
 
 #problems
 PROBLEMS
-out of beer
-out of coke
-no free time
+Problem 1
+Problen 2
 
 #hours
 WORKING HOURS (this week/so far)
-
-Muhammad Qasim      22/35
-Zhang Yichi          5/18
-Yang Mengyuan        4/26
-Tommi Tuominen       0/18
-Shahzad Choudhry     0/9
-Saba Jafarzadeh     15/31
-Huang Jueran         6/11
-Ahsanur Rahman       4/12
-Total:
+Matti Meikäläinen	15/30
+Jane Doe		10/45
 
 #additional
 ADDITIONAL INFORMATION
+Text block with text

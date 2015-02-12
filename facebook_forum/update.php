@@ -16,13 +16,12 @@ session_start();
 
 if ((!isset($_GET["group"])) || (!isset($_SESSION["token"])))
   header("Location:login.php");
+if (!is_numeric($_GET["group"]))
+  exit("Make sure that the group ID contains digits only.");
 FacebookSession::setDefaultApplication('777065655684035', '3648579cf4a413d1dfe490304456cd4c');
 $session = new FacebookSession($_SESSION["token"]);
 $request = new FacebookRequest($session, 'GET', "/".$_GET["group"]."/members");
-try{$response = $request->execute();}
-catch (Exception $e) {
-    echo 'Caught exception: ',  $e->getMessage(), "\n";
-}
+try{$response = $request->execute();
 $graphObject = $response->getGraphObject(GraphUser::className());
 $outcome=$graphObject->getProperty('data')->asArray();
 
@@ -51,4 +50,7 @@ else $result=FALSE;
 mysqli_close($con);
 if ($result==TRUE) echo "Updated successfully"; //doesn't really report on any errors above
 else echo "Did not update (is the group added to DB?)";
+}
+catch (Exception $e)
+{echo "Caught exception: ".$e->getMessage()."\n";}
 ?>

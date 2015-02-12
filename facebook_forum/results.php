@@ -157,7 +157,6 @@ while ($outcome)
 	}
    if ($outcome==false) $temp=array_slice($temp,0,$j); //if anything has been cut, or the page is empty, move on
 }
-
 if ($_POST["members"]!="Everyone") //filtering by a particular name
 {
   $j=0;
@@ -168,6 +167,11 @@ if ($_POST["members"]!="Everyone") //filtering by a particular name
 	  $j++;
 	}
   $temp=array_slice($temp,0,$j);
+}
+if (count($temp)==0)
+{
+  echo "There are no posts in this group matching the entered restrictions. <a href='initialization.php'>Return to the form.</a>";
+  return;
 }
 $cnt=count($temp);
 $truecount=min($_POST["count"],$cnt); //display the queried number of recent posts, but as many as truly exist
@@ -215,8 +219,9 @@ for ($i=0; $i<$namecount; $i++)
     echo htmlentities($p[$i]).", ";
 //Display entire feed, for debugging purposes:
 //var_dump($temp);
+echo "<br><p align='center'><a href='initialization.php'>Return to the form.</a>";
 }
 catch (Exception $e) 
-{echo 'Caught exception: '.$e->getMessage()."\n";}
+{echo "Caught exception: ".$e->getMessage()."\n";}
 }
 ?>

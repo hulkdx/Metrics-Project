@@ -16,18 +16,20 @@ session_start();
 
 if ((!isset($_GET["addgroup"])) || (!isset($_SESSION["token"])))
   header("Location:login.php");
+if (!is_numeric($_GET["addgroup"]))
+  exit("Make sure that the group ID contains digits only.");
 $id=$_GET["addgroup"];
 FacebookSession::setDefaultApplication('777065655684035', '3648579cf4a413d1dfe490304456cd4c');
 $session = new FacebookSession($_SESSION["token"]);
 $request = new FacebookRequest($session, 'GET', "/".$id);
-try{$response = $request->execute();}
-catch (Exception $e)
-{echo 'Caught exception: ',  $e->getMessage(), "\n";}
+try{$response = $request->execute();
 $graphObject = $response->getGraphObject(GraphUser::className());
 $outcome=$graphObject->getProperty('name');
 
 $result=mysqli_query($con,"INSERT INTO facebook_group (fgroup_id, group_name) VALUES (".$id.
 ",'".mysqli_real_escape_string($con,$outcome)."')"); //fills facebook_group...
+if ($result===FALSE)
+  exit("Did not add (the group likely exists already)");
 
 $request = new FacebookRequest($session, 'GET', "/".$id."/members");
 try{$response = $request->execute();}
@@ -41,5 +43,8 @@ foreach ($outcome as $i)
   $result=mysqli_query($con,$query); //but NOT the link_table; see update.php
 }
 mysqli_close($con);
-echo "Updated successfully"; //overly optimistic
+echo "Added successfully";
+}
+catch (Exception $e)
+{echo "Caught exception: ".$e->getMessage()."\n";}
 ?>

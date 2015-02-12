@@ -117,6 +117,7 @@ function checkGroup()
   if (!b)
 	document.getElementById("grouperr").innerHTML="The group ID must contain digits only.";
   else document.getElementById("grouperr").innerHTML="";
+  document.getElementById("addgroup").innerHTML="Add group to list";
   document.getElementById("update").innerHTML="Update member list in DB";
   fetch("group","refresh","id","members");
 }

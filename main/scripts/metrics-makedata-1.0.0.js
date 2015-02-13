@@ -284,7 +284,7 @@ if(objects.participation != 0){
 
         for(var k=0; k<objects.individual.length; k++){
             if(objects.individual[k].member_id == memberid){
-                indiArray.push({name: membername+" ("+objects.project[0].project_id+")", y: parseInt(objects.individual[k].hours), id: parseInt(objects.individual[k].member_id)});
+                indiArray.push({name: membername+" ("+objects.project[0].project_id+")", y: parseFloat(objects.individual[k].hours), id: parseInt(objects.individual[k].member_id)});
             }
         }
 
@@ -295,7 +295,7 @@ if(objects.participation != 0){
 }else if(objects.individual != 0){
         var testadd = 0;
             for(var k=0; k<objects.individual.length; k++){
-                indiArray.push({name: parseInt(objects.individual[k].member_id), y: parseInt(objects.individual[k].hours), id: parseInt(objects.individual[k].member_id)});
+                indiArray.push({name: parseInt(objects.individual[k].member_id), y: parseFloat(objects.individual[k].hours), id: parseInt(objects.individual[k].member_id)});
             }
     return addHours(indiArray);
 
@@ -306,7 +306,7 @@ if(objects.participation != 0){
                 try{
                     var weeklyHours = JSON.parse(objects.weekly_report[0].working_hours);
                     for(var k=0; k<weeklyHours.length; k++){
-                        indiArray.push({name: weeklyHours[k].name, y: parseInt(weeklyHours[k].totalhours)});
+                        indiArray.push({name: weeklyHours[k].name, y: parseFloat(weeklyHours[k].totalhours)});
                         xCategories.push(weeklyHours[k].name);
                     }    
                 }catch(err){
@@ -339,7 +339,7 @@ if(objects.individual && objects.individual.length > 1){
         indidate = objects.individual[i].date;
         
         reArray.push({name: objects.project[0].project_name,
-                    y: parseInt(objects.individual[i].hours),
+                    y: parseFloat(objects.individual[i].hours),
                     //day: parseInt(parseDateTime("day",indidate)),
                     month: parseInt(parseDateTime("month",indidate))
                     //year: parseInt(parseDateTime("year",indidate))

@@ -2,7 +2,7 @@
 Tommi Tuominen and Jueran Huang
 Metrics Monitoring Tool
 Project Work 2014/2015
-Updated: 6.2.2015
+Updated: 14.2.2015
 This file includes functions for loading a text file,
 parsing it and creating input fields. The data is then
 constructed into an object that is sent forward to the
@@ -23,16 +23,16 @@ var keywords = ["#title","#time","#client","#project","#desc","#managers","#phas
                "#req","#tasks_comp","#tasks_next","#milestone","#passed_unit_test","#total_unit_test","#passed_other_test","#total_other_test",
                "#revisions","#problems","#hours","#additional"];
 
-var statuses = ["New","In_progress","Resolved","Feedback","Closed","Rejected"];
+var statuses = ["----New----","--In_progress--","--Resolved--","--Feedback--","---Closed---","--Rejected--"];
 
 var selecteddiv;
 var headerdiv;
 var selectedbtn;
  
-//Gets today's date
+// Gets today's date
 var today = new Date();
 var dd = today.getDate();
-var mm = today.getMonth()+1; //January is 0!
+var mm = today.getMonth()+1; // January is 0!
 var yyyy = today.getFullYear();
 
 if(dd<10) {
@@ -45,7 +45,7 @@ if(mm<10) {
 
 today = mm+'.'+dd+'.'+yyyy;
 
-//Load defaults
+// Load defaults
 initFields();
 
 
@@ -64,10 +64,10 @@ Called after choosing a text file.
         r.onload = function(e){
         contents = e.target.result;
 
-        //Creates an array matching regex:
+        // Creates an array matching regex:
         var arrayOfLines = contents.match(/[^\r\n]+/g);
         
-        //Regex patterns used for matching certain strings
+        // Regex patterns used for matching certain strings
         var emailregex = /(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
         var hashtagregex = /(^|\s)(#[a-z\d-]+)/;
         
@@ -78,8 +78,8 @@ Called after choosing a text file.
         
         var buttons = "";
         
-        //Loops thru the information searching for keywords:
-        //TODO: Make it more efficient
+        // Loops thru the information searching for keywords:
+        // TODO: Make it more efficient
             for(i = 0; i<arrayOfLines.length; i++){
                 if(arrayOfLines[i].charAt(0) == "#"){
                     
@@ -106,7 +106,7 @@ Called after choosing a text file.
         r.readAsText(f);
       }
 
-    //Function used for clearing fields and divs
+    // Function used for clearing fields and divs
     function initFields(){
         clearFields();
         
@@ -161,7 +161,7 @@ function addToSection(detectedkey){
         }
         else if(detectedkey == "#req"){
         	CreateInput("",subkey+"_name",0,parseInt(numofitems)+1,detectedkey,"text_input");
-        	//CreateInput("",subkey+"_status",1,parseInt(numofitems)+1,detectedkey,"text_input");
+        	// CreateInput("",subkey+"_status",1,parseInt(numofitems)+1,detectedkey,"text_input");
             CreateInput("", subkey+"_status", 1, parseInt(numofitems)+1, detectedkey, "dropdown");
         }
         else if(detectedkey == "#milestone" || detectedkey == "#revisions" || detectedkey == "#problems"){
@@ -180,7 +180,7 @@ function addToSection(detectedkey){
             CreateInput("",subkey+"_total",1,parseInt(numofitems)+1,detectedkey,"hour_input");
         }
         
-    //TEXT AREAS  
+    // TEXT AREAS
         else if(detectedkey == "#desc" || detectedkey == "#phase" || detectedkey == "#additional"){
             if(!document.getElementById(subkey)){
                 CreateInput("",subkey,0,0,detectedkey,"textarea");
@@ -209,14 +209,15 @@ function hideSection(targetid, headerid, btnid){
     
 }
 
-//Function used for displaying the data
-//Loops thru sub categories
+// Function used for displaying the data
+// Loops thru sub categories
 function getData(i, regex, idprefix, arrayOfLines, detectedkey){
     var extractedRegex = "";
     var excludedRegex = "";
     var text = "";
     var keywordsub = detectedkey.substr(1);
     var counter = 1;
+    var subcounter = 0;
     var hoursRegex = /\d+\/\d+/;
     var textRegex = /[a-zA-Z]*\s+[a-zA-Z]*/;
     var extractedHours = "";
@@ -236,7 +237,7 @@ function getData(i, regex, idprefix, arrayOfLines, detectedkey){
 
 
 /* REQUIREMENTS */
-//match(/(^|\s)(#[a-z\d-]+)/) = Matches for '#' in text
+// match(/(^|\s)(#[a-z\d-]+)/) = Matches for '#' in text
 
             else if(detectedkey == "#req"){
                 
@@ -247,8 +248,9 @@ function getData(i, regex, idprefix, arrayOfLines, detectedkey){
                         if(arrayOfLines[t] == "In_progress:" || arrayOfLines[t].match(/(^|\s)(#[a-z\d-]+)/)) {
                             break;
                         }
-                        CreateInput(arrayOfLines[t], keywordsub+"_name", 0, counter, detectedkey, "text_input");
-                        CreateInput("New", keywordsub+"_status", 1, counter, detectedkey, "text_input");
+                        subcounter++
+                        CreateInput(arrayOfLines[t], keywordsub+"_name", 0, subcounter, detectedkey, "text_input");
+                        CreateInput("0", keywordsub+"_status", 1, subcounter, detectedkey, "dropdown");
                     }
                 }
 
@@ -259,8 +261,9 @@ function getData(i, regex, idprefix, arrayOfLines, detectedkey){
                         if(arrayOfLines[t] == "Resolved:" || arrayOfLines[t].match(/(^|\s)(#[a-z\d-]+)/)) {
                             break;
                         }
-                        CreateInput(arrayOfLines[t], keywordsub+"_name", 0, counter, detectedkey, "text_input");
-                        CreateInput("In_progress", keywordsub+"_status", 1, counter, detectedkey, "text_input");
+                        subcounter++
+                        CreateInput(arrayOfLines[t], keywordsub+"_name", 0, subcounter, detectedkey, "text_input");
+                        CreateInput("1", keywordsub+"_status", 1, subcounter, detectedkey, "dropdown");
                     }   
                 }
 
@@ -271,8 +274,9 @@ function getData(i, regex, idprefix, arrayOfLines, detectedkey){
                         if(arrayOfLines[t] == "Feedback:" || arrayOfLines[t].match(/(^|\s)(#[a-z\d-]+)/)) {
                             break;
                         }
-                        CreateInput(arrayOfLines[t], keywordsub+"_name", 0, counter, detectedkey, "text_input");
-                        CreateInput("Resolved", keywordsub+"_status", 1, counter, detectedkey, "text_input");
+                        subcounter++
+                        CreateInput(arrayOfLines[t], keywordsub+"_name", 0, subcounter, detectedkey, "text_input");
+                        CreateInput("2", keywordsub+"_status", 1, subcounter, detectedkey, "dropdown");
                     }   
                 }
 
@@ -283,8 +287,9 @@ function getData(i, regex, idprefix, arrayOfLines, detectedkey){
                         if(arrayOfLines[t] == "Closed:" || arrayOfLines[t].match(/(^|\s)(#[a-z\d-]+)/)) {
                             break;
                         }
-                        CreateInput(arrayOfLines[t], keywordsub+"_name", 0, counter, detectedkey, "text_input");
-                        CreateInput("3", keywordsub+"_status", 1, counter, detectedkey, "dropdown");
+                        subcounter++
+                        CreateInput(arrayOfLines[t], keywordsub+"_name", 0, subcounter, detectedkey, "text_input");
+                        CreateInput("3", keywordsub+"_status", 1, subcounter, detectedkey, "dropdown");
                     }   
                 }
 
@@ -295,8 +300,9 @@ function getData(i, regex, idprefix, arrayOfLines, detectedkey){
                         if(arrayOfLines[t] == "Rejected:" || arrayOfLines[t].match(/(^|\s)(#[a-z\d-]+)/)) {
                             break;
                         }
-                        CreateInput(arrayOfLines[t], keywordsub+"_name", 0, counter, detectedkey, "text_input");
-                        CreateInput("3", keywordsub+"_status", 1, counter, detectedkey, "dropdown");
+                        subcounter++
+                        CreateInput(arrayOfLines[t], keywordsub+"_name", 0, subcounter, detectedkey, "text_input");
+                        CreateInput("4", keywordsub+"_status", 1, subcounter, detectedkey, "dropdown");
                     }   
                 }
 
@@ -307,8 +313,10 @@ function getData(i, regex, idprefix, arrayOfLines, detectedkey){
                         if(arrayOfLines[t].match(/(^|\s)(#[a-z\d-]+)/)) {
                             break;
                         }
-                        CreateInput(arrayOfLines[t], keywordsub+"_name", 0, counter, detectedkey, "text_input");
-                        CreateInput("2", keywordsub+"_status", 1, counter, detectedkey, "dropdown");
+                        subcounter++
+                        CreateInput(arrayOfLines[t], keywordsub+"_name", 0, subcounter, detectedkey, "text_input");
+                        CreateInput("5", keywordsub+"_status", 1, subcounter, detectedkey, "dropdown");
+                        
                     }   
                 }             
 
@@ -318,8 +326,8 @@ function getData(i, regex, idprefix, arrayOfLines, detectedkey){
 
             else if(detectedkey == "#client" || detectedkey == "#managers"){
                 
-                //Gets email from the string
-                //Separates email from name
+                // Gets email from the string
+                // Separates email from name
                 extractedRegex = regex.exec(arrayOfLines[k]);
                 
                 if(extractedRegex != null){
@@ -398,8 +406,7 @@ function CreateInput(text,idprefix,order,counter,detectedkey,classname){
         placeholder = "Email";
     }else if(idprefix == "project"){
         placeholder = "Project name";
-    }else if(idprefix == "req_status"){
-        placeholder = "Requirement_status";
+   
     }else if(idprefix == "tasks_comp"){
         placeholder = "Completed task";
     }else if(idprefix == "tasks_next"){
@@ -428,31 +435,42 @@ function CreateInput(text,idprefix,order,counter,detectedkey,classname){
     
     var container = document.getElementById(detectedkey+"_container");
     
-    if(classname == "dropdown"){
-        //Create and append select list
+    if(classname == "dropdown" ){
+        // Create and append select list
         var selectList = document.createElement("select");
-        selectList.selectedIndex = parseInt(text);
         selectList.id = "req_select_"+counter;
         container.appendChild(selectList);
-        var option = document.createElement("option");
-        option.value = "New";
-        option.text = "New";
-        selectList.appendChild(option);
-        var option = document.createElement("option");
-        option.value = "In progress";
-        option.text = "In progress";
-        selectList.appendChild(option);
-        var option = document.createElement("option");
-        option.value = "Resolved";
-        option.text = "Resolved";
-        selectList.appendChild(option);
-        var option = document.createElement("option");
-        option.value = "Feedback";
-        option.text = "Feedback";
-        selectList.appendChild(option);
+        var option1 = document.createElement("option");
+        option1.value = "1";
+        option1.text = "New";
+        selectList.appendChild(option1);
+        var option2 = document.createElement("option");
+        option2.value = "2";
+        option2.text = "In progress";
+        selectList.appendChild(option2);
+        var option3 = document.createElement("option");
+        option3.value = "3";
+        option3.text = "Resolved";
+        selectList.appendChild(option3);
+        var option4 = document.createElement("option");
+        option4.value = "4";
+        option4.text = "Feedback";
+        selectList.appendChild(option4);
+        var option5 = document.createElement("option");
+        option5.value = "5";
+        option5.text = "Closed";
+        selectList.appendChild(option5);
+        var option6 = document.createElement("option");
+        option6.value = "6";
+        option6.text = "Rejected";
+        selectList.appendChild(option6);
 
-        document.getElementById("req_select_"+counter).selectedIndex = parseInt(text);
-    }else{
+        var x = selectList.children[parseInt(text)];
+    	x.setAttribute("selected", "selected");
+    	container.innerHTML += "<br>";
+    }
+    
+    else{
 
     if(classname == "text_input" || classname == "hour_input"){
         var input = document.createElement("input");
@@ -492,7 +510,7 @@ var placeholder = "";
     var description; 
     var phase = "";
     
-    //Weeklyreport info
+    // Weeklyreport info
     var managers = [];
     var manageremails = [];
     var requirements = [];
@@ -527,8 +545,9 @@ var placeholder = "";
                 projectid = document.getElementById("projectid").value;
                 reportid = document.getElementById("reportid").value;
 
-                //Time, project name, desc, phase ,unit_test,oother_test and additional
-                //are pushed into otherinfo array
+                // Time, project name, desc, phase ,unit_test,oother_test and
+		// additional
+                // are pushed into otherinfo array
                 
                 if(document.getElementById("time_0")){
                     otherinfo[0].time = document.getElementById("time_0").value;
@@ -549,7 +568,7 @@ var placeholder = "";
                 if(document.getElementById("additional")){
                     otherinfo[0].additional = document.getElementById("additional").value;
                 }else{console.log("error getting additional!");}
-               //Unit Test
+               // Unit Test
                 
                 if(document.getElementById("passed_unit_test_0")){
                 	otherinfo[0].passed_unit_test = document.getElementById("passed_unit_test_0").value;
@@ -559,7 +578,7 @@ var placeholder = "";
                 if(document.getElementById("total_unit_test_0")){
                 	otherinfo[0].total_unit_test = document.getElementById("total_unit_test_0").value;
                 }else{console.log("error getting total_unit_test!");}     
-                //Other Test
+                // Other Test
                
                 if(document.getElementById("passed_other_test_0")){
                 	otherinfo[0].passed_other_test = document.getElementById("passed_other_test_0").value;
@@ -572,7 +591,7 @@ var placeholder = "";
                 otherinfo[0].reportid = reportid;
                 otherinfo[0].projectid = projectid;
                 
-                //Client name
+                // Client name
                 while(true){
                 i++;
                     if(document.getElementById("client_name_"+i)){
@@ -583,11 +602,13 @@ var placeholder = "";
                     }
                 }
                 
-                //Managers
+                // Managers
                 while(true){
                 i++;
                     if(document.getElementById("managers_name_"+i)){
                         managers.push({name:document.getElementById("managers_name_"+i).value, email: document.getElementById("managers_email_"+i).value });
+                        //console.log( document.getElementById("managers_name_"+i).value );
+                        //console.log( document.getElementById("managers_email_"+i).value );
                     }else{
                         i = 0;
                         break;
@@ -595,11 +616,13 @@ var placeholder = "";
                 }
                    
                 
-                //Requirements
+                // Requirements
                 while(true){
                 i++;
                     if(document.getElementById("req_name_"+i)){
-                        requirements.push({name:document.getElementById("req_name_"+i).value, status: document.getElementById("req_select_"+i).selectedIndex});
+                        requirements.push({name:document.getElementById("req_name_"+i).value, status: document.getElementById("req_select_"+i).value});
+                        //console.log( document.getElementById("req_name_"+i).value );
+                        //console.log( document.getElementById("req_select_"+i).value );
                     }else{
                         i = 0;
                         break;
@@ -607,7 +630,7 @@ var placeholder = "";
                 }
                 
                 
-                //Completed tasks
+                // Completed tasks
                 while(true){
                 i++;
                     if(document.getElementById("tasks_comp_"+i)){
@@ -618,7 +641,7 @@ var placeholder = "";
                     }
                 }
                 
-                //Next tasks
+                // Next tasks
                 while(true){
                 i++;
                     if(document.getElementById("tasks_next_"+i)){
@@ -629,7 +652,7 @@ var placeholder = "";
                     }
                 }
                 
-                //Milestone
+                // Milestone
                 while(true){
                 i++;
                     if(document.getElementById("milestone_"+i)){
@@ -641,7 +664,7 @@ var placeholder = "";
                 }
                 
                 
-                //Code revisions
+                // Code revisions
                 while(true){
                 i++;
                     if(document.getElementById("revisions_"+i)){
@@ -652,7 +675,7 @@ var placeholder = "";
                     }
                 }
                 
-                //Problems
+                // Problems
                 while(true){
                 i++;
                     if(document.getElementById("problems_"+i)){
@@ -663,7 +686,7 @@ var placeholder = "";
                     }
                 }
                 
-                //Working hours
+                // Working hours
                 while(true){
                 i++;
                     if(document.getElementById("hours_name_"+i)){
@@ -676,7 +699,7 @@ var placeholder = "";
                     }
                 }
         
-                //Final object is created from all the data objects:
+                // Final object is created from all the data objects:
                 finalObject = {
                     otherinfo: otherinfo,
                     client: client,
@@ -690,7 +713,7 @@ var placeholder = "";
                     problems: problems                
                 };
                 
-                //console.log(JSON.stringify(finalObject));            
+                console.log(JSON.stringify(finalObject));
             } 
         
         sendData();    
@@ -712,8 +735,8 @@ var placeholder = "";
             data : JSON.stringify(finalObject),
             success : function(finalObject) {
                 console.log("success!");
-                //console.log( data );
-                //data - response from server
+                // console.log( data );
+                // data - response from server
             },
             error : function(errorThrown) {    
                 console.log("error - AJAX");
@@ -722,5 +745,5 @@ var placeholder = "";
         });
     }
 
-//File reader event    
+// File reader event
 document.getElementById('fileinput').addEventListener('change', readSingleFile, false);

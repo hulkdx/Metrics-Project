@@ -85,8 +85,8 @@ Problen 2
 
 #hours
 WORKING HOURS (this week/so far)
-Matti Meikäläinen	15/30
-Jane Doe		10/45
+Matti Meikäläinen 15/30
+Jane Doe 10/45
 
 #additional
 ADDITIONAL INFORMATION

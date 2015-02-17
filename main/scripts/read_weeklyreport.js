@@ -568,8 +568,8 @@ var placeholder = "";
                 if(document.getElementById("additional")){
                     otherinfo[0].additional = document.getElementById("additional").value;
                 }else{console.log("error getting additional!");}
-               // Unit Test
-                
+		
+		// Unit Test 
                 if(document.getElementById("passed_unit_test_0")){
                 	otherinfo[0].passed_unit_test = document.getElementById("passed_unit_test_0").value;
                 }else{console.log("error getting passed_unit_test!");}      
@@ -578,8 +578,8 @@ var placeholder = "";
                 if(document.getElementById("total_unit_test_0")){
                 	otherinfo[0].total_unit_test = document.getElementById("total_unit_test_0").value;
                 }else{console.log("error getting total_unit_test!");}     
-                // Other Test
-               
+                
+		// Other Test
                 if(document.getElementById("passed_other_test_0")){
                 	otherinfo[0].passed_other_test = document.getElementById("passed_other_test_0").value;
                 }else{console.log("error getting passed_other_test!");}
@@ -607,8 +607,6 @@ var placeholder = "";
                 i++;
                     if(document.getElementById("managers_name_"+i)){
                         managers.push({name:document.getElementById("managers_name_"+i).value, email: document.getElementById("managers_email_"+i).value });
-                        //console.log( document.getElementById("managers_name_"+i).value );
-                        //console.log( document.getElementById("managers_email_"+i).value );
                     }else{
                         i = 0;
                         break;
@@ -621,8 +619,6 @@ var placeholder = "";
                 i++;
                     if(document.getElementById("req_name_"+i)){
                         requirements.push({name:document.getElementById("req_name_"+i).value, status: document.getElementById("req_select_"+i).value});
-                        //console.log( document.getElementById("req_name_"+i).value );
-                        //console.log( document.getElementById("req_select_"+i).value );
                     }else{
                         i = 0;
                         break;
@@ -712,8 +708,6 @@ var placeholder = "";
                     workinghours: working_hours,
                     problems: problems                
                 };
-                
-                console.log(JSON.stringify(finalObject));
             } 
         
         sendData();    
@@ -734,12 +728,10 @@ var placeholder = "";
             type : "POST",
             data : JSON.stringify(finalObject),
             success : function(finalObject) {
-                console.log("success!");
-                // console.log( data );
-                // data - response from server
+            console.log("success!");
+
             },
-            error : function(errorThrown) {    
-                console.log("error - AJAX");
+            error : function(errorThrown) {
                 console.log(errorThrown);
             },
         });

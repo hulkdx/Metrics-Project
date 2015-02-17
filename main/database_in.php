@@ -42,8 +42,8 @@ else {
 	$problems = mysqli_real_escape_string($con,json_encode($decoded_json->problems));
 	$workinghours = mysqli_real_escape_string($con,json_encode($decoded_json->workinghours));
 	
-	$status = "Active";
-	$version = "1.0.3";
+	$status = 1;
+	$version = 1;
 	
 	$query = "INSERT INTO `weekly_report`(`report_id`, `project_id`, `number_of_week`, `project_phase`,
 		`completed_tasks`, `task_for_nextweek`, `schedule_status`, `next_milestone`, `working_hours`, `passed_unit_testcases`,`total_unit_testcases`,
@@ -51,7 +51,7 @@ else {
 	VALUES ($report_id,$project_id,$number_of_week,'$project_phase','$completed_tasks','$task_for_nextweek','$schedule_status',
 		'$next_milestone','$workinghours',$passed_unit_testcases,$total_unit_testcases,$passed_other_testcases,$total_other_testcases,'$code_revisions','$problems','$changes_in_project_plan','$things_to_mention');";
 	
-	for($i=0;$i<count($requirements);$i++){     
+	for($i=0;$i<count($requirements);$i++){
 	    $query .= "INSERT INTO `weekly_report_requirement`(`project_id`, `report_id`, `requirement_name`,  `requirement_status`)
 	    VALUES($project_id, $report_id,'" . $requirements[$i]->name . "'," . $requirements[$i]->status .");";
 	}
@@ -62,7 +62,7 @@ else {
 	}
 	
 	$query .= "INSERT INTO `project`(`project_id`, `project_name`, `created_on`, `updated_on`, `status`, `version`, `discription`)
-	VALUES($project_id, '$project_name','$created_on','$updated_on','$status','$version', '$description')";
+	VALUES($project_id, '$project_name', '$created_on','$updated_on', $status, $version, '$description')";
 
 	try {
 

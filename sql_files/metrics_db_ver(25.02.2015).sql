@@ -29,7 +29,7 @@ USE `metrics`;
 --
 
 CREATE TABLE IF NOT EXISTS `facebook_group` (
-  `group_id` int(20) NOT NULL,
+  `group_id` int(20) NOT NULL AUTO_INCREMENT,
   `fgroup_id` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
   `group_name` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
   PRIMARY KEY (`group_id`),
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `facebook_group` (
 --
 
 CREATE TABLE IF NOT EXISTS `facebook_member` (
-  `member_id` int(10) NOT NULL,
+  `member_id` int(10) NOT NULL AUTO_INCREMENT,
   `member_name` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
   `fmember_id` varchar(30) CHARACTER SET latin1 DEFAULT NULL,
   PRIMARY KEY (`member_id`),
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `individual_work` (
 --
 
 CREATE TABLE IF NOT EXISTS `link_table` (
-  `link_id` int(20) NOT NULL,
+  `link_id` int(20) NOT NULL AUTO_INCREMENT,
   `group_id` int(20) DEFAULT NULL,
   `member_id` int(10) DEFAULT NULL,
   PRIMARY KEY (`link_id`),
@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `link_table` (
 --
 
 CREATE TABLE IF NOT EXISTS `member` (
-  `member_id` int(10) NOT NULL,
+  `member_id` int(10) NOT NULL AUTO_INCREMENT,
   `account` varchar(30) CHARACTER SET latin1 DEFAULT NULL,
   `password` varchar(30) CHARACTER SET latin1 DEFAULT NULL,
   `first_name` varchar(20) CHARACTER SET latin1 DEFAULT NULL,

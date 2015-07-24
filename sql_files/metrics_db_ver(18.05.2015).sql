@@ -172,7 +172,7 @@ CREATE TABLE IF NOT EXISTS `requirement` (
 --
 
 CREATE TABLE IF NOT EXISTS `weekly_report` (
-  `report_id` int(50) NOT NULL,
+  `report_id` int(50) NOT NULL AUTO_INCREMENT,
   `project_id` int(10) DEFAULT NULL,
   `number_of_week` int(100) DEFAULT NULL,
   `project_phase` varchar(30) CHARACTER SET latin1 DEFAULT NULL,

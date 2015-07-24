@@ -41,12 +41,18 @@
 						<li>
 							<label for="emailz">Email:</label>
 							<input type="text" name="email">
-						</li>
+						
 						
 						<li>
 							<label for="phonenumebr">Phone Number:</label>
 							<input type="text" name="pnumb">
+                                                </li>  
+                                                        <label for="verification_code">Verification Code:</label>
+							<input type="text" name="verification_code">
+                                                        
 						</li>
+                                                
+                                                Ask the verification code from pekka.makiaho(at)uta.fi
 						<span></span>
 					</ol>
 					<div id="logb">

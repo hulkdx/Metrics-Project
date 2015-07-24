@@ -21,7 +21,7 @@ body{
     padding:2px;
     width:100%;
     margin-top:20px;
-    margin-bottom:-10px;    
+    margin-bottom:-10px;
 }
 
 .header_div{
@@ -47,8 +47,12 @@ body{
     float:right;
 }
 
-@media print { 
+#projectid{
+    visibility: hidden;
+}
+
+@media print {
     .no-print{
         display:none;
-    } 
+    }
 }

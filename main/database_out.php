@@ -26,13 +26,13 @@ if (mysqli_connect_errno($con)) {
     //Type 0 is used for echoing whole tables
     if($querytype == 0){
 	echoResults($operation, $project_id, $con, "*", "1", "");
-    }  
-    
+    }
+
     //Type 1 is for chart data
     else if($querytype == 1){
 	getProjectDataForCharts($project_id, $con);
-    }     
-  
+    }
+
 }
 
 /* Use this function for echoing results from a certain query */
@@ -43,29 +43,31 @@ function echoResults($operation, $project_id, $con, $scope, $where, $equal){
     }else if($operation == 1){
 	echo json_encode(getProjects($project_id, $con, $scope, $where, $equal));
     }else if($operation == 2){
-	echo json_encode(getParticipation($project_id, $con, $scope, $where, $equal));	
+	echo json_encode(getParticipation($project_id, $con, $scope, $where, $equal));
     }else if($operation == 3){
 	echo json_encode(getIndividual($project_id, $con, $scope, $where, $equal));
     }else if($operation == 4){
 	echo json_encode(getWeeklyRequirements($project_id, $con, $scope, $where, $equal));
-    }  
+    }else if($operation == 5){
+	echo json_encode(getProjects($project_id, $con, $scope, "publicity", "= 1"));
+    }
 }
 
 /*----------------------------------------------
 
     GET DATA FROM WEEKLY_REPORT TABLE
 
------------------------------------------------*/     
+-----------------------------------------------*/
 function getWeeklyReports($project_id, $con, $scope, $where, $equal){
-    
+
 	$sql_weeklyreport = "SELECT ".$scope." FROM `weekly_report` WHERE ".$where."".$equal;
 	$result_weekly = mysqli_query($con, $sql_weeklyreport);
 	$num_of_projects = mysqli_num_rows($result_weekly);
-	
+
 	if($num_of_projects != null || $num_of_projects != 0){
-	        
+
 	    while ($row_weekly = mysqli_fetch_array($result_weekly)) {
-		
+
 		$weeklyreport = array(
 		    "project_id" => $row_weekly['project_id'],
 		    "report_id" => $row_weekly['report_id'],
@@ -76,12 +78,12 @@ function getWeeklyReports($project_id, $con, $scope, $where, $equal){
 		    "schedule_status" => $row_weekly['schedule_status'],
 		    "next_milestone" => $row_weekly['next_milestone'],
 		    "working_hours" => $row_weekly['working_hours'],
-		    
+
 		    "passed_unit_testcases" => $row_weekly['passed_unit_testcases'],
 		    "total_unit_testcases" => $row_weekly['total_unit_testcases'],
 		    "passed_other_testcases" => $row_weekly['passed_other_testcases'],
 		    "total_other_testcases" => $row_weekly['total_other_testcases'],
-		    
+
 		    "code_revisions" => $row_weekly['code_revisions'],
 		    "problems" => $row_weekly['problems'],
 		    "changes_in_project_plan" => $row_weekly['changes_in_project_plan'],
@@ -89,12 +91,12 @@ function getWeeklyReports($project_id, $con, $scope, $where, $equal){
 		);
 		$weeklyreport_table[] = $weeklyreport;
 	    }
-    
+
 	    return $weeklyreport_table;
 	}else{
 	    return 0;
 	}
-	
+
 }
 
 /*----------------------------------------------
@@ -106,11 +108,11 @@ function getWeeklyRequirements($project_id, $con, $scope, $where, $equal){
     $sql_req = "SELECT ".$scope." FROM `weekly_report_requirement` WHERE ".$where."".$equal;
     $result_req = mysqli_query($con, $sql_req);
     $num_of_requirements = mysqli_num_rows($result_req);
-    
+
     //$req_table = array();
-    
+
     if($num_of_requirements != null || $num_of_requirements != 0){
-	
+
 	while ($row_req = mysqli_fetch_array($result_req)){
 	    $requirements = array(
 		"project_id" => $row_req['project_id'],
@@ -121,8 +123,8 @@ function getWeeklyRequirements($project_id, $con, $scope, $where, $equal){
 	    );
 	    $requirements_table[] = $requirements;
 	}
-	
-	return $requirements_table; 
+
+	return $requirements_table;
     }else{
 	return 0;
     }
@@ -136,7 +138,7 @@ function getWeeklyRequirements($project_id, $con, $scope, $where, $equal){
 function getProjects($project_id, $con, $scope, $where, $equal){
     $sql_project = "SELECT ".$scope." FROM `project` WHERE ".$where."".$equal;
     $result_project = mysqli_query($con, $sql_project);
-    
+
     $project_table = array();
 
     while ($row_project = mysqli_fetch_array($result_project)) {
@@ -151,8 +153,8 @@ function getProjects($project_id, $con, $scope, $where, $equal){
 	);
 	$project_table[] = $project;
     }
-    
-    return $project_table;  
+
+    return $project_table;
 }
 
 /*----------------------------------------------
@@ -163,15 +165,15 @@ function getProjects($project_id, $con, $scope, $where, $equal){
 function getParticipation($project_id, $con, $scope, $where, $equal){
     $sql_participation = "SELECT ".$scope." FROM `participation` WHERE ".$where."".$equal;
     $result_participation = mysqli_query($con, $sql_participation);
-    
+
     $num_of_rows = mysqli_num_rows($result_participation);
-	
-    if($num_of_rows != null || $num_of_rows != 0){    
-    
+
+    if($num_of_rows != null || $num_of_rows != 0){
+
       $participation_table = array();
-   
+
       while ($row_participation = mysqli_fetch_array($result_participation)) {
-	  
+
 	  $participation = array(
 	      "participation_id" => $row_participation['participation_id'],
 	      "project_id" => $row_participation['project_id'],
@@ -180,19 +182,19 @@ function getParticipation($project_id, $con, $scope, $where, $equal){
 	      "starting_date" => $row_participation['starting_date'],
 	      "ending_date" => $row_participation['ending_date'],
 	      "first_name" => getMember($row_participation['member_id'], 0, $con),
-	      "last_name" => getMember($row_participation['member_id'], 1, $con)	    
+	      "last_name" => getMember($row_participation['member_id'], 1, $con)
 	  );
 	  $participation_table[] = $participation;
       }
-      
+
       return $participation_table;
     }
-    
+
     else{
-	
+
 	return 0;
     }
-    
+
 }
 
 /*----------------------------------------------
@@ -201,22 +203,22 @@ function getParticipation($project_id, $con, $scope, $where, $equal){
 
 -----------------------------------------------*/
 function getMember($memberid, $x, $con){
-    
+
     if($x == 0){
 	$sql_getName = "SELECT `first_name` FROM `member` WHERE `member_id` = ".$memberid;
-	
+
 	if ($result_getName = mysqli_query($con, $sql_getName)) {
 	    $row_getName = mysqli_fetch_assoc($result_getName);
 	    return $row_getName['first_name'];
 	}
     }else{
 	$sql_getName = "SELECT `last_name` FROM `member` WHERE `member_id` = ".$memberid;
-	
+
 	if ($result_getName = mysqli_query($con, $sql_getName)) {
 	    $row_getName = mysqli_fetch_assoc($result_getName);
 	    return $row_getName['last_name'];
-	}	
-    } 
+	}
+    }
 }
 
 /*----------------------------------------------
@@ -227,11 +229,11 @@ function getMember($memberid, $x, $con){
 function getRequirements($project_id, $con, $scope, $where, $equal){
     $sql_requirements = "SELECT ".$scope." FROM `requirement` WHERE ".$where."".$equal;
     $result_requirements = mysqli_query($con, $sql_requirements);
-    
+
     $requirements_table = array();
- 
+
     while ($row_requirements = mysqli_fetch_array($result_requirements)) {
-	
+
 	$requirements = array(
 	    "requirement_id" => $row_requirements['requirement_id'],
 	    "project_id" => $row_requirements['project_id'],
@@ -242,8 +244,8 @@ function getRequirements($project_id, $con, $scope, $where, $equal){
 	);
 	$requirements_table[] = $requirements;
     }
-    
-    return $requirements_table;   
+
+    return $requirements_table;
 }
 
 /*----------------------------------------------
@@ -254,15 +256,15 @@ function getRequirements($project_id, $con, $scope, $where, $equal){
 function getIndividual($project_id, $con, $scope, $where, $equal){
     $sql_individual = "SELECT ".$scope." FROM `individual_work` WHERE ".$where."".$equal;
     $result_individual = mysqli_query($con, $sql_individual);
-    
+
     $individual_table = array();
-    
+
     $num_of_rows = mysqli_num_rows($result_individual);
-    
+
     if($num_of_rows != null || $num_of_rows != 0){
-	    
+
 	while ($row_individual = mysqli_fetch_array($result_individual)){
-	    
+
 	    $individual = array(
 		"work_id" => $row_individual['work_id'],
 		"project_id" => $row_individual['project_id'],
@@ -273,8 +275,8 @@ function getIndividual($project_id, $con, $scope, $where, $equal){
 		"problems" => $row_individual['issue_id']
 	    );
 	    $individual_table[] = $individual;
-	}    
-	
+	}
+
 	return $individual_table;
     }else{
 	return 0;
@@ -283,30 +285,30 @@ function getIndividual($project_id, $con, $scope, $where, $equal){
 
 /*
 function individualHours($project_id, $con, $scope, $where, $equal){
-    
+
     $sql = "SELECT ".$scope." FROM `individual_work` WHERE ".$where."".$equal;
     $result = mysqli_query($con, $sql_individual);
-    
+
     $table = array();
-     
+
     while ($row = mysqli_fetch_array($result)){
-	
+
     }
-    
+
     sort($numbers);
-    
-    
-    
+
+
+
     return $totalhours;
 }*/
 
 /*----------------------------------------------
 
     GET DATA FOR CHARTS
-    
+
 -----------------------------------------------*/
 function getProjectDataForCharts($project_id, $con){
-	
+
 	$mega = array(
 	    "weekly_report" => getWeeklyReports($project_id, $con, "*", "`project_id`", " = ".$project_id),
 	    "project" => getProjects($project_id, $con, "*", "project_id", " = ".$project_id),
@@ -315,7 +317,7 @@ function getProjectDataForCharts($project_id, $con){
 	    "requirement" => getRequirements($project_id, $con, "*", "project_id", " = ".$project_id),
 	    "weekly_requirement" => getWeeklyRequirements($project_id, $con, "*", "project_id", " = ".$project_id)
 	);
-	
+
 	echo json_encode($mega);
 }
 

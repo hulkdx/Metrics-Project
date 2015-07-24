@@ -10,7 +10,9 @@
 
 		<Title>Login</title>
 		<link href="css/style.css" rel="stylesheet" type="text/css" media="screen">
+		<script src="scripts/jquery-1.11.1.min.js"></script>
 		<script src="scripts/metrics-elements-1.0.0.js"></script>
+		<script src="scripts/index.js"></script>
 	</head>
 
 	<body>
@@ -44,6 +46,18 @@
 					</div>
 
 				</form>
+
+
+				<div id="public">
+					<select id="publicCB" name="publicComboBox">
+						<script>
+							createOptions();
+						</script>
+					</select>
+					<button name="public" onclick="publicClicked()">
+						Public Page
+					</button>
+				</div>
 			</div>
 
 			<script>

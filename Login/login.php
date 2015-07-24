@@ -26,7 +26,7 @@ if (isset($_POST['submit'])) {
 	if (empty($_POST['uname']) || empty($_POST['pass'])) {
 		$error = "Username or Password is invalid";
 	} else {
-		
+
 		// Create connection
 		$con = mysqli_connect($hostname, $usrname, $password, $db_name);
 

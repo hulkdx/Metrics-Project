@@ -234,14 +234,63 @@ function createListForPublic()
             //console.log("yes");
         },
     });
-
-
 }
 
 function getUrlVars() {
-var vars = {};
-var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-vars[key] = value;
-});
-return vars;
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+    vars[key] = value;
+    });
+    return vars;
+}
+
+function createPublicAllElement(){
+
+    // 1. Read public projects from Database
+
+    // Connect To Database
+    $.ajax({
+        url: "database_out.php",
+        type: "POST",
+        dataType: "json",
+        data: {
+            querytype: 0,
+            id: 0,
+            operation: 5
+        },
+        success: function(data) {
+            // Create Elements for each project
+            for (var i = 0, len = data.length; i < len; i++) {
+                document.getElementById("publicAll").innerHTML +=
+                    "<label>Project Name:</label>"+
+                    "<input type=\"text\" id=\"project_name\" value=\""+data[i].project_name+"\">"+
+                    "<br>"+
+                    "<label>Created On :</label>"+
+                    "<input type=\"text\" id=\"created_on\" value=\""+data[i].created_on+"\">"+
+                    "<br>"+
+                    "<label>Updated On   :</label>"+
+                    "<input type=\"text\" id=\"updated_on\" value=\""+data[i].updated_on+"\">"+
+                    "<br>"+
+                    "<label>Status :</label>"+
+                    "<input type=\"text\" id=\"status\" value=\""+data[i].status+"\">"+
+                    "<br>"+
+                    "<label>Version      :</label>"+
+                    "<input type=\"text\" id=\"version\" value=\""+data[i].version+"\">"+
+                    "<br>"+
+                    "<label>Description      :</label>"+
+                    "<input type=\"text\" id=\"desc\" value=\""+data[i].description+"\">"+
+                    "<br>"+
+                    "<label>Total Hours      :</label>"+
+                    "<input type=\"text\" id=\"hours\" value=\""+data[i].working_hours+"\">"+
+                    "<br>"+
+                    "<br>";
+
+            };
+        },
+
+        error: function(errorThrown) {
+            console.log(errorThrown);
+            console.log("error");
+        },
+    });
 }

@@ -22,13 +22,15 @@ function createOptions()
         success: function(data) {
             projectList = data;
             var comboBox = document.getElementById("publicCB");
+            var option = document.createElement("option");
+            option.text = "All";
+            comboBox.add(option);
             // Fill the comboBox options with Project List
             for (var i = 0, len = data.length; i < len; i++) {
                 var option = document.createElement("option");
                 option.text = data[i].project_name;
                 comboBox.add(option);
-            }
-            //comboBox.remove(0);
+            };
         },
 
         error: function(errorThrown) {
@@ -40,6 +42,12 @@ function createOptions()
 
 function publicClicked() {
     var comboBox = document.getElementById("publicCB");
-    var id = projectList[comboBox.selectedIndex].project_id;
+
+    if(comboBox.selectedIndex==0){
+        window.location.href = "public_all.php";
+        return;
+    }
+
+    var id = projectList[comboBox.selectedIndex-1].project_id;
     window.location.href = "public.php?id=" + id;
 }

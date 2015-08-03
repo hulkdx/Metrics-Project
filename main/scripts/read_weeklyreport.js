@@ -48,6 +48,27 @@ today = mm+'.'+dd+'.'+yyyy;
 // Load defaults
 initFields();
 
+var isNewProject = 1;
+// This will happens whenever the listbox changed
+function onChangeComboBox() {
+    var comboBox = document.getElementById("projectComboBox");
+    var textBox = document.getElementById("projectid");
+    var selectedValue = comboBox.options[comboBox.selectedIndex].value;
+    if (selectedValue == "New") {
+        isNewProject = 1;
+        var randomNumber = Math.random() * 100000 | 0;
+        textBox.value = randomNumber;
+    }
+    else {
+        isNewProject = 0;
+        for (var i = 0, len = projectList.length, selectedIndex = comboBox.selectedIndex-1; i < len; i++) {
+            if (selectedIndex == i) {
+                textBox.value = projectList[i].project_id;
+            }
+        }
+    }
+}
+
 
 /*----------------
 
@@ -65,7 +86,7 @@ TODO clearfields is clearing the board
         contents = e.target.result;
 
         // Creates an array matching regex:
-        var arrayOfLines = contents.match(/[^\r\n]+[a-zA-Z0-9äöÄÖÅå:]+/g);
+        var arrayOfLines = contents.match(/[^\r\n]+/g);
 
         // Regex patterns used for matching certain strings
         var emailregex = /(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
@@ -143,16 +164,13 @@ function addToSection(detectedkey){
         var numofitems = document.getElementById(detectedkey+"_container").getAttribute("name");
         var subkey = detectedkey.substr(1);
 
-        // if(detectedkey == "#title"){
-        //     console.log("");
-        // }
-        // else
         if(detectedkey == "#time" || detectedkey == "#project"){
             if(!document.getElementById(subkey+"_0")){
                 CreateInput("",subkey,1,0,detectedkey,"text_input");
             }
         }
         else if(detectedkey == "#client" || detectedkey == "#managers"){
+
             CreateInput("",subkey+"_name",0,parseInt(numofitems)+1,detectedkey,"text_input");
             CreateInput("",subkey+"_email",1,parseInt(numofitems)+1,detectedkey,"text_input");
         }
@@ -213,6 +231,7 @@ function hideSection(targetid, headerid, btnid){
 // Function used for displaying the data
 // Loops thru sub categories
 function getData(i, regex, idprefix, arrayOfLines, detectedkey){
+
     var extractedRegex = "";
     var excludedRegex = "";
     var text = "";
@@ -231,8 +250,7 @@ function getData(i, regex, idprefix, arrayOfLines, detectedkey){
             break;
         }else{
 
-            if(detectedkey == "#time" || detectedkey == "#project" || detectedkey == "#passed_unit_test"
-            	|| detectedkey == "#passed_other_test"|| detectedkey == "#total_unit_test" || detectedkey == "#total_other_test"){
+            if(detectedkey == "#title" || detectedkey == "#time" || detectedkey == "#project" || detectedkey == "#passed_unit_test" || detectedkey == "#passed_other_test"|| detectedkey == "#total_unit_test" || detectedkey == "#total_other_test"){
                 CreateInput(arrayOfLines[k], keywordsub, 1, 0, detectedkey, "text_input");
             }
 
@@ -240,7 +258,7 @@ function getData(i, regex, idprefix, arrayOfLines, detectedkey){
 
                 if(arrayOfLines[k] == "New:"){
                     for(t = k+1; t<arrayOfLines.length; t++){
-                        if(arrayOfLines[t] == "In_progress:" || arrayOfLines[t].match(/(^|\s)(#[a-z\d-]+)/)) {
+                        if(arrayOfLines[t] == "New:" || arrayOfLines[t] == "In_progress:" || arrayOfLines[t] == "Resolved:" || arrayOfLines[t] == "Feedback:"  || arrayOfLines[t] == "Closed:" || arrayOfLines[t] == "Rejected:" || arrayOfLines[t].match(/(^|\s)(#[a-z\d-]+)/)) {
                             break;
                         }
                         subcounter++;
@@ -249,9 +267,9 @@ function getData(i, regex, idprefix, arrayOfLines, detectedkey){
                     }
                 }
 
-                if(arrayOfLines[k] == "In_progress:"){
+                else if(arrayOfLines[k] == "In_progress:"){
                     for(t = k+1; t<arrayOfLines.length; t++){
-                        if(arrayOfLines[t] == "Resolved:" || arrayOfLines[t].match(/(^|\s)(#[a-z\d-]+)/)) {
+                        if(arrayOfLines[t] == "New:" || arrayOfLines[t] == "In_progress:" || arrayOfLines[t] == "Resolved:" || arrayOfLines[t] == "Feedback:"  || arrayOfLines[t] == "Closed:" || arrayOfLines[t] == "Rejected:" || arrayOfLines[t].match(/(^|\s)(#[a-z\d-]+)/)) {
                             break;
                         }
                         subcounter++;
@@ -260,20 +278,21 @@ function getData(i, regex, idprefix, arrayOfLines, detectedkey){
                     }
                 }
 
-                if(arrayOfLines[k] == "Resolved:"){
+                else if(arrayOfLines[k] == "Resolved:"){
                     for(t = k+1; t<arrayOfLines.length; t++){
-                        if(arrayOfLines[t] == "Feedback:" || arrayOfLines[t].match(/(^|\s)(#[a-z\d-]+)/)) {
+                        if(arrayOfLines[t] == "New:" || arrayOfLines[t] == "In_progress:" || arrayOfLines[t] == "Resolved:" || arrayOfLines[t] == "Feedback:"  || arrayOfLines[t] == "Closed:" || arrayOfLines[t] == "Rejected:" || arrayOfLines[t].match(/(^|\s)(#[a-z\d-]+)/)) {
                             break;
                         }
+                        console.log(arrayOfLines[t]);
                         subcounter++;
                         CreateInput(arrayOfLines[t], keywordsub+"_name", 0, subcounter, detectedkey, "text_input");
                         CreateInput("2", keywordsub+"_status", 1, subcounter, detectedkey, "dropdown");
                     }
                 }
 
-                if(arrayOfLines[k] == "Feedback:"){
+                else if(arrayOfLines[k] == "Feedback:"){
                     for(t = k+1; t<arrayOfLines.length; t++){
-                        if(arrayOfLines[t] == "Closed:" || arrayOfLines[t].match(/(^|\s)(#[a-z\d-]+)/)) {
+                        if(arrayOfLines[t] == "New:" || arrayOfLines[t] == "In_progress:" || arrayOfLines[t] == "Resolved:" || arrayOfLines[t] == "Feedback:"  || arrayOfLines[t] == "Closed:" || arrayOfLines[t] == "Rejected:" || arrayOfLines[t].match(/(^|\s)(#[a-z\d-]+)/)) {
                             break;
                         }
                         subcounter++;
@@ -282,10 +301,10 @@ function getData(i, regex, idprefix, arrayOfLines, detectedkey){
                     }
                 }
 
-                if(arrayOfLines[k] == "Closed:"){
+                else if(arrayOfLines[k] == "Closed:"){
 
                     for(t = k+1; t<arrayOfLines.length; t++){
-                        if(arrayOfLines[t] == "Rejected:" || arrayOfLines[t].match(/(^|\s)(#[a-z\d-]+)/)) {
+                        if(arrayOfLines[t] == "New:" || arrayOfLines[t] == "In_progress:" || arrayOfLines[t] == "Resolved:" || arrayOfLines[t] == "Feedback:"  || arrayOfLines[t] == "Closed:" || arrayOfLines[t] == "Rejected:" || arrayOfLines[t].match(/(^|\s)(#[a-z\d-]+)/)) {
                             break;
                         }
                         subcounter++;
@@ -294,9 +313,9 @@ function getData(i, regex, idprefix, arrayOfLines, detectedkey){
                     }
                 }
 
-                if(arrayOfLines[k] == "Rejected:"){
+                else if(arrayOfLines[k] == "Rejected:"){
                     for(t = k+1; t<arrayOfLines.length; t++){
-                        if(arrayOfLines[t].match(/(^|\s)(#[a-z\d-]+)/)) {
+                        if(arrayOfLines[t] == "New:" || arrayOfLines[t] == "In_progress:" || arrayOfLines[t] == "Resolved:" || arrayOfLines[t] == "Feedback:"  || arrayOfLines[t] == "Closed:" || arrayOfLines[t] == "Rejected:" || arrayOfLines[t].match(/(^|\s)(#[a-z\d-]+)/)) {
                             break;
                         }
                         subcounter++;
@@ -308,25 +327,23 @@ function getData(i, regex, idprefix, arrayOfLines, detectedkey){
             }
 
             else if(detectedkey == "#client" || detectedkey == "#managers"){
-
-                // Gets email from the string
-                // Separates email from name
+                // Gets email from the string Separates email from name
                 extractedRegex = regex.exec(arrayOfLines[k]);
 
                 if(extractedRegex != null){
                     excludedRegex = arrayOfLines[k].replace(extractedRegex[0],'');
                     excludedRegex = excludedRegex.trim();
                     excludedRegex = excludedRegex.match(/[\w\s]+[a-zA-Z0-9äöÄÖÅå]/);
+                    CreateInput(excludedRegex, keywordsub+"_name", 0, counter, detectedkey, "text_input");
+                    CreateInput(extractedRegex[0], keywordsub+"_email", 1, counter, detectedkey, "text_input");
                 }else{
-                    extractedRegex = "";
+                    CreateInput(arrayOfLines[k], keywordsub+"_name", 0, counter, detectedkey, "text_input");
+                    CreateInput("", keywordsub+"_email", 1, counter, detectedkey, "text_input");
                 }
-                CreateInput(excludedRegex, keywordsub+"_name", 0, counter, detectedkey, "text_input");
-                CreateInput(extractedRegex[0], keywordsub+"_email", 1, counter, detectedkey, "text_input");
             }
             else if(detectedkey == "#tasks_comp" || detectedkey == "#task_comp" || detectedkey == "#tasks_next" || detectedkey == "#task_next"
                 || detectedkey == "#milestone" || detectedkey == "#miletone" || detectedkey == "#miletones"
                 || detectedkey == "#revisions" || detectedkey == "#revision" || detectedkey == "#problems" || detectedkey == "#problem" ){
-                console.log(detectedkey);
                 CreateInput(arrayOfLines[k], keywordsub, 1, counter, detectedkey, "text_input", "text_input");
             }
 
@@ -558,9 +575,11 @@ var placeholder = "";
 
                 projectid = document.getElementById("projectid").value;
 
-                // Time, project name, desc, phase ,unit_test,oother_test and
-		// additional
-                // are pushed into otherinfo array
+                // Time, project name, desc, phase, unit_test,oother_test,
+                // additional are pushed into otherinfo array
+                if (document.getElementById("title_0")){
+                    otherinfo[0].week_number = document.getElementById("title_0").value;
+                }
 
                 if(document.getElementById("time_0")){
                     otherinfo[0].time = document.getElementById("time_0").value;
@@ -719,7 +738,8 @@ var placeholder = "";
                     milestone: milestone,
                     revisions: revisions,
                     workinghours: working_hours,
-                    problems: problems
+                    problems: problems,
+                    isNewProject: isNewProject
                 };
             }
 

@@ -1,4 +1,11 @@
 <?php
+/*
+Tommi Tuominen and Mohammad Jafarzadeh Rezvan
+Metrics Monitoring Tool
+Project Work 2014/2015
+Updated: 3.8.2015
+Here are the functions used for putting data to database
+*/
 
 include('../Login/db_connection.php');
 
@@ -12,7 +19,15 @@ if (mysqli_connect_errno($con)) {
 
 else {
 	$project_id = intval($decoded_json->otherinfo[0]->projectid);
-	$number_of_week = 3;
+	if (isset($decoded_json->otherinfo[0]->week_number)) {
+		$number_of_week = intval($decoded_json->otherinfo[0]->week_number);
+		if (!is_numeric($number_of_week)){
+			$number_of_week = 0;
+		}
+	}else {
+		$number_of_week = 0;
+	}
+
 	$schedule_status = " ";
 	$working_hours = 434;
 	$changes_in_project_plan = " ";
@@ -44,6 +59,8 @@ else {
 	$status = 1;
 	$version = 1;
 
+	$isNewProject = $decoded_json->isNewProject;
+
 	$countError = 0;
 	$queryFailed = "";
 	$query = "INSERT INTO `weekly_report`(`project_id`, `number_of_week`, `project_phase`,
@@ -55,19 +72,19 @@ else {
 	if(!mysqli_query($con, $query))
 	{
 		$countError++;
-		$queryFailed .= $query."\r\n";
+		// $queryFailed .= $query."\r\n";
 	}
 
 	$report_id = mysqli_insert_id($con);
 
 	for($i=0;$i<count($requirements);$i++){
-	    $query = "INSERT INTO `weekly_report_requirement`(`project_id`, `requirement_name`,  `requirement_status`)
-	    VALUES($project_id, '" . $requirements[$i]->name . "'," . $requirements[$i]->status .");";
+	    $query = "INSERT INTO `weekly_report_requirement`(`project_id`, `report_id`, `requirement_name`,  `requirement_status`)
+	    VALUES($project_id, $report_id, '" . $requirements[$i]->name . "'," . $requirements[$i]->status .");";
 
 		if(!mysqli_query($con, $query))
 		{
 			$countError++;
-			$queryFailed .= $query."\r\n";
+			// $queryFailed .= $query."\r\n";
 		}
 	}
 
@@ -78,17 +95,24 @@ else {
 		if(!mysqli_query($con, $query))
 		{
 			$countError++;
-			$queryFailed .= $query."\r\n";
+			// $queryFailed .= $query."\r\n";
 		}
 	}
 
-	$query = "INSERT IGNORE INTO `project`(`project_id`, `project_name`, `created_on`, `updated_on`, `status`, `version`, `discription`)
-	VALUES($project_id, '$project_name', '$created_on','$updated_on', $status, $version, '$description')";
+	if($isNewProject){
+		$query = "INSERT INTO `project`(`project_id`, `project_name`, `created_on`, `updated_on`, `status`, `version`, `discription`, `publicity`)
+		VALUES($project_id, '$project_name', '$created_on','$updated_on', $status, $version, '$description', '0')";
+	}
+	else{
+		$query = "UPDATE `project` SET `project_name`='$project_name', `created_on`='$created_on', `updated_on`='$updated_on', `status`=$status, `version`=$version, `discription`='$description', `publicity`='0'
+		WHERE `project_id`=$project_id";
+	}
+
 
 	if(!mysqli_query($con, $query))
 	{
 		$countError++;
-		$queryFailed .= $query."\r\n";
+		// $queryFailed .= $query."\r\n";
 	}
 
 	if ($countError===0)
@@ -96,7 +120,8 @@ else {
 		echo "Data successfully added";
 	}
 	else {
-		echo $countError . " Query failed! \r\n The Query which Failed are " . $queryFailed;
+		echo $countError . "error found!";
+		//  . " Query failed! \r\n The Query which Failed are " . $queryFailed;
 	}
 
 

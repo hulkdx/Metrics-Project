@@ -2,7 +2,7 @@
 Tommi Tuominen and Mohammad Jafarzadeh Rezvan
 Metrics Monitoring Tool
 Project Work 2014/2015
-Updated: 5.1.2015
+Updated: 3.8.2015
 This file is used for dynamic creation of basic website elements.
 ----------------------
 TODO:
@@ -115,7 +115,7 @@ function createHeader(text, type) {
             "<div style='width: 1100px; margin-left: 10px;'>" +
 
             "<div style='width: 600px; float: right;'>"+
-            "<select id=\"projectComboBox\" onchange=\"onChangeComboBox()\"> <option>New</option> <option>Random</option> </select>" +
+            "<select id=\"projectComboBox\" onchange=\"onChangeComboBox()\"> <option>New</option> </select>" +
             "<br>"+
             "<input type=\"button\" onclick=\"clicked()\" value=\"Send to db\"/>" +
             "</div>"+
@@ -150,25 +150,11 @@ function createHeader(text, type) {
             },
         });
 
-    }
-}
-
-
-function onChangeComboBox() {
-    var comboBox = document.getElementById("projectComboBox");
-    var textBox = document.getElementById("projectid");
-    var selectedValue = comboBox.options[comboBox.selectedIndex].value;
-    if (selectedValue == "New") {
-        textBox.value = "";
-    } else if (selectedValue == "Random") {
+        // Default is in new one
+        var textBox = document.getElementById("projectid");
         var randomNumber = Math.random() * 100000 | 0;
         textBox.value = randomNumber;
-    } else {
-        for (var i = 0, len = projectList.length, selectedIndex = comboBox.selectedIndex-2; i < len; i++) {
-            if (selectedIndex == i) {
-                textBox.value = projectList[i].project_id;
-            }
-        }
+
     }
 }
 
@@ -250,14 +236,9 @@ function createPublicAllElement(){
 
     // Connect To Database
     $.ajax({
-        url: "database_out.php",
+        url: "../Login/public.php",
         type: "POST",
         dataType: "json",
-        data: {
-            querytype: 0,
-            id: 0,
-            operation: 5
-        },
         success: function(data) {
             // Create Elements for each project
             for (var i = 0, len = data.length; i < len; i++) {
